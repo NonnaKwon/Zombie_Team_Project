@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Define
 {
-
+    public const int JUMP_MAX_COUNT = 1;
     public enum Scene
     {
         TItle,
@@ -13,8 +13,9 @@ public class Define
 
     public enum PlayerState
     {
-
-    
+        Idle,
+        Interact,
+        Die,
     }
 
     public enum ZombieState
