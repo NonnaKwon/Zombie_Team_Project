@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     private float _jumpPower;
     private float _dashSpeed;
 
-    private float _nowSpeed;
+    private float _curSpeed;
     private int _stackJumpCount;
     private bool _canMove;
 
@@ -47,10 +47,10 @@ public class PlayerController : MonoBehaviour
     {
         _canMove = true;
         _stackJumpCount = 0;
-        _moveSpeed = 8.4f;
+        _moveSpeed = 8f;
         _jumpPower = 7f;
-        _dashSpeed = 20f;
-        _nowSpeed = _moveSpeed;
+        _dashSpeed = 14f;
+        _curSpeed = _moveSpeed;
         _groundFind = LayerMask.GetMask("Ground");
         if (_stateMachine.CurState != PlayerState.Idle)
             _stateMachine.ChangeState(PlayerState.Idle);
@@ -64,7 +64,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Move()
     {
-        transform.Translate(_moveDir * _nowSpeed * Time.deltaTime);
+        transform.Translate(_moveDir * _curSpeed * Time.deltaTime);
     }
 
 
@@ -77,13 +77,19 @@ public class PlayerController : MonoBehaviour
 
     private void OnJump(InputValue value)
     {
+        if (!_canMove)
+            return;
         if (_stackJumpCount < JUMP_MAX_COUNT)
             Jump();
     }
 
     private void OnDash(InputValue value)
     {
-        //스피드를 올린다. ( 키를 누르고 있는동안? 아니면 누른 즉시 순간대쉬?) 
+        if (value.isPressed)
+            _curSpeed = _dashSpeed;
+        else
+            _curSpeed = _moveSpeed;
+
     }
 
     private void OnMove(InputValue value)
