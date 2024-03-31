@@ -27,6 +27,9 @@ public class ZombieController : MonoBehaviour
     public float attackrange;
     public float timeBetweenAttacks;
     public float walkPointRange;
+    public int health = 100; // 좀비의 초기 생명력
+    public GameObject[] itemsToDrop; // 드랍할 수 있는 아이템들의 배열
+    public float dropRadius = 0.5f; // 아이템을 드랍할 때 좀비 위치에서의 최대 반경
 
     private void Awake()
     {
@@ -128,5 +131,32 @@ public class ZombieController : MonoBehaviour
     private void ResetAttack()
     {
         alreadyAttacked = false;
+    }
+
+    public void TakeDamage(int damage)
+    {
+        health -= damage; // 받은 피해만큼 생명력을 감소시킴
+
+        if (health <= 0) // 생명력이 0 이하가 되면 죽음
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        DropRandomItem(); // 무작위 아이템 드랍
+        Destroy(gameObject); // 좀비 게임오브젝트를 파괴하여 죽음 처리
+    }
+
+    private void DropRandomItem()
+    {
+        if (itemsToDrop.Length > 0) // 드랍할 아이템이 설정되어 있다면
+        {
+            int randomIndex = Random.Range(0, itemsToDrop.Length); // 무작위 인덱스 선택
+            Vector3 dropPosition = transform.position + Random.insideUnitSphere * dropRadius; // 드랍 위치 결정
+            dropPosition.y = transform.position.y; // y 위치는 조정하지 않음
+            Instantiate(itemsToDrop[randomIndex], dropPosition, Quaternion.identity); // 아이템 생성
+        }
     }
 }
