@@ -14,11 +14,9 @@ public class PlayerController : MonoBehaviour
 {
     private Vector3 _moveDir;
     private float _moveSpeed;
-    private float _jumpPower;
     private float _dashSpeed;
 
     private float _curSpeed;
-    private int _stackJumpCount;
     private bool _canMove;
     private bool _onMouseRotate;
 
@@ -52,9 +50,7 @@ public class PlayerController : MonoBehaviour
     {
         _onMouseRotate = false;
         _canMove = true;
-        _stackJumpCount = 0;
         _moveSpeed = 8f;
-        _jumpPower = 7f;
         _dashSpeed = 14f;
         _curSpeed = _moveSpeed;
         _groundFind = LayerMask.GetMask("Ground");
@@ -80,12 +76,11 @@ public class PlayerController : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
                 Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.red, 0.5f);
-                Debug.Log(hit.transform.position);
 
                 Vector3 tmpDir = hit.point - transform.position;
                 Vector3 rotateDir = new Vector3(tmpDir.x, 0, tmpDir.z);
                 Quaternion lookRotation = Quaternion.LookRotation(rotateDir);
-                transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, 5f * Time.deltaTime);
+                transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, 10f * Time.deltaTime);
             }
         }
         else
@@ -105,21 +100,6 @@ public class PlayerController : MonoBehaviour
         transform.Translate(_moveDir * _curSpeed * Time.deltaTime,Space.World);
     }
 
-
-    private void Jump()
-    {
-        _stackJumpCount++;
-        _rigid.velocity = new Vector3(_rigid.velocity.x, _jumpPower, _rigid.velocity.z);
-    }
-
-
-    private void OnInteract(InputValue value)
-    {
-        if (!_canMove)
-            return;
-        if (_stackJumpCount < JUMP_MAX_COUNT)
-            Jump();
-    }
 
     private void OnDash(InputValue value)
     {
@@ -148,12 +128,18 @@ public class PlayerController : MonoBehaviour
         _onMouseRotate = value.isPressed ? true : false;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (_groundFind.Contain(collision.gameObject.layer))
-        {
-            _stackJumpCount = 0;
-        }
+        IInteractable interact = other.GetComponent<IInteractable>();
+        if (interact != null)
+            interact.OnActive();
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        IInteractable interact = other.GetComponent<IInteractable>();
+        if (interact != null)
+            interact.OffActive();
     }
 
 
