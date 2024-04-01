@@ -8,124 +8,74 @@ using UnityEngine.AI;
 
 public class ZombieController : MonoBehaviour
 {
-    public NavMeshAgent agent;
-    public Transform player; // 플레이어 위치 참조
-    public LayerMask whatIsGround, whatIsPlayer; // 바닥과 플레이어를 구분하기 위한 레이어마스크
-    public enum StateMachine { Idle, Patrol, Chase, Attack } // 현재 좀비 상태를 나타내는 열거형
-    public StateMachine statemachine; //현재 좀비 상태
-    public bool isAlive;
-    public bool playerInSightRange, playerInAttackRange;
+    public Transform player;
+    public Rigidbody rigid;
+    public LayerMask whatIsGround, whatIsPlayer;
+
+    public enum StateMachine { Idle, Chase, Attack }
+    public StateMachine statemachine = StateMachine.Idle;
+
     public Vector3 walkPoint;
     public bool walkPointSet;
-    private bool alreadyAttacked; // 이미 공격했는지 여부
+    public float walkPointRange;
 
     public float sightRange, attackRange;
-    public float speed;
-    public float patrolSpeed;
-    public float chaseSpeed;
-    public float sightrange;
-    public float attackrange;
+    public float zombieSpeed;
     public float timeBetweenAttacks;
-    public float walkPointRange;
-    public int health = 100; // 좀비의 초기 생명력
-    public GameObject[] itemsToDrop; // 드랍할 수 있는 아이템들의 배열
-    public float dropRadius = 0.5f; // 아이템을 드랍할 때 좀비 위치에서의 최대 반경
+    private bool alreadyAttacked;
+
+    public int hp;
+    public GameObject[] itemsToDrop;
+    public float dropRadius = 0.5f;
 
     private void Awake()
     {
         player = GameObject.FindWithTag("Player").transform;
-        agent = GetComponent<NavMeshAgent>();
+        rigid = GetComponent<Rigidbody>();
     }
 
     private void Update()
     {
-        if (!isAlive)
-        {
-            return;
-        }
+        // 플레이어와 좀비 사이의 거리 계산
+        float distanceToPlayer = Vector3.Distance(player.position, transform.position);
 
-        playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
-        playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
-
-        switch (statemachine)
-        {
-            case StateMachine.Patrol:
-                Patrol();
-                break;
-            case StateMachine.Chase:
-                Chase();
-                break;
-            case StateMachine.Attack:
-                Attack();
-                break;
-        }
-    }
-
-    private void Patrol() // 좀비 순찰 기능
-    {
-        agent.speed = patrolSpeed;
-        if (!walkPointSet) SearchWalkPoint();
-
-        if (walkPointSet) agent.SetDestination(walkPoint);
-
-        // 순찰 지점에 도착했다면 다음 순찰 지점 찾기
-        Vector3 distanceToWalkPoint = transform.position - walkPoint;
-        if (distanceToWalkPoint.magnitude < 1f)
-        {
-            walkPointSet = false;
-        }
-
-        // 플레이어가 시야 범위 내에 있다면 추적 상태로 전환
-        if (Physics.CheckSphere(transform.position, sightrange, whatIsPlayer))
+        if (distanceToPlayer <= sightRange && distanceToPlayer > attackRange)
         {
             statemachine = StateMachine.Chase;
         }
-    }
-
-    private void SearchWalkPoint()
-    {
-        // 랜덤으로 순찰 지점 결정
-        float randomX = Random.Range(-walkPointRange, walkPointRange);
-        float randomZ = Random.Range(-walkPointRange, walkPointRange);
-
-        walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
-        if(Physics.Raycast(walkPoint, transform.up, 2f, whatIsGround));
-
-        if (Physics.Raycast(walkPoint, -Vector3.up, 2f, whatIsGround))
-        {
-            walkPointSet = true;
-        }
-    }
-
-    private void Chase() // 좀비 추격 기능
-    {
-        agent.speed = chaseSpeed;
-        agent.SetDestination(player.position);
-
-        if (Physics.CheckSphere(transform.position, attackRange, whatIsPlayer))
+        else if (distanceToPlayer <= attackRange)
         {
             statemachine = StateMachine.Attack;
         }
+
+        switch (statemachine)
+        {
+            case StateMachine.Chase:
+                ChasePlayer();
+                break;
+            case StateMachine.Attack:
+                AttackPlayer();
+                break;
+        }
     }
 
-    private void Attack() // 좀비 공격 기능
+    private void ChasePlayer()
     {
-        agent.SetDestination(transform.position);
+        Vector3 direction = (player.position - transform.position).normalized;
+        direction.y = 0;
+        rigid.MovePosition(transform.position + direction * zombieSpeed * Time.fixedDeltaTime);
+    }
 
-        transform.LookAt(player);
-
+    private void AttackPlayer()
+    {
         if (!alreadyAttacked)
         {
+            
+            // player.TakeDamage(damage);
 
             alreadyAttacked = true;
             Invoke(nameof(ResetAttack), timeBetweenAttacks);
         }
-
-        if (!Physics.CheckSphere(transform.position, attackRange, whatIsPlayer))
-        {
-            statemachine = StateMachine.Chase;
-        }
-
     }
 
     private void ResetAttack()
@@ -135,9 +85,9 @@ public class ZombieController : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        health -= damage; // 받은 피해만큼 생명력을 감소시킴
+        hp -= damage;
 
-        if (health <= 0) // 생명력이 0 이하가 되면 죽음
+        if (hp <= 0)
         {
             Die();
         }
@@ -145,18 +95,24 @@ public class ZombieController : MonoBehaviour
 
     private void Die()
     {
-        DropRandomItem(); // 무작위 아이템 드랍
-        Destroy(gameObject); // 좀비 게임오브젝트를 파괴하여 죽음 처리
+        DropRandomItem();
+        Destroy(gameObject);
     }
 
     private void DropRandomItem()
     {
-        if (itemsToDrop.Length > 0) // 드랍할 아이템이 설정되어 있다면
+        if (itemsToDrop.Length > 0)
         {
-            int randomIndex = Random.Range(0, itemsToDrop.Length); // 무작위 인덱스 선택
-            Vector3 dropPosition = transform.position + Random.insideUnitSphere * dropRadius; // 드랍 위치 결정
-            dropPosition.y = transform.position.y; // y 위치는 조정하지 않음
-            Instantiate(itemsToDrop[randomIndex], dropPosition, Quaternion.identity); // 아이템 생성
+            int randomIndex = Random.Range(0, itemsToDrop.Length);
+            Vector3 dropPosition = transform.position + Random.insideUnitSphere * dropRadius;
+            dropPosition.y = transform.position.y;
+            Instantiate(itemsToDrop[randomIndex], dropPosition, Quaternion.identity);
         }
     }
+
+    private void Respawn()
+    {
+
+    }
+
 }

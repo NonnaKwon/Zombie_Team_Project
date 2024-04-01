@@ -6,4 +6,5 @@ public class GameManager : Singleton<GameManager>
     {
         Debug.Log(GetInstanceID());
     }
+
 }
