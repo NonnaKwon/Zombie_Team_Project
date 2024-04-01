@@ -8,10 +8,10 @@ public class CameraController : MonoBehaviour
     Transform _follow;
     Vector3 _distance;
 
-    private void Start()
+    private void Awake()
     {
         _follow = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
-        _distance = transform.position;
+        _distance = transform.position - _follow.position;
     }
     private void Update()
     {
