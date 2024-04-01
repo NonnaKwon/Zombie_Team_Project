@@ -231,8 +231,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5422824315353000563}
   m_HandleRect: {fileID: 5246080573109100544}
   m_Direction: 2
-  m_Value: 0.4806817
-  m_Size: 0.3125176
+  m_Value: 0.1391566
+  m_Size: 0.3967331
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -539,7 +539,7 @@ GameObject:
   - component: {fileID: 8644155035806734266}
   - component: {fileID: 1552401119481908942}
   m_Layer: 5
-  m_Name: Hour
+  m_Name: Min
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1146,7 +1146,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.011000001, y: 0.78900003}
   m_AnchorMax: {x: 0.09985069, y: 0.8315834}
-  m_AnchoredPosition: {x: -0.8432007, y: 0.099998474}
+  m_AnchoredPosition: {x: -0.8432007, y: 0.1000061}
   m_SizeDelta: {x: 3.612091, y: 6.6700974}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6400039037763607454
@@ -1761,7 +1761,7 @@ GameObject:
   - component: {fileID: 8827659400622526401}
   - component: {fileID: 4129315811040722579}
   m_Layer: 5
-  m_Name: Min
+  m_Name: Sec
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3326,7 +3326,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 107.10666}
+  m_AnchoredPosition: {x: 0, y: 155.79549}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &8767535001568655124
