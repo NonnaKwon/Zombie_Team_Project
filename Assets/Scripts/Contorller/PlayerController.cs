@@ -79,13 +79,13 @@ public class PlayerController : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(_mousePos);
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                Debug.DrawRay(ray.origin, ray.direction * 1000f, Color.red, 0.5f);
+                Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.red, 0.5f);
+                Debug.Log(hit.transform.position);
 
-                Vector3 rotateDir = hit.transform.position - transform.position;
+                Vector3 tmpDir = hit.point - transform.position;
+                Vector3 rotateDir = new Vector3(tmpDir.x, 0, tmpDir.z);
                 Quaternion lookRotation = Quaternion.LookRotation(rotateDir);
                 transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, 5f * Time.deltaTime);
-
-                Debug.Log(rotateDir);
             }
         }
         else
@@ -145,7 +145,6 @@ public class PlayerController : MonoBehaviour
 
     private void OnLook(InputValue value)
     {
-        Debug.Log(value);
         _onMouseRotate = value.isPressed ? true : false;
     }
 
