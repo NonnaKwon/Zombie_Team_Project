@@ -75,7 +75,7 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    private void OnJump(InputValue value)
+    private void OnInteract(InputValue value)
     {
         if (!_canMove)
             return;
