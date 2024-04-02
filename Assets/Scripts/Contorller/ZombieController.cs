@@ -12,7 +12,7 @@ public class ZombieController : MonoBehaviour
     public Rigidbody rigid;
     public LayerMask whatIsGround, whatIsPlayer;
 
-    public enum StateMachine { Idle, Chase, Attack }
+    public enum StateMachine { Idle, Chase, Attack, Die }
     public StateMachine statemachine = StateMachine.Idle;
 
     public Vector3 walkPoint;
@@ -51,28 +51,25 @@ public class ZombieController : MonoBehaviour
         switch (statemachine)
         {
             case StateMachine.Chase:
-                ChasePlayer();
+                Chase();
                 break;
             case StateMachine.Attack:
-                AttackPlayer();
+                Attack();
                 break;
         }
     }
 
-    private void ChasePlayer()
+    private void Chase()
     {
         Vector3 direction = (player.position - transform.position).normalized;
         direction.y = 0;
         rigid.MovePosition(transform.position + direction * zombieSpeed * Time.fixedDeltaTime);
     }
 
-    private void AttackPlayer()
+    private void Attack()
     {
         if (!alreadyAttacked)
         {
-            
-            // player.TakeDamage(damage);
-
             alreadyAttacked = true;
             Invoke(nameof(ResetAttack), timeBetweenAttacks);
         }
@@ -109,10 +106,4 @@ public class ZombieController : MonoBehaviour
             Instantiate(itemsToDrop[randomIndex], dropPosition, Quaternion.identity);
         }
     }
-
-    private void Respawn()
-    {
-
-    }
-
 }

@@ -6,7 +6,7 @@ public class ItemDrop : MonoBehaviour
 {
     public string itemName;
 
-    [System.Serializable]
+    [System.Serializable] // Á÷·ÄÈ­
     public struct Stat
     {
         public string name;
@@ -23,5 +23,4 @@ public class ItemDrop : MonoBehaviour
 
     [Multiline]
     public string description;
-
 }
