@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     Rigidbody _rigid;
     Vector2 _mousePos;
     LayerMask _groundFind;
+    Animator _animator;
     UI_Inventory _uiInventory;
 
     private StateMachine<PlayerState> _stateMachine;
@@ -33,6 +34,7 @@ public class PlayerController : MonoBehaviour
         
         //Component
         _rigid = GetComponent<Rigidbody>();
+        _animator = GetComponent<Animator>();
         _uiInventory = Manager.Resource.Load<UI_Inventory>("Prefabs/UI/Popup/UI_Inventory");
 
     }
@@ -47,8 +49,8 @@ public class PlayerController : MonoBehaviour
     {
         _onMouseRotate = false;
         _canMove = true;
-        _moveSpeed = 8f;
-        _dashSpeed = 14f;
+        _moveSpeed = 4f;
+        _dashSpeed = 8f;
         _curSpeed = _moveSpeed;
         _groundFind = LayerMask.GetMask("Ground");
         if (_stateMachine.CurState != PlayerState.Idle)
@@ -76,8 +78,7 @@ public class PlayerController : MonoBehaviour
 
                 Vector3 tmpDir = hit.point - transform.position;
                 Vector3 rotateDir = new Vector3(tmpDir.x, 0, tmpDir.z);
-                Quaternion lookRotation = Quaternion.LookRotation(rotateDir);
-                transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, 10f * Time.deltaTime);
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(rotateDir), 10f * Time.deltaTime);
             }
         }
         else
@@ -95,6 +96,8 @@ public class PlayerController : MonoBehaviour
     private void Move()
     {
         transform.Translate(_moveDir * _curSpeed * Time.deltaTime,Space.World);
+        _animator.SetFloat("velocity", (_moveDir * _curSpeed).magnitude);
+        _animator.SetFloat("moveAngle", Extension.GetAngle(transform.forward, _moveDir)); //moveDir랑 지금 캐릭터가 보고있는 forward 각도 계산
     }
 
 
