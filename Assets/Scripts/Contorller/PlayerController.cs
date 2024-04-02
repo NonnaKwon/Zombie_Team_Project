@@ -1,14 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.PackageManager;
 using UnityEngine;
-using UnityEngine.Diagnostics;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.XR;
-using UnityEngine.Rendering;
-using UnityEngine.UIElements;
 using static Define;
-using static UnityEngine.UI.GridLayoutGroup;
 
 public class PlayerController : MonoBehaviour
 {
@@ -20,9 +12,11 @@ public class PlayerController : MonoBehaviour
     private bool _canMove;
     private bool _onMouseRotate;
 
+    Inventory _inventory;
     Rigidbody _rigid;
     Vector2 _mousePos;
     LayerMask _groundFind;
+    UI_Inventory _uiInventory;
 
     private StateMachine<PlayerState> _stateMachine;
     public StateMachine<PlayerState> StateMachine { get { return _stateMachine; } }
@@ -39,10 +33,13 @@ public class PlayerController : MonoBehaviour
         
         //Component
         _rigid = GetComponent<Rigidbody>();
+        _uiInventory = Manager.Resource.Load<UI_Inventory>("Prefabs/UI/Popup/UI_Inventory");
+
     }
 
     private void Start()
     {
+        Manager.Game.Player = this;
         PlayerInit();
     }
 
@@ -126,6 +123,14 @@ public class PlayerController : MonoBehaviour
     private void OnLook(InputValue value)
     {
         _onMouseRotate = value.isPressed ? true : false;
+    }
+
+    private void OnInventory(InputValue value)
+    {
+        if (!Manager.UI.OnPopup)
+            Manager.UI.ShowPopUpUI(_uiInventory);
+        else
+            Manager.UI.ClosePopUpUI();
     }
 
     private void OnTriggerEnter(Collider other)
