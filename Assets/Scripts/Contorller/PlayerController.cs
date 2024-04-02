@@ -132,14 +132,27 @@ public class PlayerController : MonoBehaviour
     {
         IInteractable interact = other.GetComponent<IInteractable>();
         if (interact != null)
+        {
             interact.OnActive();
+            return;
+        }
+
+        MapController map = other.GetComponent<MapController>();
+        if (map != null)
+        {
+            map.SpawnMap();
+            return;
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
         IInteractable interact = other.GetComponent<IInteractable>();
         if (interact != null)
+        {
             interact.OffActive();
+            return;
+        }
     }
 
 
