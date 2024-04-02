@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class UI_GameScene : InGameUI
 {
-    private float _passTime = 0;
+    private float _passTime = Define.PLAY_TIME;
     enum GameObjects
     {
         PlayerHP,
@@ -20,12 +20,12 @@ public class UI_GameScene : InGameUI
 
     private void Start()
     {
-
+        Manager.Game.GameUI = this;
     }
 
     private void Update()
     {
-        _passTime += Time.deltaTime;
+        _passTime -= Time.deltaTime;
         GetUI<TMP_Text>(GameObjects.Min.ToString()).text = ((int)_passTime / 60).ToString("D2");
         GetUI<TMP_Text>(GameObjects.Sec.ToString()).text = ((int)_passTime % 60).ToString("D2");
     }

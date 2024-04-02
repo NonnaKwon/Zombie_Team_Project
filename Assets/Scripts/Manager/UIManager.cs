@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static Define;
 
 public class UIManager : Singleton<UIManager>
 {
@@ -12,6 +13,9 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] Image popUpBlocker;
     [SerializeField] Button inGameBlocker;
 
+    public bool OnPopup { get { return _onPopup; } }
+
+    private bool _onPopup = false;
     private Stack<PopUpUI> popUpStack = new Stack<PopUpUI>();
     private float prevTimeScale;
     private InGameUI curInGameUI;
@@ -46,6 +50,7 @@ public class UIManager : Singleton<UIManager>
 
         T ui = Instantiate(popUpUI, popUpCanvas.transform);
         popUpStack.Push(ui);
+        _onPopup = true;
         return ui;
     }
 
@@ -64,6 +69,7 @@ public class UIManager : Singleton<UIManager>
             popUpBlocker.gameObject.SetActive(false);
             Time.timeScale = prevTimeScale;
         }
+        _onPopup = false;
     }
 
     public void ClearPopUpUI()
@@ -72,6 +78,7 @@ public class UIManager : Singleton<UIManager>
         {
             ClosePopUpUI();
         }
+        _onPopup = false;
     }
 
     public T ShowWindowUI<T>(T windowUI) where T : WindowUI
