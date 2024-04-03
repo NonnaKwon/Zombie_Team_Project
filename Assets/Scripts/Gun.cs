@@ -7,6 +7,13 @@ public class Gun : Weapon
     [SerializeField] Transform _muzzlePoint;
     private float _maxDistance = 10f;
     LineRenderer _lineRenderer;
+    private int _curBullet;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        _curBullet = _data.maxBullet;
+    }
 
     private void Start()
     {
@@ -14,18 +21,18 @@ public class Gun : Weapon
     }
     public override void Attack()
     {
+        if (_curBullet == 0)
+            return;
+        _curBullet--;
+        Debug.Log(_curBullet);
+
         float damage = Random.Range(_data.minDamage, _data.maxDamage);
         Vector3 dir = Manager.Game.Player.transform.forward;
-        Debug.Log(dir);
-        RaycastHit hitInfo;
-        //muzzleFlash.Play(); -> 라인랜더러로
-        if (Physics.Raycast(_muzzlePoint.position, dir, out hitInfo, _maxDistance))
+
+        if (Physics.Raycast(_muzzlePoint.position, dir, out RaycastHit hitInfo, _maxDistance))
         {
             IDamagable damagable = hitInfo.collider.GetComponent<IDamagable>();
             damagable?.TakeDamage(damage);
-
-            //ParticleSystem effect = Instantiate(hitEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
-            //effect.transform.parent = hitInfo.transform;
 
             Rigidbody rigid = hitInfo.collider.GetComponent<Rigidbody>();
             if (rigid != null)

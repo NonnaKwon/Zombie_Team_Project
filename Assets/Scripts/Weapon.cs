@@ -8,8 +8,9 @@ public abstract class Weapon : Item
     [SerializeField] protected WeaponData _data;
     protected Animator _playerAnimator;
     protected bool _sGet = false;
+    
 
-    protected void Awake()
+    protected virtual void Awake()
     {
         _playerAnimator = GetComponentInParent<Animator>();
     }
