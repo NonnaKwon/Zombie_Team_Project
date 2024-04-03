@@ -13,16 +13,14 @@ public abstract class Weapon : Item
     protected virtual void Awake()
     {
         _playerAnimator = GetComponentInParent<Animator>();
-        Debug.Log(_playerAnimator);
     }
 
-    protected void OnEnable()
+    protected virtual void OnEnable()
     {
-        Debug.Log(Manager.Game.Player);
         Manager.Game.Player.ChangeAnimationLayer(_data.animationLayer);
     }
 
-    protected void OnDisable()
+    protected virtual void OnDisable()
     {
         Manager.Game.Player.ChangeAnimationLayer("Base Layer");
     }
