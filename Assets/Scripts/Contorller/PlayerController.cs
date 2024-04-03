@@ -4,6 +4,8 @@ using static Define;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] GameObject _mousePointer;
+
     private Vector3 _moveDir;
     private float _moveSpeed;
     private float _dashSpeed;
@@ -11,16 +13,16 @@ public class PlayerController : MonoBehaviour
     private float _curSpeed;
     private bool _canMove;
     private bool _onMouseRotate;
+    private int _animationLayer;
 
-    Inventory _inventory;
     Rigidbody _rigid;
     Vector2 _mousePos;
-    LayerMask _groundFind;
+    Animator _animator;
     UI_Inventory _uiInventory;
 
     private StateMachine<PlayerState> _stateMachine;
     public StateMachine<PlayerState> StateMachine { get { return _stateMachine; } }
-
+    public Vector2 MousePos { get { return _mousePos; } }
 
     private void Awake()
     {
@@ -33,8 +35,8 @@ public class PlayerController : MonoBehaviour
         
         //Component
         _rigid = GetComponent<Rigidbody>();
+        _animator = GetComponentInChildren<Animator>();
         _uiInventory = Manager.Resource.Load<UI_Inventory>("Prefabs/UI/Popup/UI_Inventory");
-
     }
 
     private void Start()
@@ -47,13 +49,22 @@ public class PlayerController : MonoBehaviour
     {
         _onMouseRotate = false;
         _canMove = true;
-        _moveSpeed = 8f;
-        _dashSpeed = 14f;
+        _moveSpeed = 4f;
+        _dashSpeed = 8f;
         _curSpeed = _moveSpeed;
-        _groundFind = LayerMask.GetMask("Ground");
+        _animationLayer = 0;
         if (_stateMachine.CurState != PlayerState.Idle)
             _stateMachine.ChangeState(PlayerState.Idle);
     }
+
+    public void ChangeAnimationLayer(string name)
+    {
+        if (_animationLayer != 0)
+            _animator.SetLayerWeight(_animationLayer, 0);
+        _animationLayer = _animator.GetLayerIndex(name);
+        _animator.SetLayerWeight(_animationLayer, 1);
+    }
+
 
     private void Update()
     {
@@ -76,8 +87,7 @@ public class PlayerController : MonoBehaviour
 
                 Vector3 tmpDir = hit.point - transform.position;
                 Vector3 rotateDir = new Vector3(tmpDir.x, 0, tmpDir.z);
-                Quaternion lookRotation = Quaternion.LookRotation(rotateDir);
-                transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, 10f * Time.deltaTime);
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(rotateDir), 10f * Time.deltaTime);
             }
         }
         else
@@ -91,10 +101,13 @@ public class PlayerController : MonoBehaviour
                 transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, 5f * Time.deltaTime);
             }
         }
+        _mousePointer.transform.position = transform.position + transform.forward + new Vector3(0,1f,0);
     }
     private void Move()
     {
         transform.Translate(_moveDir * _curSpeed * Time.deltaTime,Space.World);
+        _animator.SetFloat("velocity", (_moveDir * _curSpeed).magnitude);  
+        _animator.SetFloat("moveAngle", Extension.GetAngle(transform.forward, _moveDir)); //moveDir랑 지금 캐릭터가 보고있는 forward 각도 계산
     }
 
 
