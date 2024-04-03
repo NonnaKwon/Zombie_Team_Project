@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e05cca9cef48824c97c56de953f6813, type: 3}
   m_Name: Bat1
   m_EditorClassIdentifier: 
-  weaponName: 
-  minDamage: 0
-  maxDamage: 0
-  animationLayer: 
-  maxBullet: 0
+  weaponName: bat
+  minDamage: 2
+  maxDamage: 10
+  animationLayer: Bat
