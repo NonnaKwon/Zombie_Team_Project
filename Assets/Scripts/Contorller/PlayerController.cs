@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
 
     private StateMachine<PlayerState> _stateMachine;
     public StateMachine<PlayerState> StateMachine { get { return _stateMachine; } }
+    public Vector2 MousePos { get { return _mousePos; } }
 
     private void Awake()
     {
@@ -98,7 +99,6 @@ public class PlayerController : MonoBehaviour
             {
                 Quaternion lookRotation = Quaternion.LookRotation(forwardDir * _moveDir.z + rightDir * _moveDir.x);
                 transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, 5f * Time.deltaTime);
-                Debug.Log(lookRotation);
             }
         }
         _mousePointer.transform.position = transform.position + transform.forward + new Vector3(0,1f,0);
