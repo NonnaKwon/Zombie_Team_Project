@@ -37,11 +37,12 @@ public class PlayerController : MonoBehaviour
         _rigid = GetComponent<Rigidbody>();
         _animator = GetComponentInChildren<Animator>();
         _uiInventory = Manager.Resource.Load<UI_Inventory>("Prefabs/UI/Popup/UI_Inventory");
+        
+        Manager.Game.Player = this;
     }
 
     private void Start()
     {
-        Manager.Game.Player = this;
         PlayerInit();
     }
 

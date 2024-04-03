@@ -5,8 +5,8 @@ using UnityEngine.InputSystem;
 
 public class FightController : MonoBehaviour
 {
-    Inventory _inventory;
     [SerializeField] Weapon _curWeapon;
+    Inventory _inventory;
 
     private void Awake()
     {

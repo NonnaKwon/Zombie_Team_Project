@@ -5,9 +5,11 @@ using UnityEngine;
 public class Gun : Weapon
 {
     [SerializeField] Transform _muzzlePoint;
+
     private float _maxDistance = 10f;
-    LineRenderer _lineRenderer;
     private int _curBullet;
+
+    LineRenderer _lineRenderer;
 
     protected override void Awake()
     {
