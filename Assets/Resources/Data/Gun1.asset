@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e05cca9cef48824c97c56de953f6813, type: 3}
   m_Name: Gun1
   m_EditorClassIdentifier: 
-  weaponName: 
-  minDamage: 0
-  maxDamage: 0
-  animationLayer: 
+  weaponName: Gun01
+  minDamage: 2
+  maxDamage: 10
+  animationLayer: Upper Layer
+  maxBullet: 100
