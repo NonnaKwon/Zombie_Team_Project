@@ -5,6 +5,7 @@ using UnityEngine;
 public class Define
 {
     public const int JUMP_MAX_COUNT = 1;
+    public const float PLAY_TIME = 50 * 60; //50Ка
     public enum Scene
     {
         TItle,
@@ -22,4 +23,11 @@ public class Define
     {
 
     }
+
+    public enum PopupUI
+    {
+        Inventory,
+        Shop
+    }
+
 }
