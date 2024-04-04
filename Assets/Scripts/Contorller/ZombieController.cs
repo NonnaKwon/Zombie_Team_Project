@@ -7,6 +7,7 @@ using UnityEngine.AI;
 
 public class ZombieController : MonoBehaviour
 {
+    [SerializeField] ZombieType type;
     public Transform player;
     public Rigidbody rigid;
     public Animator animator;
@@ -27,12 +28,20 @@ public class ZombieController : MonoBehaviour
         Attack
     }
 
+    enum ZombieType
+    {
+        walk,
+        run,
+        crawl
+    }
+
     private void Awake()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        player = Manager.Game.Player.gameObject.transform;
         rigid = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         currentState = ZombieState.Idle;
+        animator.SetInteger("ZombieType", (int)type);
     }
 
     private void Update()
@@ -58,6 +67,7 @@ public class ZombieController : MonoBehaviour
         if (distanceToPlayer <= sightRange)
         {
             currentState = ZombieState.Chase;
+            animator.SetBool("IsChase", true);
         }
     }
 
@@ -72,6 +82,7 @@ public class ZombieController : MonoBehaviour
         else if (distanceToPlayer > sightRange)
         {
             currentState = ZombieState.Idle;
+            animator.SetBool("IsChase", false);
         }
         else
         {
@@ -88,7 +99,7 @@ public class ZombieController : MonoBehaviour
         if (!alreadyAttacked)
         {
             // Implement attack logic here
-            Debug.Log("Zombie attacks the player!");
+            Debug.Log("플레이어 공격");
 
             alreadyAttacked = true;
             Invoke(nameof(ResetAttack), timeBetweenAttacks);
@@ -97,6 +108,7 @@ public class ZombieController : MonoBehaviour
         if (Vector3.Distance(player.position, transform.position) > attackRange)
         {
             currentState = ZombieState.Chase;
+            animator.SetBool("IsChase", true);
         }
     }
 
