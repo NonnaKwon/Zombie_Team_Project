@@ -8,8 +8,6 @@ public class Arranger : MonoBehaviour
     void Start()
     {
         children = new List<Transform>();
-
-
     }
 
     public void UpdateChildren()
@@ -29,6 +27,7 @@ public class Arranger : MonoBehaviour
 
         children.RemoveRange(transform.childCount, children.Count - transform.childCount);
     }
+
     public int GetIndexByPosition(Transform card,int skipIndex = -1)
     {
         int result = 0;
@@ -51,7 +50,6 @@ public class Arranger : MonoBehaviour
         UpdateChildren();
     }
     
-
     void BeginDrag(Transform card)
     {
         
