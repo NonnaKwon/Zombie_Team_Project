@@ -8,7 +8,6 @@ public class Gun : Weapon
     [SerializeField] Transform _muzzlePoint;
     [SerializeField] int _maxBullet;
 
-    private float _maxDistance = 10f;
     private int _curBullet;
 
     LineRenderer _lineRenderer;
@@ -35,6 +34,8 @@ public class Gun : Weapon
    
     public override void Attack()
     {
+        Debug.Log("ÃÑ½ô");
+        OnAttack = true;
         if (_curBullet == 0)
             return;
         _curBullet--;
@@ -43,7 +44,7 @@ public class Gun : Weapon
         float damage = Random.Range(_data.minDamage, _data.maxDamage);
         Vector3 dir = Manager.Game.Player.transform.forward;
 
-        if (Physics.Raycast(_muzzlePoint.position, dir, out RaycastHit hitInfo, _maxDistance))
+        if (Physics.Raycast(_muzzlePoint.position, dir, out RaycastHit hitInfo, _data.attackRange))
         {
             IDamagable damagable = hitInfo.collider.GetComponent<IDamagable>();
             damagable?.TakeDamage(damage);
@@ -59,6 +60,7 @@ public class Gun : Weapon
 
         StartCoroutine(DrawLine(_muzzlePoint.position, dir));
         _playerAnimator.Play("fire");
+        _playerAnimator.SetFloat("attackSpeed", AttackSpeed);
     }
 
     IEnumerator DrawLine(Vector3 startPos,Vector3 dir)
@@ -66,7 +68,8 @@ public class Gun : Weapon
         _lineRenderer.positionCount = 2;
         _lineRenderer.SetPosition(0, startPos);
         _lineRenderer.SetPosition(1, startPos + dir * 100f);
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.1f / AttackSpeed);
         _lineRenderer.positionCount = 0;
+        OnAttack = false;
     }
 }

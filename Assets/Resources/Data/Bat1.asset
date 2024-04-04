@@ -16,3 +16,5 @@ MonoBehaviour:
   minDamage: 2
   maxDamage: 10
   animationLayer: Bat
+  attackRange: 5
+  attackSpeed: 1

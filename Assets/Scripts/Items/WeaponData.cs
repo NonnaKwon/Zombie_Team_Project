@@ -9,4 +9,6 @@ public class WeaponData : ScriptableObject
     public float minDamage;
     public float maxDamage;
     public string animationLayer;
+    public float attackRange;
+    public float attackSpeed;
 }

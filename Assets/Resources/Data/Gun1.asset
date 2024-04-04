@@ -16,3 +16,5 @@ MonoBehaviour:
   minDamage: 2
   maxDamage: 10
   animationLayer: Gun
+  attackRange: 10
+  attackSpeed: 1

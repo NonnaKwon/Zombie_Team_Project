@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static Define;
@@ -7,13 +8,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject _mousePointer;
 
     private Vector3 _moveDir;
+
     private float _moveSpeed;
-    private float _dashSpeed;
+    private float _dashSpeedPercent;
 
     private float _curSpeed;
     private bool _canMove;
     private bool _onMouseRotate;
     private int _animationLayer;
+    private bool _onDash;
 
     Rigidbody _rigid;
     Vector2 _mousePos;
@@ -23,6 +26,9 @@ public class PlayerController : MonoBehaviour
     private StateMachine<PlayerState> _stateMachine;
     public StateMachine<PlayerState> StateMachine { get { return _stateMachine; } }
     public Vector2 MousePos { get { return _mousePos; } }
+    public float MoveSpeed { get { return _moveSpeed; } }
+    public float CurSpeed { set { _curSpeed = value; } }
+    public bool CanMove { get { return _canMove; } }
 
     private void Awake()
     {
@@ -36,7 +42,6 @@ public class PlayerController : MonoBehaviour
         //Component
         _rigid = GetComponent<Rigidbody>();
         _animator = GetComponentInChildren<Animator>();
-        _uiInventory = Manager.Resource.Load<UI_Inventory>("Prefabs/UI/Popup/UI_Inventory");
         
         Manager.Game.Player = this;
     }
@@ -48,24 +53,18 @@ public class PlayerController : MonoBehaviour
 
     public void PlayerInit()
     {
+        _onDash = false;
         _onMouseRotate = false;
         _canMove = true;
         _moveSpeed = 4f;
-        _dashSpeed = 8f;
+        _dashSpeedPercent = 1.8f;
         _curSpeed = _moveSpeed;
         _animationLayer = 0;
+        _uiInventory = Manager.Game.GameUI.GetComponentInChildren<UI_Inventory>();
+        _uiInventory.gameObject.SetActive(false);
         if (_stateMachine.CurState != PlayerState.Idle)
             _stateMachine.ChangeState(PlayerState.Idle);
     }
-
-    public void ChangeAnimationLayer(string name)
-    {
-        if (_animationLayer != 0)
-            _animator.SetLayerWeight(_animationLayer, 0);
-        _animationLayer = _animator.GetLayerIndex(name);
-        _animator.SetLayerWeight(_animationLayer, 1);
-    }
-
 
     private void Update()
     {
@@ -76,6 +75,15 @@ public class PlayerController : MonoBehaviour
             Move();
         }
     }
+
+    public void ChangeAnimationLayer(string name)
+    {
+        if (_animationLayer != 0)
+            _animator.SetLayerWeight(_animationLayer, 0);
+        _animationLayer = _animator.GetLayerIndex(name);
+        _animator.SetLayerWeight(_animationLayer, 1);
+    }
+
 
     private void Rotate()
     {
@@ -106,8 +114,9 @@ public class PlayerController : MonoBehaviour
     }
     private void Move()
     {
-        transform.Translate(_moveDir * _curSpeed * Time.deltaTime,Space.World);
-        _animator.SetFloat("velocity", (_moveDir * _curSpeed).magnitude);  
+        float speed = _onDash ? _curSpeed * _dashSpeedPercent : _curSpeed;
+        transform.Translate(_moveDir * speed * Time.deltaTime,Space.World);
+        _animator.SetFloat("velocity", (_moveDir * speed).magnitude);  
         _animator.SetFloat("moveAngle", Extension.GetAngle(transform.forward, _moveDir)); //moveDir랑 지금 캐릭터가 보고있는 forward 각도 계산
     }
 
@@ -115,10 +124,9 @@ public class PlayerController : MonoBehaviour
     private void OnDash(InputValue value)
     {
         if (value.isPressed)
-            _curSpeed = _dashSpeed;
+            _onDash = true;
         else
-            _curSpeed = _moveSpeed;
-
+            _onDash = false;
     }
 
     private void OnMove(InputValue value)
@@ -141,10 +149,16 @@ public class PlayerController : MonoBehaviour
 
     private void OnInventory(InputValue value)
     {
-        if (!Manager.UI.OnPopup)
-            Manager.UI.ShowPopUpUI(_uiInventory);
+        if (!_uiInventory.gameObject.activeSelf)
+        {
+            _uiInventory.gameObject.SetActive(true);
+            _stateMachine.ChangeState(PlayerState.Interact);
+        }
         else
-            Manager.UI.ClosePopUpUI();
+        {
+            _uiInventory.gameObject.SetActive(false);
+            _stateMachine.ChangeState(PlayerState.Idle);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -202,11 +216,16 @@ public class PlayerController : MonoBehaviour
 
         public override void Enter()
         {
-
+            owner._canMove = false;
         }
         public override void Transition()
         {
 
+        }
+
+        public override void Exit()
+        {
+            owner._canMove = true;
         }
 
     }

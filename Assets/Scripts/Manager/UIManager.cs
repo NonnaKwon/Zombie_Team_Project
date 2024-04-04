@@ -51,6 +51,7 @@ public class UIManager : Singleton<UIManager>
         T ui = Instantiate(popUpUI, popUpCanvas.transform);
         popUpStack.Push(ui);
         _onPopup = true;
+        Manager.Game.Player.StateMachine.ChangeState(PlayerState.Interact);
         return ui;
     }
 
@@ -70,6 +71,7 @@ public class UIManager : Singleton<UIManager>
             Time.timeScale = prevTimeScale;
         }
         _onPopup = false;
+        Manager.Game.Player.StateMachine.ChangeState(PlayerState.Idle);
     }
 
     public void ClearPopUpUI()

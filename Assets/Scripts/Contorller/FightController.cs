@@ -6,6 +6,15 @@ using UnityEngine.InputSystem;
 public class FightController : MonoBehaviour, IDamagable
 {
     [SerializeField] Weapon _curWeapon;
+
+    public float AttackSpeed { set { _curWeapon.AttackSpeed = value; } }
+    public float AttackSpeedBase { get { return _curWeapon.AttackSpeedBase; } }
+
+    private float _hp;
+    private float _power;
+    private float _range;
+    private float _attackSpeed;
+
     Inventory _inventory;
     Animator _animator;
 
@@ -21,10 +30,15 @@ public class FightController : MonoBehaviour, IDamagable
 
     private void OnAttack(InputValue value)
     {
-        if(_curWeapon != null)
+        Debug.Log(Manager.Game.Player.CanMove);
+        Debug.Log(Manager.Game.Player.StateMachine.CurState);
+
+        if (!Manager.Game.Player.CanMove)
+            return;
+        if (_curWeapon != null && !_curWeapon.OnAttack)
             _curWeapon.Attack();
     }
-
+    
     public void TakeDamage(float damage)
     {
 
