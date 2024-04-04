@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour
     public Vector2 MousePos { get { return _mousePos; } }
     public float MoveSpeed { get { return _moveSpeed; } }
     public float CurSpeed { set { _curSpeed = value; } }
+    public bool CanMove { get { return _canMove; } }
 
     private void Awake()
     {
@@ -149,9 +150,15 @@ public class PlayerController : MonoBehaviour
     private void OnInventory(InputValue value)
     {
         if (!_uiInventory.gameObject.activeSelf)
+        {
             _uiInventory.gameObject.SetActive(true);
+            _stateMachine.ChangeState(PlayerState.Interact);
+        }
         else
+        {
             _uiInventory.gameObject.SetActive(false);
+            _stateMachine.ChangeState(PlayerState.Idle);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -209,7 +216,7 @@ public class PlayerController : MonoBehaviour
 
         public override void Enter()
         {
-            owner._canMove = true;
+            owner._canMove = false;
         }
         public override void Transition()
         {
@@ -218,7 +225,7 @@ public class PlayerController : MonoBehaviour
 
         public override void Exit()
         {
-            owner._canMove = false;
+            owner._canMove = true;
         }
 
     }

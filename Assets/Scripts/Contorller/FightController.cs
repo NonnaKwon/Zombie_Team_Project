@@ -30,6 +30,11 @@ public class FightController : MonoBehaviour, IDamagable
 
     private void OnAttack(InputValue value)
     {
+        Debug.Log(Manager.Game.Player.CanMove);
+        Debug.Log(Manager.Game.Player.StateMachine.CurState);
+
+        if (!Manager.Game.Player.CanMove)
+            return;
         if (_curWeapon != null && !_curWeapon.OnAttack)
             _curWeapon.Attack();
     }
