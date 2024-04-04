@@ -8,7 +8,6 @@ public class Gun : Weapon
     [SerializeField] Transform _muzzlePoint;
     [SerializeField] int _maxBullet;
 
-    private float _maxDistance = 10f;
     private int _curBullet;
 
     LineRenderer _lineRenderer;
@@ -43,7 +42,7 @@ public class Gun : Weapon
         float damage = Random.Range(_data.minDamage, _data.maxDamage);
         Vector3 dir = Manager.Game.Player.transform.forward;
 
-        if (Physics.Raycast(_muzzlePoint.position, dir, out RaycastHit hitInfo, _maxDistance))
+        if (Physics.Raycast(_muzzlePoint.position, dir, out RaycastHit hitInfo, _data.attackRange))
         {
             IDamagable damagable = hitInfo.collider.GetComponent<IDamagable>();
             damagable?.TakeDamage(damage);

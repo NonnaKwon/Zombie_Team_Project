@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static Define;
@@ -8,7 +9,7 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 _moveDir;
     private float _moveSpeed;
-    private float _dashSpeed;
+    private float _dashSpeedPercent;
 
     private float _curSpeed;
     private bool _canMove;
@@ -23,6 +24,7 @@ public class PlayerController : MonoBehaviour
     private StateMachine<PlayerState> _stateMachine;
     public StateMachine<PlayerState> StateMachine { get { return _stateMachine; } }
     public Vector2 MousePos { get { return _mousePos; } }
+    public float MoveSpeed { get { return _moveSpeed; } set { _moveSpeed = value; } }
 
     private void Awake()
     {
@@ -51,7 +53,7 @@ public class PlayerController : MonoBehaviour
         _onMouseRotate = false;
         _canMove = true;
         _moveSpeed = 4f;
-        _dashSpeed = 8f;
+        _dashSpeedPercent = 1.8f;
         _curSpeed = _moveSpeed;
         _animationLayer = 0;
         if (_stateMachine.CurState != PlayerState.Idle)
@@ -115,10 +117,9 @@ public class PlayerController : MonoBehaviour
     private void OnDash(InputValue value)
     {
         if (value.isPressed)
-            _curSpeed = _dashSpeed;
+            _curSpeed = _moveSpeed * _dashSpeedPercent;
         else
             _curSpeed = _moveSpeed;
-
     }
 
     private void OnMove(InputValue value)
@@ -202,11 +203,16 @@ public class PlayerController : MonoBehaviour
 
         public override void Enter()
         {
-
+            owner._canMove = true;
         }
         public override void Transition()
         {
 
+        }
+
+        public override void Exit()
+        {
+            owner._canMove = false;
         }
 
     }

@@ -8,8 +8,6 @@ public class Bat : Weapon
     [SerializeField] GameObject _attackPoint;
     [SerializeField] LayerMask _mask;
 
-    private float _attackRange = 5f;
-
     Collider[] _colliders = new Collider[100];
 
     protected override void Awake()
@@ -33,7 +31,7 @@ public class Bat : Weapon
 
     private void Hit()
     {
-        int size = Physics.OverlapSphereNonAlloc(transform.position, _attackRange, _colliders, _mask);
+        int size = Physics.OverlapSphereNonAlloc(transform.position, _data.attackRange, _colliders, _mask);
         Debug.Log(size);
         for (int i = 0; i < size; i++)
         {

@@ -6,6 +6,14 @@ using UnityEngine.InputSystem;
 public class FightController : MonoBehaviour, IDamagable
 {
     [SerializeField] Weapon _curWeapon;
+
+    public float AttackSpeed { get { return _attackSpeed; } set { _attackSpeed = value; } }
+
+    private float _hp;
+    private float _power;
+    private float _range;
+    private float _attackSpeed;
+
     Inventory _inventory;
     Animator _animator;
 
