@@ -15,4 +15,5 @@ MonoBehaviour:
   weaponName: Gun01
   minDamage: 2
   maxDamage: 10
-  animationLayer: Gun
+  animationLayer: Upper Layer
+  maxBullet: 100

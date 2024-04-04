@@ -1,38 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Animations.Rigging;
 
 public class Gun : Weapon
 {
     [SerializeField] Transform _muzzlePoint;
-    [SerializeField] int _maxBullet;
 
     private float _maxDistance = 10f;
     private int _curBullet;
 
     LineRenderer _lineRenderer;
-    RigBuilder _rigBuilder;
 
     protected override void Awake()
     {
         base.Awake();
-        _curBullet = _maxBullet;
-        _lineRenderer = GetComponent<LineRenderer>();
-        _rigBuilder = GetComponentInParent<RigBuilder>();
+        _curBullet = _data.maxBullet;
     }
 
-    protected override void OnEnable()
+    private void Start()
     {
-        base.OnEnable();
-        _rigBuilder.layers[0].active = true;
+        _lineRenderer = GetComponent<LineRenderer>();
     }
-    protected override void OnDisable()
-    {
-        base.OnDisable();
-        _rigBuilder.layers[0].active = false;
-    }
-   
     public override void Attack()
     {
         if (_curBullet == 0)

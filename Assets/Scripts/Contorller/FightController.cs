@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class FightController : MonoBehaviour, IDamagable
+public class FightController : MonoBehaviour
 {
     [SerializeField] Weapon _curWeapon;
     Inventory _inventory;
-    Animator _animator;
 
     private void Awake()
     {
@@ -23,10 +22,5 @@ public class FightController : MonoBehaviour, IDamagable
     {
         if(_curWeapon != null)
             _curWeapon.Attack();
-    }
-
-    public void TakeDamage(float damage)
-    {
-
     }
 }
