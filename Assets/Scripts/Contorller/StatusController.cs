@@ -18,12 +18,10 @@ public class StatusController : MonoBehaviour
     FightController _fightController;
     PlayerController _playerController;
 
-    private float _passTime = 0;
-    private float _dashTime = 0;
     private bool _onDash = false;
 
     private float _hunger = 1;
-    private float _thirst = 1;
+    private float _thirst = 1f; //테스트
     private float _fatigue = 1;
     private float _stamina = 1;
     private float _decreaseStaminaAmount = 0;
@@ -47,6 +45,7 @@ public class StatusController : MonoBehaviour
     {
         _connectUI = Manager.Game.GameUI;
         _frame = 1 / Time.deltaTime;
+
         _playerController = Manager.Game.Player;
         _fightController = _playerController.gameObject.GetComponent<FightController>();
     }
@@ -54,16 +53,8 @@ public class StatusController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _passTime += Time.deltaTime;
         if (_onDash)
-        {
-            _dashTime += Time.deltaTime;
-            _dashTime = 0;
             ChangeData(Status.Stamina, DECREASE_STAMINA / _frame);
-
-        }
-
-        _passTime = 0;
         ChangeData(Status.Hunger,  DECREASE / _frame);
         ChangeData(Status.Thirst,  DECREASE / _frame);
         ChangeData(Status.Fatigue, DECREASE / _frame);
@@ -104,7 +95,8 @@ public class StatusController : MonoBehaviour
         {
             if(_thirst < _thirstRatio[i])
             {
-                _fightController.AttackSpeed -= _fightController.AttackSpeed * _thirstEffectRatio[i];
+                //여기도 수정해야함. cur이랑 원래 attackSpeed 랑 구분해서 변수를 만들것!
+                _fightController.AttackSpeed = _fightController.AttackSpeedBase - _fightController.AttackSpeedBase * _thirstEffectRatio[i];
                 break;
             }
         }
@@ -113,7 +105,7 @@ public class StatusController : MonoBehaviour
         {
             if (_fatigue < _fatigueRatio[i])
             {
-                _playerController.MoveSpeed -= _playerController.MoveSpeed * _fatigueEffectRatio[i];
+                _playerController.CurSpeed = _playerController.MoveSpeed - _playerController.MoveSpeed * _fatigueEffectRatio[i];
                 break;
             }
         }
@@ -131,10 +123,7 @@ public class StatusController : MonoBehaviour
         if (value.isPressed)
             _onDash = true;
         else
-        {
             _onDash = false;
-            _dashTime = 0;
-        }
     }
 
 }

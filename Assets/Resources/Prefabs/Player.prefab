@@ -99,6 +99,7 @@ GameObject:
   - component: {fileID: 5975142891196364675}
   - component: {fileID: 9102275919408008216}
   - component: {fileID: 6583397512682196095}
+  - component: {fileID: 3163999827949762773}
   - component: {fileID: 9184264621449730634}
   m_Layer: 0
   m_Name: Player
@@ -216,6 +217,18 @@ CapsuleCollider:
   m_Height: 1.8747628
   m_Direction: 1
   m_Center: {x: -0.022931755, y: 0.9233049, z: 0.010150135}
+--- !u!114 &3163999827949762773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 961613753523996973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63e5c9f2c9e23d240b0211d55ac120a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &9184264621449730634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -229,6 +242,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _curWeapon: {fileID: 5913694217839107087}
+--- !u!1 &971203914404012443
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1036999490926811356}
+  m_Layer: 0
+  m_Name: FirePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1036999490926811356
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 971203914404012443}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4055319998850293464}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3220934589456475898
 GameObject:
   m_ObjectHideFlags: 0
@@ -264,6 +308,8 @@ Transform:
   - {fileID: 2275754397498507639}
   - {fileID: 6915420864868505643}
   - {fileID: 3512545538677296574}
+  - {fileID: 5974099486097721420}
+  - {fileID: 1036999490926811356}
   m_Father: {fileID: 3703956453992399960}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4247472171248896381
@@ -431,6 +477,62 @@ Transform:
   - {fileID: 551000920535883555}
   m_Father: {fileID: 3709255329290853574}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8177625590294486365
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5974099486097721420}
+  - component: {fileID: 1026914949267222100}
+  m_Layer: 0
+  m_Name: LeftHand
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5974099486097721420
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8177625590294486365}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4055319998850293464}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1026914949267222100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8177625590294486365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aeda7bfbf984f2a4da5ab4b8967b115d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Weight: 1
+  m_Data:
+    m_Root: {fileID: 3708934174943968272}
+    m_Mid: {fileID: 3709057019499083864}
+    m_Tip: {fileID: 3709062893132600142}
+    m_Target: {fileID: 0}
+    m_Hint: {fileID: 0}
+    m_TargetPositionWeight: 1
+    m_TargetRotationWeight: 1
+    m_HintWeight: 1
+    m_MaintainTargetPositionOffset: 0
+    m_MaintainTargetRotationOffset: 0
 --- !u!1 &8214566693215257592
 GameObject:
   m_ObjectHideFlags: 0

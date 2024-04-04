@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject _mousePointer;
 
     private Vector3 _moveDir;
+
     private float _moveSpeed;
     private float _dashSpeedPercent;
 
@@ -15,6 +16,7 @@ public class PlayerController : MonoBehaviour
     private bool _canMove;
     private bool _onMouseRotate;
     private int _animationLayer;
+    private bool _onDash;
 
     Rigidbody _rigid;
     Vector2 _mousePos;
@@ -24,7 +26,8 @@ public class PlayerController : MonoBehaviour
     private StateMachine<PlayerState> _stateMachine;
     public StateMachine<PlayerState> StateMachine { get { return _stateMachine; } }
     public Vector2 MousePos { get { return _mousePos; } }
-    public float MoveSpeed { get { return _moveSpeed; } set { _moveSpeed = value; } }
+    public float MoveSpeed { get { return _moveSpeed; } }
+    public float CurSpeed { set { _curSpeed = value; } }
 
     private void Awake()
     {
@@ -50,6 +53,7 @@ public class PlayerController : MonoBehaviour
 
     public void PlayerInit()
     {
+        _onDash = false;
         _onMouseRotate = false;
         _canMove = true;
         _moveSpeed = 4f;
@@ -60,15 +64,6 @@ public class PlayerController : MonoBehaviour
             _stateMachine.ChangeState(PlayerState.Idle);
     }
 
-    public void ChangeAnimationLayer(string name)
-    {
-        if (_animationLayer != 0)
-            _animator.SetLayerWeight(_animationLayer, 0);
-        _animationLayer = _animator.GetLayerIndex(name);
-        _animator.SetLayerWeight(_animationLayer, 1);
-    }
-
-
     private void Update()
     {
         _stateMachine.Update();
@@ -78,6 +73,15 @@ public class PlayerController : MonoBehaviour
             Move();
         }
     }
+
+    public void ChangeAnimationLayer(string name)
+    {
+        if (_animationLayer != 0)
+            _animator.SetLayerWeight(_animationLayer, 0);
+        _animationLayer = _animator.GetLayerIndex(name);
+        _animator.SetLayerWeight(_animationLayer, 1);
+    }
+
 
     private void Rotate()
     {
@@ -108,8 +112,9 @@ public class PlayerController : MonoBehaviour
     }
     private void Move()
     {
-        transform.Translate(_moveDir * _curSpeed * Time.deltaTime,Space.World);
-        _animator.SetFloat("velocity", (_moveDir * _curSpeed).magnitude);  
+        float speed = _onDash ? _curSpeed * _dashSpeedPercent : _curSpeed;
+        transform.Translate(_moveDir * speed * Time.deltaTime,Space.World);
+        _animator.SetFloat("velocity", (_moveDir * speed).magnitude);  
         _animator.SetFloat("moveAngle", Extension.GetAngle(transform.forward, _moveDir)); //moveDir랑 지금 캐릭터가 보고있는 forward 각도 계산
     }
 
@@ -117,9 +122,9 @@ public class PlayerController : MonoBehaviour
     private void OnDash(InputValue value)
     {
         if (value.isPressed)
-            _curSpeed = _moveSpeed * _dashSpeedPercent;
+            _onDash = true;
         else
-            _curSpeed = _moveSpeed;
+            _onDash = false;
     }
 
     private void OnMove(InputValue value)
