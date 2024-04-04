@@ -5,73 +5,98 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class ZombieController : MonoBehaviour, IDamagable
+public class ZombieController : MonoBehaviour
 {
     public Transform player;
     public Rigidbody rigid;
     public Animator animator;
 
-    public enum StateMachine { Idle, Chase, Attack, Die }
-    public StateMachine statemachine = StateMachine.Idle;
-
-    public Vector3 walkPoint;
-    public bool walkPointSet;
-    public float walkPointRange;
-
     public float sightRange, attackRange;
-    public float zombieSpeed;
-    public bool alreadyAttacked;
+    private bool alreadyAttacked;
     public float timeBetweenAttacks;
+    public float zombieSpeed;
 
-    public int hp;
-    public GameObject[] itemsToDrop;
-    public float dropRadius = 0.5f;
+    private ZombieState currentState;
+    public int health = 100;
+    public GameObject[] dropItems;
+
+    private enum ZombieState
+    {
+        Idle,
+        Chase,
+        Attack
+    }
+
     private void Awake()
     {
-        player = GameObject.FindWithTag("Player").transform;
+        player = GameObject.FindGameObjectWithTag("Player").transform;
         rigid = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
+        currentState = ZombieState.Idle;
     }
 
     private void Update()
     {
-        // 플레이어와 좀비 사이의 거리 계산
+        switch (currentState)
+        {
+            case ZombieState.Idle:
+                LookForPlayer();
+                break;
+            case ZombieState.Chase:
+                ChasePlayer();
+                break;
+            case ZombieState.Attack:
+                AttackPlayer();
+                break;
+        }
+    }
+
+    private void LookForPlayer()
+    {
         float distanceToPlayer = Vector3.Distance(player.position, transform.position);
 
-        if (distanceToPlayer <= sightRange && distanceToPlayer > attackRange)
+        if (distanceToPlayer <= sightRange)
         {
-            statemachine = StateMachine.Chase;
+            currentState = ZombieState.Chase;
         }
-        else if (distanceToPlayer <= attackRange)
-        {
-            statemachine = StateMachine.Attack;
-        }
-
-        switch (statemachine)
-        {
-            case StateMachine.Chase:
-                Chase();
-                break;
-            case StateMachine.Attack:
-                Attack();
-                break;
-        }
-
     }
 
-    private void Chase()
+    private void ChasePlayer()
     {
-        Vector3 direction = (player.position - transform.position).normalized;
-        direction.y = 0;
-        rigid.MovePosition(transform.position + direction * zombieSpeed * Time.fixedDeltaTime);
+        float distanceToPlayer = Vector3.Distance(player.position, transform.position);
+
+        if (distanceToPlayer <= attackRange)
+        {
+            currentState = ZombieState.Attack;
+        }
+        else if (distanceToPlayer > sightRange)
+        {
+            currentState = ZombieState.Idle;
+        }
+        else
+        {
+            Vector3 direction = (player.position - transform.position).normalized;
+            Vector3 newPosition = transform.position + direction * zombieSpeed * Time.deltaTime;
+            rigid.MovePosition(newPosition);
+
+            transform.LookAt(new Vector3(player.position.x, transform.position.y, player.position.z));
+        }
     }
 
-    private void Attack()
+    private void AttackPlayer()
     {
         if (!alreadyAttacked)
         {
+            // Implement attack logic here
+            Debug.Log("Zombie attacks the player!");
+
             alreadyAttacked = true;
             Invoke(nameof(ResetAttack), timeBetweenAttacks);
-            Debug.Log("플레이어 공격");
+        }
+
+        if (Vector3.Distance(player.position, transform.position) > attackRange)
+        {
+            currentState = ZombieState.Chase;
         }
     }
 
@@ -79,32 +104,26 @@ public class ZombieController : MonoBehaviour, IDamagable
     {
         alreadyAttacked = false;
     }
-
-    public void TakeDamage(float damage)
+    public void TakeDamage(int damage)
     {
-        hp -= (int)damage;
+        health -= damage;
 
-        if (hp <= 0)
-        {
+        if (health <= 0)
             Die();
-            Debug.Log("좀비 사망");
-        }
     }
 
     private void Die()
     {
-        DropRandomItem();
+        DropItem();
         Destroy(gameObject);
     }
 
-    private void DropRandomItem()
+    private void DropItem()
     {
-        if (itemsToDrop.Length > 0)
+        if (dropItems.Length > 0)
         {
-            int randomIndex = Random.Range(0, itemsToDrop.Length);
-            Vector3 dropPosition = transform.position + Random.insideUnitSphere * dropRadius;
-            dropPosition.y = transform.position.y;
-            Instantiate(itemsToDrop[randomIndex], dropPosition, Quaternion.identity);
+            int randomIndex = Random.Range(0, dropItems.Length);
+            Instantiate(dropItems[randomIndex], transform.position, Quaternion.identity);
         }
     }
 }
