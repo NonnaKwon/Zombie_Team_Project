@@ -1,16 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class ZombieController : MonoBehaviour
+public class ZombieController : MonoBehaviour, IDamagable
 {
     public Transform player;
     public Rigidbody rigid;
-    public LayerMask whatIsGround, whatIsPlayer;
+    public Animator animator;
 
     public enum StateMachine { Idle, Chase, Attack, Die }
     public StateMachine statemachine = StateMachine.Idle;
@@ -21,13 +20,12 @@ public class ZombieController : MonoBehaviour
 
     public float sightRange, attackRange;
     public float zombieSpeed;
+    public bool alreadyAttacked;
     public float timeBetweenAttacks;
-    private bool alreadyAttacked;
 
     public int hp;
     public GameObject[] itemsToDrop;
     public float dropRadius = 0.5f;
-
     private void Awake()
     {
         player = GameObject.FindWithTag("Player").transform;
@@ -57,6 +55,7 @@ public class ZombieController : MonoBehaviour
                 Attack();
                 break;
         }
+
     }
 
     private void Chase()
@@ -72,6 +71,7 @@ public class ZombieController : MonoBehaviour
         {
             alreadyAttacked = true;
             Invoke(nameof(ResetAttack), timeBetweenAttacks);
+            Debug.Log("플레이어 공격");
         }
     }
 
@@ -80,13 +80,14 @@ public class ZombieController : MonoBehaviour
         alreadyAttacked = false;
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
-        hp -= damage;
+        hp -= (int)damage;
 
         if (hp <= 0)
         {
             Die();
+            Debug.Log("좀비 사망");
         }
     }
 
