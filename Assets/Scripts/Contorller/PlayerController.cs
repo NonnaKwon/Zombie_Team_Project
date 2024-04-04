@@ -41,7 +41,6 @@ public class PlayerController : MonoBehaviour
         //Component
         _rigid = GetComponent<Rigidbody>();
         _animator = GetComponentInChildren<Animator>();
-        _uiInventory = Manager.Resource.Load<UI_Inventory>("Prefabs/UI/Popup/UI_Inventory");
         
         Manager.Game.Player = this;
     }
@@ -60,6 +59,8 @@ public class PlayerController : MonoBehaviour
         _dashSpeedPercent = 1.8f;
         _curSpeed = _moveSpeed;
         _animationLayer = 0;
+        _uiInventory = Manager.Game.GameUI.GetComponentInChildren<UI_Inventory>();
+        _uiInventory.gameObject.SetActive(false);
         if (_stateMachine.CurState != PlayerState.Idle)
             _stateMachine.ChangeState(PlayerState.Idle);
     }
@@ -147,10 +148,10 @@ public class PlayerController : MonoBehaviour
 
     private void OnInventory(InputValue value)
     {
-        if (!Manager.UI.OnPopup)
-            Manager.UI.ShowPopUpUI(_uiInventory);
+        if (!_uiInventory.gameObject.activeSelf)
+            _uiInventory.gameObject.SetActive(true);
         else
-            Manager.UI.ClosePopUpUI();
+            _uiInventory.gameObject.SetActive(false);
     }
 
     private void OnTriggerEnter(Collider other)
