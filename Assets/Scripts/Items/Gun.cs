@@ -39,15 +39,20 @@ public class Gun : Weapon
         if (_curBullet == 0)
             return;
         _curBullet--;
+
         Debug.Log(_curBullet);
-
-        float damage = Random.Range(_data.minDamage, _data.maxDamage);
         Vector3 dir = Manager.Game.Player.transform.forward;
-
         if (Physics.Raycast(_muzzlePoint.position, dir, out RaycastHit hitInfo, _data.attackRange))
         {
             IDamagable damagable = hitInfo.collider.GetComponent<IDamagable>();
-            damagable?.TakeDamage(damage);
+
+            if (damagable != null)
+            {
+                //몬스터 공격
+                float damage = Random.Range(_data.minDamage, _data.maxDamage);
+                damagable.TakeDamage(damage);
+                Debug.Log("Zombie : 공격당함");
+            }
 
             Rigidbody rigid = hitInfo.collider.GetComponent<Rigidbody>();
             if (rigid != null)

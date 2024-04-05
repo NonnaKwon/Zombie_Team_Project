@@ -20,7 +20,7 @@ public class FightController : MonoBehaviour, IDamagable
 
     private void Awake()
     {
-
+        _hp = 100;
     }
 
     private void Start()
@@ -30,9 +30,6 @@ public class FightController : MonoBehaviour, IDamagable
 
     private void OnAttack(InputValue value)
     {
-        Debug.Log(Manager.Game.Player.CanMove);
-        Debug.Log(Manager.Game.Player.StateMachine.CurState);
-
         if (!Manager.Game.Player.CanMove)
             return;
         if (_curWeapon != null && !_curWeapon.OnAttack)
@@ -41,6 +38,11 @@ public class FightController : MonoBehaviour, IDamagable
     
     public void TakeDamage(float damage)
     {
-
+        _hp -= damage;
+        Manager.Game.GameUI.ChangeHP(_hp);
+        if (_hp <= 0)
+        {
+            Manager.Game.Player.StateMachine.ChangeState(Define.PlayerState.Die);
+        }
     }
 }

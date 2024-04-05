@@ -95,7 +95,6 @@ public class StatusController : MonoBehaviour
         {
             if(_thirst < _thirstRatio[i])
             {
-                //여기도 수정해야함. cur이랑 원래 attackSpeed 랑 구분해서 변수를 만들것!
                 _fightController.AttackSpeed = _fightController.AttackSpeedBase - _fightController.AttackSpeedBase * _thirstEffectRatio[i];
                 break;
             }
@@ -112,7 +111,6 @@ public class StatusController : MonoBehaviour
 
         if (_decreaseStaminaAmount >= DECREASE_STAMINA)
         {
-            Debug.Log("피로도 감소 ");
             ChangeData(Status.Fatigue, _staminaEffectRatio);
             _decreaseStaminaAmount = 0;
         }

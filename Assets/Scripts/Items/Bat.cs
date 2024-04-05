@@ -21,7 +21,6 @@ public class Bat : Weapon
         OnAttack = true;
         _playerAnimator.Play("hit");
         _playerAnimator.SetFloat("attackSpeed", AttackSpeed);
-        Debug.Log("attack speed"+AttackSpeed);
         StartCoroutine(CoHit());
     }
 
@@ -34,14 +33,24 @@ public class Bat : Weapon
     private void Hit()
     {
         int size = Physics.OverlapSphereNonAlloc(transform.position, _data.attackRange, _colliders, _mask);
+        Debug.Log(size);
         for (int i = 0; i < size; i++)
         {
             IDamagable damagable = _colliders[i].gameObject.GetComponent<IDamagable>();
             if (damagable != null)
             {
                 //몬스터 공격
+                float damage = Random.Range(_data.minDamage, _data.maxDamage);
+                damagable.TakeDamage(damage);
+                Debug.Log("Zombie : 공격당함");
             }
         }
         OnAttack = false;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, _data.attackRange);
     }
 }

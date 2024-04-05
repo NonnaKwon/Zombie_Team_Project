@@ -103,7 +103,7 @@ MonoBehaviour:
   _attackPoint: {fileID: 5019465283268865889}
   _mask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
 --- !u!1001 &362059112123138474
 PrefabInstance:
   m_ObjectHideFlags: 0

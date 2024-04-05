@@ -54,4 +54,9 @@ public class UI_GameScene : InGameUI
         GetUI<Slider>(slider).value -= decreaseValue;
     }
 
+    public void ChangeHP(float hp)
+    {
+        GetUI<Slider>(GameObjects.PlayerHP.ToString()).value = hp;
+    }
+
 }
