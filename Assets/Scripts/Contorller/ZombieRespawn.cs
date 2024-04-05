@@ -10,6 +10,7 @@ public class ZombieRespawn : MonoBehaviour
     public float spawnTime; // 좀비를 생성할 시간 간격
     public int maxZombies; // 최대 좀비 수
     public bool isGameOver = false;
+    public float checkRadius; // 리스폰 반경 체크
 
     private void Start()
     {
@@ -29,10 +30,12 @@ public class ZombieRespawn : MonoBehaviour
             {
                 yield return new WaitForSeconds(spawnTime);
 
-                int spawnIndex = Random.Range(0, spawnPoints.Length); // 스폰 위치 선택
-                int prefabIndex = Random.Range(0, zombiePrefabs.Count); // 프리팹 선택
-
-                Instantiate(zombiePrefabs[prefabIndex], spawnPoints[spawnIndex].position, Quaternion.identity);
+                Transform spawnPoint = FindSpawnLocation();
+                if (spawnPoint != null)
+                {
+                    int prefabIndex = Random.Range(0, zombiePrefabs.Count);
+                    Instantiate(zombiePrefabs[prefabIndex], spawnPoint.position, Quaternion.identity);
+                }
             }
             else
             {
@@ -40,4 +43,29 @@ public class ZombieRespawn : MonoBehaviour
             }
         }
     }
+
+    Transform FindSpawnLocation()
+    {
+        List<Transform> validSpawnPoints = new List<Transform>();
+
+        foreach (var spawnPoint in spawnPoints)
+        {
+            if (!Physics.CheckSphere(spawnPoint.position, checkRadius, LayerMask.GetMask("Zombie")))
+            {
+                validSpawnPoints.Add(spawnPoint); //
+            }
+        }
+
+        if (validSpawnPoints.Count > 0)
+        {
+            int randomIndex = Random.Range(0, validSpawnPoints.Count);
+            return validSpawnPoints[randomIndex];
+        }
+        else
+        {
+            return null; // 적합한 스폰 위치를 찾지 못한 경우
+        }
+    }
+
+
 }

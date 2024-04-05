@@ -102,6 +102,8 @@ public class ZombieController : MonoBehaviour, IDamagable
             time = 0;
             Debug.Log("플레이어 공격");
             attackPoint.Hit(attackDamage);
+            animator.SetBool("IsAttack", true);
+            animator.SetBool("Bite", false);
         }
 
         if (Vector3.Distance(player.position, transform.position) > attackRange)
@@ -114,6 +116,7 @@ public class ZombieController : MonoBehaviour, IDamagable
 
     private void Die()
     {
+        animator.SetTrigger("Die");
         DropItem();
         Destroy(gameObject);
     }
@@ -130,7 +133,7 @@ public class ZombieController : MonoBehaviour, IDamagable
     public void TakeDamage(float damage)
     {
         hp -= damage;
-        animator.SetTrigger("Hit");
+        // animator.SetTrigger("TakeHit");
         if (hp <= 0)
         {
             Die();
