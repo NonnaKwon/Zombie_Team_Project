@@ -5228,6 +5228,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1542039498457187005}
   - {fileID: 4420288320264087600}
   - {fileID: 1800464061093163732}
   - {fileID: 7355889645080765891}
@@ -5345,6 +5346,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
+  attackPoint: {fileID: 0}
+  attackDamage: 0
   player: {fileID: 9216199510392988774, guid: 512e4938006d7f147915680330fcde60, type: 3}
   rigid: {fileID: 3137637956487318408}
   animator: {fileID: 0}
@@ -5352,7 +5355,7 @@ MonoBehaviour:
   attackRange: 1
   timeBetweenAttacks: 2
   zombieSpeed: 3
-  hp: 0
+  hp: 20
   dropItems: []
 --- !u!1 &7747010305132527323
 GameObject:
@@ -5976,3 +5979,51 @@ Transform:
   - {fileID: 8772300350619273245}
   m_Father: {fileID: 7452519399248099534}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &9088212785995851996
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1542039498457187005}
+  - component: {fileID: 8592263260021467930}
+  m_Layer: 6
+  m_Name: AttackPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1542039498457187005
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9088212785995851996}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.836, y: 1.308, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7217331809984619565}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8592263260021467930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9088212785995851996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91e4a2585741e8944838cd5ee4d66763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _attackRange: 1.3
+  _mask:
+    serializedVersion: 2
+    m_Bits: 128

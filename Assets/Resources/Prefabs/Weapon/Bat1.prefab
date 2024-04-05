@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3645424565082546236}
-  - component: {fileID: 3481538640069139604}
+  - component: {fileID: 2640562795841007199}
   m_Layer: 0
   m_Name: AttackPoint
   m_TagString: Untagged
@@ -26,33 +26,28 @@ Transform:
   m_GameObject: {fileID: 5019465283268865889}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.885}
+  m_LocalPosition: {x: 0, y: 0, z: -0.913}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3895822987706147822}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &3481538640069139604
-SphereCollider:
+--- !u!114 &2640562795841007199
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5019465283268865889}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91e4a2585741e8944838cd5ee4d66763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _attackRange: 1
+  _mask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &6047657931382436524
 GameObject:
   m_ObjectHideFlags: 0
@@ -100,10 +95,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data: {fileID: 11400000, guid: 1f27454510b139141823db9ce7b18da0, type: 2}
-  _attackPoint: {fileID: 5019465283268865889}
+  _attackPoint: {fileID: 2640562795841007199}
   _mask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
 --- !u!1001 &362059112123138474
 PrefabInstance:
   m_ObjectHideFlags: 0

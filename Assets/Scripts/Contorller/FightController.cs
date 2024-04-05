@@ -40,6 +40,7 @@ public class FightController : MonoBehaviour, IDamagable
     {
         _hp -= damage;
         Manager.Game.GameUI.ChangeHP(_hp);
+        Debug.Log("Player : 공격받음");
         if (_hp <= 0)
         {
             Manager.Game.Player.StateMachine.ChangeState(Define.PlayerState.Die);

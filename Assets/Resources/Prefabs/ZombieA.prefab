@@ -1559,6 +1559,54 @@ Transform:
   - {fileID: 5106980903604712499}
   m_Father: {fileID: 7020905377158868589}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2906734854549131095
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3622641468401602797}
+  - component: {fileID: 2823979465534074370}
+  m_Layer: 6
+  m_Name: AttackPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3622641468401602797
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2906734854549131095}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.909, y: 1.318, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 505301252460782928}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2823979465534074370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2906734854549131095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91e4a2585741e8944838cd5ee4d66763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _attackRange: 1.3
+  _mask:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1 &3018562585785073102
 GameObject:
   m_ObjectHideFlags: 0
@@ -4251,6 +4299,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 3622641468401602797}
   - {fileID: 264405866308648251}
   - {fileID: 1197356289402628885}
   - {fileID: 3928707627797919438}
@@ -4368,14 +4417,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
+  attackPoint: {fileID: 2823979465534074370}
+  attackDamage: 0
   player: {fileID: 9216199510392988774, guid: 512e4938006d7f147915680330fcde60, type: 3}
   rigid: {fileID: 1184995416955884278}
-  animator: {fileID: 0}
+  animator: {fileID: 7142349063083142999}
   sightRange: 10
   attackRange: 1
   timeBetweenAttacks: 2
   zombieSpeed: 5
-  hp: 0
+  hp: 20
   dropItems: []
 --- !u!1 &6575534185515480877
 GameObject:

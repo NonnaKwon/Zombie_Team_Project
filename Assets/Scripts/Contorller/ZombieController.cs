@@ -4,6 +4,8 @@ using UnityEngine;
 public class ZombieController : MonoBehaviour, IDamagable
 {
     [SerializeField] ZombieType type;
+    [SerializeField] AttackPoint attackPoint;
+    [SerializeField] float attackDamage;
     public Transform player;
     public Rigidbody rigid;
     public Animator animator;
@@ -12,6 +14,7 @@ public class ZombieController : MonoBehaviour, IDamagable
     private bool alreadyAttacked;
     public float timeBetweenAttacks;
     public float zombieSpeed;
+    private float time = 0;
 
     private ZombieState currentState;
     public float hp = 100;
@@ -38,6 +41,7 @@ public class ZombieController : MonoBehaviour, IDamagable
         animator = GetComponent<Animator>();
         currentState = ZombieState.Idle;
         animator.SetInteger("ZombieType", (int)type);
+        attackPoint = GetComponentInChildren<AttackPoint>();
     }
 
     private void Update()
@@ -92,13 +96,14 @@ public class ZombieController : MonoBehaviour, IDamagable
 
     private void AttackPlayer()
     {
-        if (!alreadyAttacked)
+        time += Time.deltaTime;
+        if (time > timeBetweenAttacks && !alreadyAttacked)
         {
+            time = 0;
             Debug.Log("플레이어 공격");
-
             alreadyAttacked = true;
+            attackPoint.Hit(attackDamage);
             Invoke(nameof(ResetAttack), timeBetweenAttacks); // overlap 사용해서 공격 구현
-
         }
 
         if (Vector3.Distance(player.position, transform.position) > attackRange)
