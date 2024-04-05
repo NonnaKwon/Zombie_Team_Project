@@ -18,7 +18,7 @@ public class ZombieController : MonoBehaviour
     public float zombieSpeed;
 
     private ZombieState currentState;
-    public int health = 100;
+    public int hp = 100;
     public GameObject[] dropItems;
 
     private enum ZombieState
@@ -118,10 +118,12 @@ public class ZombieController : MonoBehaviour
     }
     public void TakeDamage(int damage)
     {
-        health -= damage;
+        hp -= damage;
+        Debug.Log("좀비 피격");
 
-        if (health <= 0)
+        if (hp <= 0)
             Die();
+        Debug.Log("좀비 사망");
     }
 
     private void Die()
