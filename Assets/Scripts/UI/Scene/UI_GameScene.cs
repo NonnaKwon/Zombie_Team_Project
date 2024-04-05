@@ -23,8 +23,13 @@ public class UI_GameScene : InGameUI
     {
         base.Awake();
         Manager.Game.GameUI = this;
+
     }
 
+    private void Start()
+    {
+        
+    }
     private void Update()
     {
         _passTime -= Time.deltaTime;
@@ -54,9 +59,13 @@ public class UI_GameScene : InGameUI
         GetUI<Slider>(slider).value -= decreaseValue;
     }
 
+    public void SetMaxHP(float maxHp)
+    {
+        GetUI<Slider>(GameObjects.PlayerHP.ToString()).maxValue = maxHp;
+        GetUI<Slider>(GameObjects.PlayerHP.ToString()).value = maxHp;
+    }
     public void ChangeHP(float hp)
     {
         GetUI<Slider>(GameObjects.PlayerHP.ToString()).value = hp;
     }
-
 }

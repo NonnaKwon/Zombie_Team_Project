@@ -26,6 +26,7 @@ public class FightController : MonoBehaviour, IDamagable
     private void Start()
     {
         _curWeapon.gameObject.SetActive(true);
+        Manager.Game.GameUI.SetMaxHP(_hp);
     }
 
     private void OnAttack(InputValue value)
