@@ -1,11 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor;
-using UnityEngine;
-using UnityEngine.AI;
 
-public class ZombieController : MonoBehaviour
+using UnityEngine;
+
+public class ZombieController : MonoBehaviour, IDamagable
 {
     [SerializeField] ZombieType type;
     public Transform player;
@@ -18,7 +14,7 @@ public class ZombieController : MonoBehaviour
     public float zombieSpeed;
 
     private ZombieState currentState;
-    public int hp = 100;
+    public float hp = 100;
     public GameObject[] dropItems;
 
     private enum ZombieState
@@ -98,11 +94,11 @@ public class ZombieController : MonoBehaviour
     {
         if (!alreadyAttacked)
         {
-            // Implement attack logic here
             Debug.Log("플레이어 공격");
 
             alreadyAttacked = true;
-            Invoke(nameof(ResetAttack), timeBetweenAttacks);
+            Invoke(nameof(ResetAttack), timeBetweenAttacks); // overlap 사용해서 공격 구현
+
         }
 
         if (Vector3.Distance(player.position, transform.position) > attackRange)
@@ -116,15 +112,7 @@ public class ZombieController : MonoBehaviour
     {
         alreadyAttacked = false;
     }
-    public void TakeDamage(int damage)
-    {
-        hp -= damage;
-        Debug.Log("좀비 피격");
-
-        if (hp <= 0)
-            Die();
-        Debug.Log("좀비 사망");
-    }
+   
 
     private void Die()
     {
@@ -138,6 +126,16 @@ public class ZombieController : MonoBehaviour
         {
             int randomIndex = Random.Range(0, dropItems.Length);
             Instantiate(dropItems[randomIndex], transform.position, Quaternion.identity);
+        }
+    }
+
+    public void TakeDamage(float damage)
+    {
+        hp -= damage;
+        animator.SetTrigger("Hit");
+        if (hp <= 0)
+        {
+            Die();
         }
     }
 }
