@@ -309,7 +309,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _data: {fileID: 11400000, guid: 3e88c765da80ac44688e787f12d8cb04, type: 2}
   _muzzlePoint: {fileID: 2391712916642406092}
-  _maxBullet: 10
+  _maxBullet: 100
 --- !u!120 &6089457951395003450
 LineRenderer:
   serializedVersion: 2
