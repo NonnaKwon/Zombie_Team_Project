@@ -97,13 +97,11 @@ public class ZombieController : MonoBehaviour, IDamagable
     private void AttackPlayer()
     {
         time += Time.deltaTime;
-        if (time > timeBetweenAttacks && !alreadyAttacked)
+        if (time > timeBetweenAttacks)
         {
             time = 0;
             Debug.Log("플레이어 공격");
-            alreadyAttacked = true;
             attackPoint.Hit(attackDamage);
-            Invoke(nameof(ResetAttack), timeBetweenAttacks); // overlap 사용해서 공격 구현
         }
 
         if (Vector3.Distance(player.position, transform.position) > attackRange)
@@ -113,11 +111,6 @@ public class ZombieController : MonoBehaviour, IDamagable
         }
     }
 
-    private void ResetAttack()
-    {
-        alreadyAttacked = false;
-    }
-   
 
     private void Die()
     {

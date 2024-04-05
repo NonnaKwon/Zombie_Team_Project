@@ -4208,7 +4208,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   sightRange: 10
   attackRange: 1
-  timeBetweenAttacks: 2
+  timeBetweenAttacks: 1
   zombieSpeed: 3
   hp: 20
   dropItems: []
