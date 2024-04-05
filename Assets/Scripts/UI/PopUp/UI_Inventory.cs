@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UI_Inventory : PopUpUI
+public class UI_Inventory : PopUpUI           
 {
     enum GameObjects
     {
