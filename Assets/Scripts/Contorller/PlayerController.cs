@@ -1,32 +1,34 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.PackageManager;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Diagnostics;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.XR;
-using UnityEngine.Rendering;
-using UnityEngine.UIElements;
 using static Define;
-using static UnityEngine.UI.GridLayoutGroup;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] GameObject _mousePointer;
+
     private Vector3 _moveDir;
+
     private float _moveSpeed;
-    private float _dashSpeed;
+    private float _dashSpeedPercent;
 
     private float _curSpeed;
     private bool _canMove;
     private bool _onMouseRotate;
+    private int _animationLayer;
+    private bool _onDash;
 
     Rigidbody _rigid;
     Vector2 _mousePos;
-    LayerMask _groundFind;
+    Animator _animator;
+    UI_Inventory _uiInventory;
 
     private StateMachine<PlayerState> _stateMachine;
     public StateMachine<PlayerState> StateMachine { get { return _stateMachine; } }
-
+    public Vector2 MousePos { get { return _mousePos; } }
+    public float MoveSpeed { get { return _moveSpeed; } }
+    public float CurSpeed { set { _curSpeed = value; } }
+    public bool CanMove { get { return _canMove; } }
 
     private void Awake()
     {
@@ -39,6 +41,9 @@ public class PlayerController : MonoBehaviour
         
         //Component
         _rigid = GetComponent<Rigidbody>();
+        _animator = GetComponentInChildren<Animator>();
+        
+        Manager.Game.Player = this;
     }
 
     private void Start()
@@ -48,12 +53,15 @@ public class PlayerController : MonoBehaviour
 
     public void PlayerInit()
     {
+        _onDash = false;
         _onMouseRotate = false;
         _canMove = true;
-        _moveSpeed = 8f;
-        _dashSpeed = 14f;
+        _moveSpeed = 4f;
+        _dashSpeedPercent = 1.8f;
         _curSpeed = _moveSpeed;
-        _groundFind = LayerMask.GetMask("Ground");
+        _animationLayer = 0;
+        _uiInventory = Manager.Game.GameUI.GetComponentInChildren<UI_Inventory>();
+        _uiInventory.gameObject.SetActive(false);
         if (_stateMachine.CurState != PlayerState.Idle)
             _stateMachine.ChangeState(PlayerState.Idle);
     }
@@ -68,6 +76,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void ChangeAnimationLayer(string name)
+    {
+        if (_animationLayer != 0)
+            _animator.SetLayerWeight(_animationLayer, 0);
+        _animationLayer = _animator.GetLayerIndex(name);
+        _animator.SetLayerWeight(_animationLayer, 1);
+    }
+
+
     private void Rotate()
     {
         if (_onMouseRotate)
@@ -75,12 +92,9 @@ public class PlayerController : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(_mousePos);
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.red, 0.5f);
-
                 Vector3 tmpDir = hit.point - transform.position;
                 Vector3 rotateDir = new Vector3(tmpDir.x, 0, tmpDir.z);
-                Quaternion lookRotation = Quaternion.LookRotation(rotateDir);
-                transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, 10f * Time.deltaTime);
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(rotateDir), 10f * Time.deltaTime);
             }
         }
         else
@@ -94,20 +108,23 @@ public class PlayerController : MonoBehaviour
                 transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, 5f * Time.deltaTime);
             }
         }
+        _mousePointer.transform.position = transform.position + transform.forward + new Vector3(0,1f,0);
     }
     private void Move()
     {
-        transform.Translate(_moveDir * _curSpeed * Time.deltaTime,Space.World);
+        float speed = _onDash ? _curSpeed * _dashSpeedPercent : _curSpeed;
+        transform.Translate(_moveDir * speed * Time.deltaTime,Space.World);
+        _animator.SetFloat("velocity", (_moveDir * speed).magnitude);  
+        _animator.SetFloat("moveAngle", Extension.GetAngle(transform.forward, _moveDir)); //moveDir랑 지금 캐릭터가 보고있는 forward 각도 계산
     }
 
 
     private void OnDash(InputValue value)
     {
         if (value.isPressed)
-            _curSpeed = _dashSpeed;
+            _onDash = true;
         else
-            _curSpeed = _moveSpeed;
-
+            _onDash = false;
     }
 
     private void OnMove(InputValue value)
@@ -128,18 +145,45 @@ public class PlayerController : MonoBehaviour
         _onMouseRotate = value.isPressed ? true : false;
     }
 
+    private void OnInventory(InputValue value)
+    {
+        if (!_uiInventory.gameObject.activeSelf)
+        {
+            _uiInventory.gameObject.SetActive(true);
+            _stateMachine.ChangeState(PlayerState.Interact);
+        }
+        else
+        {
+            _uiInventory.gameObject.SetActive(false);
+            _stateMachine.ChangeState(PlayerState.Idle);
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         IInteractable interact = other.GetComponent<IInteractable>();
         if (interact != null)
+        {
             interact.OnActive();
+            return;
+        }
+
+        MapController map = other.GetComponent<MapController>();
+        if (map != null)
+        {
+            map.SpawnMap();
+            return;
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
         IInteractable interact = other.GetComponent<IInteractable>();
         if (interact != null)
+        {
             interact.OffActive();
+            return;
+        }
     }
 
 
@@ -170,11 +214,16 @@ public class PlayerController : MonoBehaviour
 
         public override void Enter()
         {
-
+            owner._canMove = false;
         }
         public override void Transition()
         {
 
+        }
+
+        public override void Exit()
+        {
+            owner._canMove = true;
         }
 
     }

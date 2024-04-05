@@ -8,7 +8,7 @@ public class ItemDropTable : MonoBehaviour
     public class Items
     {
         public ItemDrop item;
-        public int weight;
+        public int weight; // 아이템 확률
     }
 
     public List<Items> items = new List<Items>();
@@ -21,13 +21,13 @@ public class ItemDropTable : MonoBehaviour
             sum += item.weight;
         }
 
-        var rnd = Random.Range(0, sum);
+        var random = Random.Range(0, sum);
 
         for (int i = 0; i < items.Count; i++)
         {
             var item = items[i];
-            if (item.weight > rnd) return items[i].item;
-            else rnd -= item.weight;
+            if (item.weight > random) return items[i].item;
+            else random -= item.weight;
         }
 
         return null;
