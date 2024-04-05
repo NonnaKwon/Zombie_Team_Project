@@ -10,8 +10,8 @@ public class Central : MonoBehaviour
     private void Start()
     {
         _arrangers = new List<Arranger>();
-        var arrs = transform.GetComponentsInChildren<Arranger>();
 
+        var arrs = transform.GetComponentsInChildren<Arranger>();
         for(int i=0;i<arrs.Length;i++)
         {
             _arrangers.Add(arrs[i]);
@@ -48,6 +48,7 @@ public class Central : MonoBehaviour
     {
         SwapCardsHierachy(_emptyCard, card);
     }
+
     void Drag(Transform card)
     {
         var whichArrangerCard = _arrangers.Find(t => ContainPos(t.transform as RectTransform, card.position));
