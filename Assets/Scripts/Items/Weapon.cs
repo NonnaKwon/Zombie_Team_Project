@@ -17,6 +17,7 @@ public abstract class Weapon : Item
     protected virtual void Awake()
     {
         _playerAnimator = GetComponentInParent<Animator>();
+        AttackSpeed = AttackSpeedBase;
     }
 
     protected virtual void OnEnable()
