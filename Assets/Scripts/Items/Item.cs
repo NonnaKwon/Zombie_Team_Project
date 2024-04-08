@@ -6,7 +6,6 @@ using UnityEngine;
 public abstract class Item : MonoBehaviour
 {
     public ItemData _idata;
-    protected int count = 0;
     protected PlayerController _player;
 
     protected virtual void Awake()
