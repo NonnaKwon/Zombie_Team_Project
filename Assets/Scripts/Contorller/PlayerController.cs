@@ -17,11 +17,11 @@ public class PlayerController : MonoBehaviour
     private bool _onMouseRotate;
     private int _animationLayer;
     private bool _onDash;
+    private int _coin;
 
     Rigidbody _rigid;
     Vector2 _mousePos;
     Animator _animator;
-    UI_Inventory _uiInventory;
 
     private StateMachine<PlayerState> _stateMachine;
     public StateMachine<PlayerState> StateMachine { get { return _stateMachine; } }
@@ -29,6 +29,8 @@ public class PlayerController : MonoBehaviour
     public float MoveSpeed { get { return _moveSpeed; } }
     public float CurSpeed { set { _curSpeed = value; } }
     public bool CanMove { get { return _canMove; } }
+    public int Coin { get { return _coin; } set { _coin = value; } }
+
 
     private void Awake()
     {
@@ -60,8 +62,8 @@ public class PlayerController : MonoBehaviour
         _dashSpeedPercent = 1.8f;
         _curSpeed = _moveSpeed;
         _animationLayer = 0;
-        _uiInventory = Manager.Game.GameUI.GetComponentInChildren<UI_Inventory>();
-        _uiInventory.gameObject.SetActive(false);
+        _coin = 10000;
+
         if (_stateMachine.CurState != PlayerState.Idle)
             _stateMachine.ChangeState(PlayerState.Idle);
     }
@@ -145,19 +147,7 @@ public class PlayerController : MonoBehaviour
         _onMouseRotate = value.isPressed ? true : false;
     }
 
-    private void OnInventory(InputValue value)
-    {
-        if (!_uiInventory.gameObject.activeSelf)
-        {
-            _uiInventory.gameObject.SetActive(true);
-            _stateMachine.ChangeState(PlayerState.Interact);
-        }
-        else
-        {
-            _uiInventory.gameObject.SetActive(false);
-            _stateMachine.ChangeState(PlayerState.Idle);
-        }
-    }
+
 
     private void OnTriggerEnter(Collider other)
     {

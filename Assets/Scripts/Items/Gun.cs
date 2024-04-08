@@ -77,4 +77,9 @@ public class Gun : Weapon
         _lineRenderer.positionCount = 0;
         OnAttack = false;
     }
+
+    public override void UseItem()
+    {
+        
+    }
 }

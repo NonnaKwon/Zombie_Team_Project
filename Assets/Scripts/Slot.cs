@@ -10,7 +10,6 @@ public class Slot : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
     private void Start()
     {
         _root = transform.root;
-        Debug.Log(_root);
     }
     public void OnBeginDrag(PointerEventData eventData)
     {

@@ -1,7 +1,7 @@
 public class PopUpUI : BaseUI
 {
-    public void Close()
+    public void Close(bool isIdle = true)
     {
-        Manager.UI.ClosePopUpUI();
+        Manager.UI.ClosePopUpUI(isIdle);
     }
 }
