@@ -34,6 +34,7 @@ public class Gun : Weapon
    
     public override void Attack()
     {
+        Debug.Log("총쏨");
         OnAttack = true;
         if (_curBullet == 0)
             return;
@@ -50,6 +51,7 @@ public class Gun : Weapon
                 //몬스터 공격
                 float damage = Random.Range(_data.minDamage, _data.maxDamage);
                 damagable.TakeDamage(damage);
+                Debug.Log("Zombie : 공격당함");
             }
 
             Rigidbody rigid = hitInfo.collider.GetComponent<Rigidbody>();
