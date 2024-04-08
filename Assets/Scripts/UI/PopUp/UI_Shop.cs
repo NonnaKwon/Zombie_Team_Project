@@ -8,7 +8,6 @@ public class UI_Shop : PopUpUI
     enum GameObjects
     {
         items
-
     }
 
     
