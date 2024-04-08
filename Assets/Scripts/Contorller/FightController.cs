@@ -30,9 +30,12 @@ public class FightController : MonoBehaviour, IDamagable
     {
         _curWeapon.gameObject.SetActive(true);
         Manager.Game.GameUI.SetMaxHP(_hp);
+
         _uiInventory = Manager.Game.GameUI.GetComponentInChildren<UI_Inventory>();
+        _inventory = GetComponent<Inventory>();
         _uiInventory.SetInventory(_inventory);
         _uiInventory.gameObject.SetActive(false);
+
         _player = GetComponent<PlayerController>();
     }
 

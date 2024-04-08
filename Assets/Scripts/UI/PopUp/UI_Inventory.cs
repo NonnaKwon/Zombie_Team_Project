@@ -19,7 +19,7 @@ public class UI_Inventory : PopUpUI
 
     private void OnEnable()
     {
-        
+        UpdateInventory();
     }
 
     private void UpdateInventory()

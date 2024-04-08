@@ -62,7 +62,8 @@ public class PlayerController : MonoBehaviour
         _dashSpeedPercent = 1.8f;
         _curSpeed = _moveSpeed;
         _animationLayer = 0;
-        
+        _coin = 10000;
+
         if (_stateMachine.CurState != PlayerState.Idle)
             _stateMachine.ChangeState(PlayerState.Idle);
     }
@@ -145,6 +146,7 @@ public class PlayerController : MonoBehaviour
     {
         _onMouseRotate = value.isPressed ? true : false;
     }
+
 
 
     private void OnTriggerEnter(Collider other)

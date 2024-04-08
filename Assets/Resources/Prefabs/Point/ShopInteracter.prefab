@@ -334,6 +334,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 924713d5d4c8ee549af6a6493e0be02c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  items:
+  - item: {fileID: 11400000, guid: 77ffa34f37acc02448e55bee63f3da3e, type: 2}
+    count: 10
+  - item: {fileID: 11400000, guid: cdb0790f01a63cc46915bb82e487fcca, type: 2}
+    count: 10
+  - item: {fileID: 11400000, guid: 442bad22f4ad8524cb62cd7c40c2ca96, type: 2}
+    count: 10
+  - item: {fileID: 11400000, guid: 01867717a338c4947bbe92588e343acf, type: 2}
+    count: 10
+  - item: {fileID: 11400000, guid: cf529568c85d36149a90948730ad2e9b, type: 2}
+    count: 10
 --- !u!1 &6806892110892576986
 GameObject:
   m_ObjectHideFlags: 0

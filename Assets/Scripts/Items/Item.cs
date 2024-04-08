@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 
-public class Item : MonoBehaviour
+public abstract class Item : MonoBehaviour
 {
     public ItemData _idata;
+    protected int count = 0;
     protected PlayerController _player;
 
     protected virtual void Awake()
@@ -25,8 +26,7 @@ public class Item : MonoBehaviour
     {
 
     }
-    public void GetItem()
-    {
 
-    }
+    public abstract void UseItem();
+
 }

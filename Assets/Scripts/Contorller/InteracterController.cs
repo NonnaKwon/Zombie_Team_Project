@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using static Define;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public abstract class InteracterController : MonoBehaviour, IInteractable
 {
@@ -21,7 +23,7 @@ public abstract class InteracterController : MonoBehaviour, IInteractable
         _uIData.SetActive(false);
     }
 
-    protected void LateUpdate()
+    protected void LateUpdate()  
     {
         if (_isActive)
             _btnInfo.rectTransform.position = Camera.main.WorldToScreenPoint(transform.position + _offset);
@@ -42,7 +44,10 @@ public abstract class InteracterController : MonoBehaviour, IInteractable
 
     protected void OnInteract(InputValue value)
     {
-        if (_isActive)
+        if (_isActive && Manager.Game.Player.StateMachine.CurState != PlayerState.Interact)
+        {
+            Manager.Game.Player.StateMachine.ChangeState(PlayerState.Interact);
             Interact();
+        }
     }
 }
