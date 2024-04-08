@@ -16,8 +16,8 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    private List<ItemEntity> items;
-    private int copacity;
+    private List<ItemEntity> items = new List<ItemEntity>();
+    public int ItemSize { get { return items.Count; } }
 
     private void Start()
     {
@@ -59,7 +59,7 @@ public class Inventory : MonoBehaviour
             count = 0;
             return null;
         }
-        count = items.Count;
+        count = items[index].Count;
         return items[index].Item;
     }
 }
