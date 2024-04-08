@@ -4064,7 +4064,7 @@ GameObject:
   - component: {fileID: 1776488136883052398}
   - component: {fileID: 7038594121971497311}
   m_Layer: 6
-  m_Name: ZombieD
+  m_Name: WalkZombieB
   m_TagString: Zombie
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4079,7 +4079,7 @@ Transform:
   m_GameObject: {fileID: 5780363829149477456}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -80}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4163,7 +4163,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!136 &1776488136883052398
 CapsuleCollider:
@@ -4175,17 +4175,17 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_LayerOverridePriority: 0
+  m_LayerOverridePriority: 1
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.2
-  m_Height: 2.3120546
+  m_Height: 1.8
   m_Direction: 1
   m_Center: {x: -0.02, y: 0.9, z: 0.01}
 --- !u!114 &7038594121971497311
@@ -4203,15 +4203,16 @@ MonoBehaviour:
   type: 0
   attackPoint: {fileID: 0}
   attackDamage: 3
-  player: {fileID: 9216199510392988774, guid: 512e4938006d7f147915680330fcde60, type: 3}
+  player: {fileID: 3524292467188578206, guid: 093b594236d32bb44ac7f692f978d7b1, type: 3}
   rigid: {fileID: 2808194788683251708}
-  animator: {fileID: 0}
+  animator: {fileID: 8667450345800296281}
   sightRange: 10
   attackRange: 1
   timeBetweenAttacks: 1
-  zombieSpeed: 3
-  hp: 20
-  dropItems: []
+  zombieSpeed: 0.8
+  hp: 100
+  dropItems:
+  - {fileID: 523629600143528482, guid: 00e129fd14abcdd4a9026f1a1c3a031e, type: 3}
 --- !u!1 &5800592414205554942
 GameObject:
   m_ObjectHideFlags: 0

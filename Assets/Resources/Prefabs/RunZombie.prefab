@@ -4831,7 +4831,7 @@ GameObject:
   - component: {fileID: 217821051945644354}
   - component: {fileID: 8699540420468034892}
   m_Layer: 6
-  m_Name: ZombieB
+  m_Name: RunZombie
   m_TagString: Zombie
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4846,7 +4846,7 @@ Transform:
   m_GameObject: {fileID: 8215388454793580449}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.21, y: 0, z: -73.94}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4930,7 +4930,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!136 &217821051945644354
 CapsuleCollider:
@@ -4942,17 +4942,17 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_LayerOverridePriority: 0
+  m_LayerOverridePriority: 1
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.2
-  m_Height: 2.3184164
+  m_Height: 1.8
   m_Direction: 1
   m_Center: {x: -0.02, y: 0.9, z: 0.01}
 --- !u!114 &8699540420468034892
@@ -4967,18 +4967,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f5138a142db4b540832cfce06d45c0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  type: 1
   attackPoint: {fileID: 9191865385183099761}
   attackDamage: 3
-  player: {fileID: 9216199510392988774, guid: 512e4938006d7f147915680330fcde60, type: 3}
+  player: {fileID: 3524292467188578206, guid: 093b594236d32bb44ac7f692f978d7b1, type: 3}
   rigid: {fileID: 5459167979706364587}
-  animator: {fileID: 0}
+  animator: {fileID: 5420633709241321314}
   sightRange: 10
   attackRange: 1
-  timeBetweenAttacks: 1
-  zombieSpeed: 3
-  hp: 20
-  dropItems: []
+  timeBetweenAttacks: 1.2
+  zombieSpeed: 1
+  hp: 100
+  dropItems:
+  - {fileID: 523629600143528482, guid: 00e129fd14abcdd4a9026f1a1c3a031e, type: 3}
 --- !u!1 &8224484140138190221
 GameObject:
   m_ObjectHideFlags: 0
