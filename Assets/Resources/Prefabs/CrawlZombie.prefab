@@ -5209,7 +5209,7 @@ GameObject:
   - component: {fileID: 6896395741683375635}
   - component: {fileID: 7548865427496769114}
   m_Layer: 6
-  m_Name: ZombieC
+  m_Name: CrawlZombie
   m_TagString: Zombie
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5224,7 +5224,7 @@ Transform:
   m_GameObject: {fileID: 7735741366644206081}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -75}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5308,7 +5308,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!136 &6896395741683375635
 CapsuleCollider:
@@ -5324,13 +5324,13 @@ CapsuleCollider:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_LayerOverridePriority: 0
+  m_LayerOverridePriority: 1
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.2
-  m_Height: 2.318416
+  m_Height: 1.8
   m_Direction: 1
   m_Center: {x: -0.02, y: 0.9, z: 0.01}
 --- !u!114 &7548865427496769114
@@ -5345,12 +5345,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f5138a142db4b540832cfce06d45c0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  type: 2
   attackPoint: {fileID: 0}
   attackDamage: 3
-  player: {fileID: 9216199510392988774, guid: 512e4938006d7f147915680330fcde60, type: 3}
+  player: {fileID: 3524292467188578206, guid: 093b594236d32bb44ac7f692f978d7b1, type: 3}
   rigid: {fileID: 3137637956487318408}
-  animator: {fileID: 0}
+  animator: {fileID: 8456509384374529459}
   sightRange: 10
   attackRange: 1
   timeBetweenAttacks: 1

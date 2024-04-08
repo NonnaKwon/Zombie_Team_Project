@@ -30,11 +30,11 @@ public class ZombieRespawn : MonoBehaviour
             {
                 yield return new WaitForSeconds(spawnTime);
 
-                Transform spawnPoint = FindSpawnLocation();
+                Vector3 spawnPoint = FindSpawnLocation();
                 if (spawnPoint != null)
                 {
                     int prefabIndex = Random.Range(0, zombiePrefabs.Count);
-                    Instantiate(zombiePrefabs[prefabIndex], spawnPoint.position, Quaternion.identity);
+                    Instantiate(zombiePrefabs[prefabIndex], spawnPoint, Quaternion.identity);
                 }
             }
             else
@@ -44,28 +44,38 @@ public class ZombieRespawn : MonoBehaviour
         }
     }
 
-    Transform FindSpawnLocation()
+
+    Vector3 FindSpawnLocation()
     {
-        List<Transform> validSpawnPoints = new List<Transform>();
-
-        foreach (var spawnPoint in spawnPoints)
-        {
-            if (!Physics.CheckSphere(spawnPoint.position, checkRadius, LayerMask.GetMask("Zombie")))
-            {
-                validSpawnPoints.Add(spawnPoint); //
-            }
-        }
-
-        if (validSpawnPoints.Count > 0)
-        {
-            int randomIndex = Random.Range(0, validSpawnPoints.Count);
-            return validSpawnPoints[randomIndex];
-        }
-        else
-        {
-            return null; // 적합한 스폰 위치를 찾지 못한 경우
-        }
+        int randomPoint = Random.Range(0, spawnPoints.Length);
+        float randomX = Random.Range(-checkRadius, checkRadius);
+        float randomZ = Random.Range(-checkRadius, checkRadius);
+        return new Vector3(spawnPoints[randomPoint].position.x + randomX, 0, spawnPoints[randomPoint].position.z + randomZ);
     }
+
+
+    //Transform FindSpawnLocation()
+    //{
+    //    List<Transform> validSpawnPoints = new List<Transform>();
+
+    //    foreach (var spawnPoint in spawnPoints)
+    //    {
+    //        if (!Physics.CheckSphere(spawnPoint.position, checkRadius, LayerMask.GetMask("Zombie")))
+    //        {
+    //            validSpawnPoints.Add(spawnPoint); //
+    //        }
+    //    }
+
+    //    if (validSpawnPoints.Count > 0)
+    //    {
+    //        int randomIndex = Random.Range(0, validSpawnPoints.Count);
+    //        return validSpawnPoints[randomIndex];
+    //    }
+    //    else
+    //    {
+    //        return null; // 적합한 스폰 위치를 찾지 못한 경우
+    //    }
+    //}
 
 
 }

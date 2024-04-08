@@ -15,6 +15,8 @@ public class ZombieController : MonoBehaviour, IDamagable
     public float timeBetweenAttacks;
     public float zombieSpeed;
     private float time = 0;
+    public float MoveSpeed { get { return zombieSpeed; } }
+    private Vector3 moveDir;
 
     private ZombieState currentState;
     public float hp = 100;
@@ -58,6 +60,12 @@ public class ZombieController : MonoBehaviour, IDamagable
                 AttackPlayer();
                 break;
         }
+        MoveAnimator();
+    }
+
+    private void MoveAnimator()
+    {
+        animator.SetFloat("velocity", (moveDir * zombieSpeed).magnitude);
     }
 
     private void LookForPlayer()
@@ -103,7 +111,7 @@ public class ZombieController : MonoBehaviour, IDamagable
             Debug.Log("플레이어 공격");
             attackPoint.Hit(attackDamage);
             animator.SetBool("IsAttack", true);
-            animator.SetBool("Bite", false);
+            animator.SetBool("Bite", true);
         }
 
         if (Vector3.Distance(player.position, transform.position) > attackRange)
