@@ -4175,7 +4175,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -4209,9 +4209,10 @@ MonoBehaviour:
   sightRange: 10
   attackRange: 1
   timeBetweenAttacks: 1
-  zombieSpeed: 3
-  hp: 20
-  dropItems: []
+  zombieSpeed: 0.8
+  hp: 100
+  dropItems:
+  - {fileID: 523629600143528482, guid: 00e129fd14abcdd4a9026f1a1c3a031e, type: 3}
 --- !u!1 &5800592414205554942
 GameObject:
   m_ObjectHideFlags: 0
