@@ -1,5 +1,3 @@
-
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class ZombieController : MonoBehaviour, IDamagable
@@ -18,7 +16,7 @@ public class ZombieController : MonoBehaviour, IDamagable
     private float time = 0;
     public float MoveSpeed { get { return zombieSpeed; } }
     private Vector3 moveDir;
-    private GameObject bloodeffect;
+    private GameObject bloodEffect;
 
     private ZombieState currentState;
     public float hp = 100;
@@ -39,28 +37,9 @@ public class ZombieController : MonoBehaviour, IDamagable
     }
     private void Start()
     {
-        bloodeffect = Resources.Load<GameObject>("Weapon");
+        bloodEffect = Resources.Load<GameObject>("Weapon");
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.collider.tag == "Weapon")
-        {
-            ShowBloodEffect(collision);
-            Destroy(collision.gameObject);
-            // hp -= collision.gameObject.GetComponent<Weapon>()
-
-            if (hp <= 0)
-            {
-
-            }
-        }
-    }
-
-    private void ShowBloodEffect(Collision collision)
-    {
-
-    }
     private void Awake()
     {
         player = Manager.Game.Player.gameObject.transform;
@@ -166,10 +145,12 @@ public class ZombieController : MonoBehaviour, IDamagable
     public void TakeDamage(float damage)
     {
         hp -= damage;
-        // animator.SetTrigger("TakeHit");
+        animator.SetTrigger("TakeHit");
+        // Manager. 오브젝트풀 사용
         if (hp <= 0)
         {
             Die();
+            Debug.Log("좀비 죽음");
         }
     }
 }

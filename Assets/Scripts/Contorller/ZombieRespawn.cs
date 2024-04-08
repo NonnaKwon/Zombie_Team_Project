@@ -31,14 +31,14 @@ public class ZombieRespawn : MonoBehaviour
             {
                 yield return new WaitForSeconds(spawnTime);
 
-                Vector3 spawnPoint = FindSpawnLocation();
+                Vector3 spawnPoint = FindSpawnLocation(); // 
                 if (spawnPoint != null)
                 {
                     if(Physics.Raycast(Camera.main.transform.position,(spawnPoint - Camera.main.transform.position).normalized ,out RaycastHit hit))
                     {
                         Debug.DrawRay(Camera.main.transform.position, (spawnPoint - Camera.main.transform.position).normalized, Color.blue,hit.distance*100f);
-
                         Debug.Log(layer.Contain(hit.collider.gameObject.layer));
+
                         if (layer.Contain(hit.collider.gameObject.layer))
                         {
                             int prefabIndex = Random.Range(0, zombiePrefabs.Count);
