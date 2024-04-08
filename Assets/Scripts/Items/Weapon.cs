@@ -1,35 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 
 public abstract class Weapon : Item
 {
-    [SerializeField] protected WeaponData _data;
-
+    protected WeaponData _data;
     protected Animator _playerAnimator;
-    protected bool _sGet = false;
+    protected bool _isGet = false;
 
     public bool OnAttack { get; set; } = false;
     public float AttackSpeed { get; set; }
     public float AttackSpeedBase { get { return _data.attackSpeed; } }
 
-    protected virtual void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+        _data = _idata as WeaponData;
+        if (_data == null)
+            Debug.Log("무기 데이터 null");
         _playerAnimator = GetComponentInParent<Animator>();
         AttackSpeed = AttackSpeedBase;
     }
 
-    protected virtual void OnEnable()
+    protected override void OnEnable()
     {
-        Manager.Game.Player.ChangeAnimationLayer(_data.animationLayer);
+        base.OnEnable();
+        _player.ChangeAnimationLayer(_data.animationLayer);
     }
 
-    protected virtual void OnDisable()
+    protected override void OnDisable()
     {
-        Manager.Game.Player.ChangeAnimationLayer("Base Layer");
+        base.OnDisable();
+        _player.ChangeAnimationLayer("Base Layer");
     }
 
     public abstract void Attack();
-
 }

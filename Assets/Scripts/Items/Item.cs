@@ -1,18 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public ItemData _idata;
+    protected PlayerController _player;
+
+    protected virtual void Awake()
     {
-        
+        _player = Manager.Game.Player;
+    }
+    protected virtual void Start()
+    {
     }
 
-    // Update is called once per frame
-    void Update()
+    protected virtual void OnEnable()
     {
-        
+
+    }
+
+    protected virtual void OnDisable()
+    {
+
+    }
+    public void GetItem()
+    {
+
     }
 }

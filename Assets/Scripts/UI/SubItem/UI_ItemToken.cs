@@ -4,5 +4,6 @@ using UnityEngine;
 
 public class UI_ItemToken : BaseUI
 {
-    
+    [SerializeField] ItemData _item;
+
 }
