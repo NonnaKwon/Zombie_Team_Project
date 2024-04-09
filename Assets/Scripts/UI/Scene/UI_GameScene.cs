@@ -37,7 +37,7 @@ public class UI_GameScene : InGameUI
         GetUI<TMP_Text>(GameObjects.Sec.ToString()).text = ((int)_passTime % 60).ToString("D2");
     }
 
-    public void ChangeData(char state,float decreaseValue)
+    public void ChangeData(char state,float decreaseValue,bool isPlus = false)
     {
         string slider = "";
         switch (state)
@@ -56,7 +56,10 @@ public class UI_GameScene : InGameUI
                 break;
         }
 
-        GetUI<Slider>(slider).value -= decreaseValue;
+        if(isPlus)
+            GetUI<Slider>(slider).value += decreaseValue;
+        else
+            GetUI<Slider>(slider).value -= decreaseValue;
     }
 
     public void SetMaxHP(float maxHp)

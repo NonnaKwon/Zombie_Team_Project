@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static Define;
 
 public class FightController : MonoBehaviour, IDamagable
 {
@@ -15,8 +16,10 @@ public class FightController : MonoBehaviour, IDamagable
     private float _range;
     private float _attackSpeed;
 
+    UI_Inventory _uiInventory;
     Inventory _inventory;
     Animator _animator;
+    PlayerController _player;
 
     private void Awake()
     {
@@ -27,11 +30,17 @@ public class FightController : MonoBehaviour, IDamagable
     {
         _curWeapon.gameObject.SetActive(true);
         Manager.Game.GameUI.SetMaxHP(_hp);
+
+        _uiInventory = Manager.Game.GameUI.GetComponentInChildren<UI_Inventory>();
+        _inventory = GetComponent<Inventory>();
+        _uiInventory.gameObject.SetActive(false);
+
+        _player = GetComponent<PlayerController>();
     }
 
     private void OnAttack(InputValue value)
     {
-        if (!Manager.Game.Player.CanMove)
+        if (!_player.CanMove)
             return;
         if (_curWeapon != null && !_curWeapon.OnAttack)
             _curWeapon.Attack();
@@ -44,7 +53,21 @@ public class FightController : MonoBehaviour, IDamagable
         Debug.Log("Player : 공격받음");
         if (_hp <= 0)
         {
-            Manager.Game.Player.StateMachine.ChangeState(Define.PlayerState.Die);
+            _player.StateMachine.ChangeState(Define.PlayerState.Die);
+        }
+    }
+
+    private void OnInventory(InputValue value)
+    {
+        if (!_uiInventory.gameObject.activeSelf)
+        {
+            _uiInventory.gameObject.SetActive(true);
+            _player.StateMachine.ChangeState(PlayerState.Interact);
+        }
+        else
+        {
+            _uiInventory.gameObject.SetActive(false);
+            _player.StateMachine.ChangeState(PlayerState.Idle);
         }
     }
 }

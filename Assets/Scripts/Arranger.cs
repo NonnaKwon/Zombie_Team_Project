@@ -50,6 +50,10 @@ public class Arranger : MonoBehaviour
         UpdateChildren();
     }
     
+    public Transform GetCard(int index)
+    {
+        return children[index];
+    }
     void BeginDrag(Transform card)
     {
         

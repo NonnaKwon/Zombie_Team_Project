@@ -1,18 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 
-public class Item : MonoBehaviour
+public abstract class Item
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    protected ItemData _data;
+    public ItemData Data { get { return _data; } }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public abstract void SetData();
+    public abstract void UseItem();
+
 }

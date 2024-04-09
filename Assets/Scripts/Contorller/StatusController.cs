@@ -34,9 +34,10 @@ public class StatusController : MonoBehaviour
     private float[] _fatigueEffectRatio = { 0.02f, 0.05f, 0.08f };
     private float _staminaEffectRatio = 0.01f;
 
-    private const float DECREASE = 0.04f / 60; //분당 2% 여서 초당으로 계산.
+    private const float DECREASE = 0.04f / 60; //분당이어서 초당으로 계산.
     private const float DECREASE_STAMINA = 0.05f;
     private const float DECREASE_STAMINA_FATIGUE = 0.01f;
+    private const float INCREASE_STAMINA = 0.03f;
 
     private float _frame;
 
@@ -55,6 +56,8 @@ public class StatusController : MonoBehaviour
     {
         if (_onDash)
             ChangeData(Status.Stamina, DECREASE_STAMINA / _frame);
+        else
+            ChangeData(Status.Stamina, INCREASE_STAMINA / _frame, true);
         ChangeData(Status.Hunger,  DECREASE / _frame);
         ChangeData(Status.Thirst,  DECREASE / _frame);
         ChangeData(Status.Fatigue, DECREASE / _frame);
@@ -62,26 +65,27 @@ public class StatusController : MonoBehaviour
         UpdateStateEffect();
     }
 
-    private void ChangeData(Status state, float decreaseValue)
+    private void ChangeData(Status state, float value,bool isPlus = false)
     {
         switch (state)
         {
             case Status.Hunger:
-                _hunger -= decreaseValue;
-                _connectUI.ChangeData('H', decreaseValue);
+                _hunger += isPlus ? value : -value;
+                _connectUI.ChangeData('H', value);
                 break;
             case Status.Thirst:
-                _thirst -= decreaseValue;
-                _connectUI.ChangeData('T', decreaseValue);
+                _thirst -= isPlus ? value : -value;
+                _connectUI.ChangeData('T', value);
                 break;
             case Status.Fatigue:
-                _fatigue -= decreaseValue;
-                _connectUI.ChangeData('F', decreaseValue);
+                _fatigue -= isPlus ? value : -value;
+                _connectUI.ChangeData('F', value);
                 break;
             case Status.Stamina:
-                _stamina -= decreaseValue;
-                _decreaseStaminaAmount += decreaseValue;
-                _connectUI.ChangeData('S', decreaseValue);
+                _stamina -= isPlus ? value : -value;
+                if(!isPlus)
+                    _decreaseStaminaAmount += value;
+                _connectUI.ChangeData('S', value, isPlus);
                 break;
         }
     }

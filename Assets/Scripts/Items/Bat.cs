@@ -36,5 +36,4 @@ public class Bat : Weapon
         OnAttack = false;
     }
 
-   
 }

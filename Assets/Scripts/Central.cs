@@ -6,6 +6,8 @@ public class Central : MonoBehaviour
 {
     [SerializeField] Transform _emptyCard;
     List<Arranger> _arrangers;
+    Arranger _workingArranger;
+    int _oriIndex;
 
     private void Start()
     {
@@ -46,24 +48,36 @@ public class Central : MonoBehaviour
 
     void BeginDrag(Transform card)
     {
+        _workingArranger = _arrangers.Find(t => ContainPos(t.transform as RectTransform, card.position));
+        _oriIndex = card.GetSiblingIndex();
         SwapCardsHierachy(_emptyCard, card);
     }
 
     void Drag(Transform card)
     {
-        var whichArrangerCard = _arrangers.Find(t => ContainPos(t.transform as RectTransform, card.position));
-
+        Arranger whichArrangerCard = _arrangers.Find(t => ContainPos(t.transform as RectTransform, card.position));
+        Debug.Log(whichArrangerCard);
         if (whichArrangerCard == null)
         {
-
+            //bool updateChildren = transform != _emptyCard.parent;
+            //_emptyCard.SetParent(transform);
+            //if(updateChildren)
+            //{
+            //    _arrangers.ForEach(t => t.UpdateChildren());
+            //}
         }
         else
         {
+            Arranger cardArranger = card.parent.GetComponent<Arranger>();
             int invisibleCardIndex = _emptyCard.GetSiblingIndex();
             int targetIndex = whichArrangerCard.GetIndexByPosition(card, invisibleCardIndex);
-            if (invisibleCardIndex != targetIndex)
+            if (whichArrangerCard == cardArranger)
             {
-                whichArrangerCard.SwapCard(invisibleCardIndex, targetIndex);
+                if (invisibleCardIndex != targetIndex)
+                    whichArrangerCard.SwapCard(invisibleCardIndex, targetIndex);
+            }else
+            {
+                SwapCardsHierachy(_emptyCard, whichArrangerCard.GetCard(targetIndex));
             }
         }
     }

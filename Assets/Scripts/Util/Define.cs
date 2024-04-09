@@ -30,4 +30,15 @@ public class Define
         Shop
     }
 
+    public enum StructureType
+    {
+        cottage,
+        church,
+        apartment,
+        villa,
+        school,
+        mall,
+        hospital
+    }
+
 }

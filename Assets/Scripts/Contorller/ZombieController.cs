@@ -1,4 +1,5 @@
 
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class ZombieController : MonoBehaviour, IDamagable
@@ -15,6 +16,9 @@ public class ZombieController : MonoBehaviour, IDamagable
     public float timeBetweenAttacks;
     public float zombieSpeed;
     private float time = 0;
+    public float MoveSpeed { get { return zombieSpeed; } }
+    private Vector3 moveDir;
+    private GameObject bloodeffect;
 
     private ZombieState currentState;
     public float hp = 100;
@@ -33,7 +37,30 @@ public class ZombieController : MonoBehaviour, IDamagable
         run,
         crawl
     }
+    private void Start()
+    {
+        bloodeffect = Resources.Load<GameObject>("Weapon");
+    }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.tag == "Weapon")
+        {
+            ShowBloodEffect(collision);
+            Destroy(collision.gameObject);
+            // hp -= collision.gameObject.GetComponent<Weapon>()
+
+            if (hp <= 0)
+            {
+
+            }
+        }
+    }
+
+    private void ShowBloodEffect(Collision collision)
+    {
+
+    }
     private void Awake()
     {
         player = Manager.Game.Player.gameObject.transform;
@@ -58,7 +85,13 @@ public class ZombieController : MonoBehaviour, IDamagable
                 AttackPlayer();
                 break;
         }
+        // MoveAnimator();
     }
+
+//private void MoveAnimator()
+//{
+//    animator.SetFloat("velocity", (moveDir * zombieSpeed).magnitude);
+//}
 
     private void LookForPlayer()
     {
@@ -102,6 +135,8 @@ public class ZombieController : MonoBehaviour, IDamagable
             time = 0;
             Debug.Log("플레이어 공격");
             attackPoint.Hit(attackDamage);
+            animator.SetBool("IsAttack", true);
+            animator.SetBool("Bite", true);
         }
 
         if (Vector3.Distance(player.position, transform.position) > attackRange)
@@ -114,6 +149,7 @@ public class ZombieController : MonoBehaviour, IDamagable
 
     private void Die()
     {
+        animator.SetTrigger("Die");
         DropItem();
         Destroy(gameObject);
     }
@@ -130,7 +166,7 @@ public class ZombieController : MonoBehaviour, IDamagable
     public void TakeDamage(float damage)
     {
         hp -= damage;
-        animator.SetTrigger("Hit");
+        // animator.SetTrigger("TakeHit");
         if (hp <= 0)
         {
             Die();

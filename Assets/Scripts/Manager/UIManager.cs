@@ -55,7 +55,8 @@ public class UIManager : Singleton<UIManager>
         return ui;
     }
 
-    public void ClosePopUpUI()
+
+    public void ClosePopUpUI(bool isIdle = true)
     {
         PopUpUI ui = popUpStack.Pop();
         Destroy(ui.gameObject);
@@ -71,7 +72,8 @@ public class UIManager : Singleton<UIManager>
             Time.timeScale = prevTimeScale;
         }
         _onPopup = false;
-        Manager.Game.Player.StateMachine.ChangeState(PlayerState.Idle);
+        if(isIdle)
+            Manager.Game.Player.StateMachine.ChangeState(PlayerState.Idle);
     }
 
     public void ClearPopUpUI()
