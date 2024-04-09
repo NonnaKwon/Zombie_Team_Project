@@ -8,6 +8,7 @@ using static Define;
 public class DoorController : InteracterController
 {
     [SerializeField] StructureType _type;
+    private bool _isGet = false;
 
     private class ItemEntity
     {
@@ -65,6 +66,8 @@ public class DoorController : InteracterController
 
     public override void Interact()
     {
+        if (_isGet)
+            return;
         Inventory playerInventory = Manager.Game.Player.GetComponent<Inventory>();
         for (int i=0;i< _existingItems.Count;i++)
         {
@@ -72,6 +75,7 @@ public class DoorController : InteracterController
             playerInventory.AddItem(_existingItems[i].item.Data, _existingItems[i].count);
             Debug.Log(_existingItems[i].item.Data.name + "È¹µæ!");
         }
+        _isGet = true;
         Manager.Game.Player.StateMachine.ChangeState(PlayerState.Idle);
     }
 

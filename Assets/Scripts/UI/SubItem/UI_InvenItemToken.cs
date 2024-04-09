@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UI_InvenItemToken : BaseUI
+public class UI_InvenItemToken : BaseUI, IPointerClickHandler
 {
     ItemData _item;
     int _count = 0;
@@ -54,5 +55,13 @@ public class UI_InvenItemToken : BaseUI
     private void UpdateData()
     {
         GetUI<TMP_Text>(GameObjects.Count.ToString()).text = _count.ToString();
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            Debug.Log("Mouse Click Button : Right");
+        }
     }
 }
