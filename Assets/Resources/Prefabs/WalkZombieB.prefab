@@ -4201,7 +4201,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
-  attackPoint: {fileID: 0}
+  attackPoint: {fileID: 8138594120678617632}
   attackDamage: 3
   player: {fileID: 3524292467188578206, guid: 093b594236d32bb44ac7f692f978d7b1, type: 3}
   rigid: {fileID: 2808194788683251708}
