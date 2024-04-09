@@ -4954,7 +4954,7 @@ CapsuleCollider:
   m_Radius: 0.2
   m_Height: 1.8
   m_Direction: 1
-  m_Center: {x: -0.02, y: 0.9, z: 0.01}
+  m_Center: {x: 0.0152058, y: 0.9, z: 0.01}
 --- !u!114 &8699540420468034892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4976,7 +4976,7 @@ MonoBehaviour:
   sightRange: 10
   attackRange: 1
   timeBetweenAttacks: 1.2
-  zombieSpeed: 1
+  zombieSpeed: 0.7
   hp: 100
   dropItems:
   - {fileID: 523629600143528482, guid: 00e129fd14abcdd4a9026f1a1c3a031e, type: 3}

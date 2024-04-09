@@ -4187,7 +4187,7 @@ CapsuleCollider:
   m_Radius: 0.2
   m_Height: 1.8
   m_Direction: 1
-  m_Center: {x: -0.02, y: 0.9, z: 0.01}
+  m_Center: {x: 0.0152058, y: 0.9, z: 0.01}
 --- !u!114 &7038594121971497311
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4201,7 +4201,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
-  attackPoint: {fileID: 0}
+  attackPoint: {fileID: 8138594120678617632}
   attackDamage: 3
   player: {fileID: 3524292467188578206, guid: 093b594236d32bb44ac7f692f978d7b1, type: 3}
   rigid: {fileID: 2808194788683251708}
