@@ -4976,7 +4976,7 @@ MonoBehaviour:
   sightRange: 10
   attackRange: 1
   timeBetweenAttacks: 1.2
-  zombieSpeed: 1
+  zombieSpeed: 0.7
   hp: 100
   dropItems:
   - {fileID: 523629600143528482, guid: 00e129fd14abcdd4a9026f1a1c3a031e, type: 3}
