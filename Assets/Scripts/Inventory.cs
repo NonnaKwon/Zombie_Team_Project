@@ -39,16 +39,33 @@ public class Inventory : MonoBehaviour
         items.Add(itemToken);
     }
 
+    public void AddItem(ItemData item,int count)
+    {
+        for (int i = 0; i < items.Count; i++)
+        {
+            if (items[i].Item.ItemName.Equals(item.ItemName))
+            {
+                items[i].Count += count;
+                return;
+            }
+        }
+
+        ItemEntity itemToken = new ItemEntity(item, count);
+        items.Add(itemToken);
+    }
+
     public void RemoveItem(ItemData item)
     {
         for (int i = 0; i < items.Count; i++)
         {
             if (items[i].Item.ItemName.Equals(item.ItemName))
             {
-                items.RemoveAt(i);
+                if (items[i].Count == 1)
+                    items.RemoveAt(i);
+                else
+                    items[i].Count--;
             }
         }
-
         Debug.Log("일치하는 아이템이 없음");
     }
 

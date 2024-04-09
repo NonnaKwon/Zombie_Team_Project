@@ -36,8 +36,4 @@ public class Bat : Weapon
         OnAttack = false;
     }
 
-    public override void UseItem()
-    {
-        
-    }
 }

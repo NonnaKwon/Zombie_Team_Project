@@ -78,8 +78,4 @@ public class Gun : Weapon
         OnAttack = false;
     }
 
-    public override void UseItem()
-    {
-        
-    }
 }

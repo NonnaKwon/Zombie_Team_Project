@@ -3,29 +3,12 @@ using System.Collections.Generic;
 using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 
-public abstract class Item : MonoBehaviour
+public abstract class Item
 {
-    public ItemData _idata;
-    protected PlayerController _player;
+    protected ItemData _data;
+    public ItemData Data { get { return _data; } }
 
-    protected virtual void Awake()
-    {
-        _player = Manager.Game.Player;
-    }
-    protected virtual void Start()
-    {
-    }
-
-    protected virtual void OnEnable()
-    {
-
-    }
-
-    protected virtual void OnDisable()
-    {
-
-    }
-
+    public abstract void SetData();
     public abstract void UseItem();
 
 }
