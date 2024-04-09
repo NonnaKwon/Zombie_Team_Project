@@ -10,7 +10,8 @@ public class UI_QuickSlot : BaseUI
     Inventory _inventory;
     List<UI_QuickToken> _quickItemInfo;
     Item[] _items = { null, null, null, null, null, null, null };
-    int[] usableSlotRange = { 3, 7 };
+    ItemData _gunData;
+    int[] usableSlotRange = { 3, 6 };
     enum Gameobjects
     {
 
@@ -29,6 +30,8 @@ public class UI_QuickSlot : BaseUI
 
     private void Start()
     {
+        _inventory.BulletChange -= BulletChange;
+        _inventory.BulletChange += BulletChange;
     }
 
     public void AddQuickSlot(ItemData item,int count)
@@ -38,7 +41,11 @@ public class UI_QuickSlot : BaseUI
         {
             int index = 0;
             if (weapon.ItemName.Equals("Gun"))
+            {
                 index = 0;
+                _gunData = item;
+                count = _inventory.BulletCount;
+            }
             else if (weapon.ItemName.Equals("Bat"))
                 index = 1;
             else
@@ -49,6 +56,8 @@ public class UI_QuickSlot : BaseUI
         }
         else //소비아이템
         {
+            if (item.ItemName.Equals("bullet"))
+                return;
             for (int i = usableSlotRange[0]; i <= usableSlotRange[1]; i++)
             {
                 if (!_quickItemInfo[i].GetActiveToken())
@@ -59,6 +68,14 @@ public class UI_QuickSlot : BaseUI
                     break;
                 }
             }
+        }
+    }
+
+    public void BulletChange()
+    {
+        if (_gunData != null)
+        {
+            _quickItemInfo[0].SetData(_gunData, _inventory.BulletCount);
         }
     }
 
