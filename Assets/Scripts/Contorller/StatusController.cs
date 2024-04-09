@@ -65,7 +65,6 @@ public class StatusController : MonoBehaviour
         {
             case Status.Hunger:
                 _hunger += isPlus ? value : -value;
-                Debug.Log(_hunger);
                 _connectUI.ChangeData('H', _hunger);
                 break;
             case Status.Thirst:

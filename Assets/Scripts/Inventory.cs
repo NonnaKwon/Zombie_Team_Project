@@ -61,10 +61,7 @@ public class Inventory : MonoBehaviour
             if (items[i].Item.ItemName.Equals(item.ItemName))
             {
                 if (items[i].Count == 1)
-                {
                     items.RemoveAt(i);
-                    Debug.Log("Áö¿ò");
-                }
                 else
                     items[i].Count--;
             }

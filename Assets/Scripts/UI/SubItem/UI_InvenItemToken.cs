@@ -37,15 +37,13 @@ public class UI_InvenItemToken : BaseUI, IPointerClickHandler
     public void SetData(ItemData item,int count)
     {
         if (count == 0)
-            SetActiveToken(false);
-        this._count = count;
-        if (_item == null)
         {
-            _item = item;
-            InitData();
+            SetActiveToken(false);
+            return;
         }
-        else
-            UpdateData();
+        _count = count;
+        _item = item;
+        InitData();
 
     }
 

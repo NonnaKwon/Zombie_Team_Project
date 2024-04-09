@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class UI_Inventory : PopUpUI           
 {
     private Inventory _inventory;
     List<UI_InvenItemToken> _invenItemInfo;
+    private int count = 0;
     enum GameObjects
     {
         Items,
@@ -33,7 +35,7 @@ public class UI_Inventory : PopUpUI
     private void UpdateInventory()
     {
         GetUI<TMP_Text>(GameObjects.Cash.ToString()).text = Manager.Game.Player.Coin.ToString();
-        for(int i=0;i<_inventory.ItemSize;i++)
+        for (int i=0;i<_inventory.ItemSize;i++)
         {
             if(!_invenItemInfo[i].GetActiveToken())
                 _invenItemInfo[i].SetActiveToken(true);
@@ -41,6 +43,9 @@ public class UI_Inventory : PopUpUI
             ItemData item = _inventory.GetData(i, out itemNum);
             _invenItemInfo[i].SetData(item,itemNum);
         }
+        while (count-- > _inventory.ItemSize)
+            _invenItemInfo[count].SetActiveToken(false);
+        count = _inventory.ItemSize;
     }
 
 }
