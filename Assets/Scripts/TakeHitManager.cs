@@ -6,48 +6,55 @@ public class TakeHitManager : MonoBehaviour
 {
     public static TakeHitManager Instance;
 
-    public GameObject bloodEffectPrefab; // 혈흔 효과 프리팹
-    private Queue<GameObject> bloodEffectPool = new Queue<GameObject>(); // 혈흔 효과를 저장할 큐
+    public GameObject bloodEffectPrefab;
+    private Queue<GameObject> bloodEffectPool = new Queue<GameObject>();
 
     void Awake()
     {
+        if (Instance != null)
+        {
+            Debug.LogWarning("More than one instance of TakeHitManager found!");
+            Destroy(gameObject);
+            return;
+        }
         Instance = this;
-        Initialize(10); // 예시로 10개의 혈흔 효과를 초기화
+        DontDestroyOnLoad(gameObject);
+        Initialize(10);
     }
 
     void Initialize(int amount)
     {
         for (int i = 0; i < amount; i++)
         {
-            bloodEffectPool.Enqueue(CreateNewBloodEffect());
+            GameObject instance = Instantiate(bloodEffectPrefab);
+            instance.SetActive(false);
+            bloodEffectPool.Enqueue(instance);
+            instance.transform.SetParent(transform);
         }
     }
 
-    GameObject CreateNewBloodEffect()
+    // 혈흔 효과 객체를 풀에서 가져오는 메서드
+    public GameObject GetBloodEffect()
     {
-        var obj = Instantiate(bloodEffectPrefab);
-        obj.SetActive(false);
-        obj.transform.SetParent(transform);
-        return obj;
-    }
-
-    public static GameObject GetBloodEffect()
-    {
-        if (Instance.bloodEffectPool.Count > 0)
+        if (bloodEffectPool.Count > 0)
         {
-            var obj = Instance.bloodEffectPool.Dequeue();
-            obj.SetActive(true);
-            return obj;
+            GameObject bloodEffect = bloodEffectPool.Dequeue();
+            bloodEffect.SetActive(true);
+            return bloodEffect;
         }
         else
         {
-            return Instance.CreateNewBloodEffect();
+            // 풀이 비어있으면 새로운 혈흔 효과 객체를 생성
+            GameObject bloodEffect = Instantiate(bloodEffectPrefab);
+            bloodEffect.SetActive(true);
+            return bloodEffect;
         }
     }
 
-    public static void ReturnBloodEffect(GameObject bloodEffect)
+    // 사용한 혈흔 효과 객체를 다시 풀로 반환하는 메서드
+    public void ReturnToPool(GameObject bloodEffect)
     {
         bloodEffect.SetActive(false);
-        Instance.bloodEffectPool.Enqueue(bloodEffect);
+        bloodEffectPool.Enqueue(bloodEffect);
     }
 }
