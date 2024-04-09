@@ -3,16 +3,10 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static Define;
 
 public class StatusController : MonoBehaviour
 {
-    enum Status
-    {
-        Hunger,
-        Thirst,
-        Fatigue,
-        Stamina
-    }
 
     UI_GameScene _connectUI;
     FightController _fightController;
@@ -21,7 +15,7 @@ public class StatusController : MonoBehaviour
     private bool _onDash = false;
 
     private float _hunger = 1;
-    private float _thirst = 1f; //테스트
+    private float _thirst = 1; //테스트
     private float _fatigue = 1;
     private float _stamina = 1;
     private float _decreaseStaminaAmount = 0;
@@ -65,27 +59,27 @@ public class StatusController : MonoBehaviour
         UpdateStateEffect();
     }
 
-    private void ChangeData(Status state, float value,bool isPlus = false)
+    public void ChangeData(Status state, float value,bool isPlus = false)
     {
         switch (state)
         {
             case Status.Hunger:
                 _hunger += isPlus ? value : -value;
-                _connectUI.ChangeData('H', value);
+                _connectUI.ChangeData('H', _hunger);
                 break;
             case Status.Thirst:
-                _thirst -= isPlus ? value : -value;
-                _connectUI.ChangeData('T', value);
+                _thirst += isPlus ? value : -value;
+                _connectUI.ChangeData('T', _thirst);
                 break;
             case Status.Fatigue:
-                _fatigue -= isPlus ? value : -value;
-                _connectUI.ChangeData('F', value);
+                _fatigue += isPlus ? value : -value;
+                _connectUI.ChangeData('F', _fatigue);
                 break;
             case Status.Stamina:
-                _stamina -= isPlus ? value : -value;
+                _stamina += isPlus ? value : -value;
                 if(!isPlus)
                     _decreaseStaminaAmount += value;
-                _connectUI.ChangeData('S', value, isPlus);
+                _connectUI.ChangeData('S', _stamina, isPlus);
                 break;
         }
     }

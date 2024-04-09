@@ -66,7 +66,6 @@ public class Inventory : MonoBehaviour
                     items[i].Count--;
             }
         }
-        Debug.Log("일치하는 아이템이 없음");
     }
 
     public ItemData GetData(int index, out int count)
