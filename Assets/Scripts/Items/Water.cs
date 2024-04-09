@@ -6,7 +6,8 @@ public class Water : Item
 {
     public override void UseItem()
     {
-
+        StatusController sc = Manager.Game.Player.GetComponent<StatusController>();
+        sc.ChangeData(Define.Status.Thirst, 0.3f, true);
     }
 
     public override void SetData()

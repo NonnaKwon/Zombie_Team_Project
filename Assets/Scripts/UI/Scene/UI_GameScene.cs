@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class UI_GameScene : InGameUI
 {
     private float _passTime = Define.PLAY_TIME;
+    private UI_QuickSlot _quickSlot;
     enum GameObjects
     {
         PlayerHP,
@@ -24,6 +25,7 @@ public class UI_GameScene : InGameUI
     {
         base.Awake();
         Manager.Game.GameUI = this;
+        _quickSlot = GetComponentInChildren<UI_QuickSlot>();
 
     }
 
@@ -38,6 +40,10 @@ public class UI_GameScene : InGameUI
         GetUI<TMP_Text>(GameObjects.Sec.ToString()).text = ((int)_passTime % 60).ToString("D2");
     }
 
+    public void AddQuickSlot(ItemData item,int count)
+    {
+        _quickSlot.AddQuickSlot(item, count);
+    }
     public void SetCoin(int amount)
     {
         GetUI<TMP_Text>(GameObjects.Coin.ToString()).text = amount.ToString();

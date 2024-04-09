@@ -3,16 +3,10 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static Define;
 
 public class StatusController : MonoBehaviour
 {
-    enum Status
-    {
-        Hunger,
-        Thirst,
-        Fatigue,
-        Stamina
-    }
 
     UI_GameScene _connectUI;
     FightController _fightController;
@@ -65,7 +59,7 @@ public class StatusController : MonoBehaviour
         UpdateStateEffect();
     }
 
-    private void ChangeData(Status state, float value,bool isPlus = false)
+    public void ChangeData(Status state, float value,bool isPlus = false)
     {
         switch (state)
         {

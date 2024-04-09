@@ -35,7 +35,7 @@ public class UI_Inventory : PopUpUI
         GetUI<TMP_Text>(GameObjects.Cash.ToString()).text = Manager.Game.Player.Coin.ToString();
         for(int i=0;i<_inventory.ItemSize;i++)
         {
-            if(!_invenItemInfo[i].GetActiveTokwn())
+            if(!_invenItemInfo[i].GetActiveToken())
                 _invenItemInfo[i].SetActiveToken(true);
             int itemNum;
             ItemData item = _inventory.GetData(i, out itemNum);

@@ -9,6 +9,7 @@ public class UI_InvenItemToken : BaseUI, IPointerClickHandler
 {
     ItemData _item;
     int _count = 0;
+    bool _isQuickAdd = false;
     enum GameObjects
     {
         Image,
@@ -28,7 +29,7 @@ public class UI_InvenItemToken : BaseUI, IPointerClickHandler
         GetUI(GameObjects.Slot.ToString()).SetActive(active);
     }
 
-    public bool GetActiveTokwn()
+    public bool GetActiveToken()
     {
         return GetUI(GameObjects.Data.ToString()).activeSelf;
     }
@@ -59,9 +60,11 @@ public class UI_InvenItemToken : BaseUI, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Right)
+        if (!_isQuickAdd && eventData.button == PointerEventData.InputButton.Right)
         {
-            Debug.Log("Mouse Click Button : Right");
+            Manager.Game.GameUI.AddQuickSlot(_item,_count);
+            _isQuickAdd = true;
         }
     }
+
 }
