@@ -29,7 +29,13 @@ public class PlayerController : MonoBehaviour
     public float MoveSpeed { get { return _moveSpeed; } }
     public float CurSpeed { set { _curSpeed = value; } }
     public bool CanMove { get { return _canMove; } }
-    public int Coin { get { return _coin; } set { _coin = value; } }
+    public int Coin { get { return _coin; } 
+        set 
+        { 
+            _coin = value;
+            Manager.Game.GameUI.SetCoin(_coin);
+        } 
+    }
 
 
     private void Awake()
@@ -62,7 +68,7 @@ public class PlayerController : MonoBehaviour
         _dashSpeedPercent = 1.8f;
         _curSpeed = _moveSpeed;
         _animationLayer = 0;
-        _coin = 10000;
+        Coin = 10000;
 
         if (_stateMachine.CurState != PlayerState.Idle)
             _stateMachine.ChangeState(PlayerState.Idle);

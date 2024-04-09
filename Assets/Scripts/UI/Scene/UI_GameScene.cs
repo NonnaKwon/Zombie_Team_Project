@@ -16,7 +16,8 @@ public class UI_GameScene : InGameUI
         StaminaSlider,
         Sec,
         Min,
-        Mission
+        Mission,
+        Coin
     }
 
     protected override void Awake()
@@ -35,6 +36,11 @@ public class UI_GameScene : InGameUI
         _passTime -= Time.deltaTime;
         GetUI<TMP_Text>(GameObjects.Min.ToString()).text = ((int)_passTime / 60).ToString("D2");
         GetUI<TMP_Text>(GameObjects.Sec.ToString()).text = ((int)_passTime % 60).ToString("D2");
+    }
+
+    public void SetCoin(int amount)
+    {
+        GetUI<TMP_Text>(GameObjects.Coin.ToString()).text = amount.ToString();
     }
 
     public void ChangeData(char state,float decreaseValue,bool isPlus = false)
