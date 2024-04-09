@@ -61,12 +61,14 @@ public class Inventory : MonoBehaviour
             if (items[i].Item.ItemName.Equals(item.ItemName))
             {
                 if (items[i].Count == 1)
+                {
                     items.RemoveAt(i);
+                    Debug.Log("지움");
+                }
                 else
                     items[i].Count--;
             }
         }
-        Debug.Log("일치하는 아이템이 없음");
     }
 
     public ItemData GetData(int index, out int count)

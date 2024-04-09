@@ -49,7 +49,7 @@ public class UI_GameScene : InGameUI
         GetUI<TMP_Text>(GameObjects.Coin.ToString()).text = amount.ToString();
     }
 
-    public void ChangeData(char state,float decreaseValue,bool isPlus = false)
+    public void ChangeData(char state,float value,bool isPlus = false)
     {
         string slider = "";
         switch (state)
@@ -67,11 +67,12 @@ public class UI_GameScene : InGameUI
                 slider = GameObjects.StaminaSlider.ToString();
                 break;
         }
+        GetUI<Slider>(slider).value = value;
 
-        if(isPlus)
-            GetUI<Slider>(slider).value += decreaseValue;
-        else
-            GetUI<Slider>(slider).value -= decreaseValue;
+        //if (isPlus)
+        //    GetUI<Slider>(slider).value += value;
+        //else
+        //    GetUI<Slider>(slider).value -= value;
     }
 
     public void SetMaxHP(float maxHp)

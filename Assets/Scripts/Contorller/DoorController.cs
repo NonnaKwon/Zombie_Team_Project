@@ -66,6 +66,7 @@ public class DoorController : InteracterController
 
     public override void Interact()
     {
+        Manager.Game.Player.StateMachine.ChangeState(PlayerState.Idle);
         if (_isGet)
             return;
         Inventory playerInventory = Manager.Game.Player.GetComponent<Inventory>();
@@ -76,7 +77,6 @@ public class DoorController : InteracterController
             Debug.Log(_existingItems[i].item.Data.name + "È¹µæ!");
         }
         _isGet = true;
-        Manager.Game.Player.StateMachine.ChangeState(PlayerState.Idle);
     }
 
     private void RandomItemAdd(int minCount,int maxCount)

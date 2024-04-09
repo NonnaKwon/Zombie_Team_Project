@@ -43,6 +43,16 @@ public class UI_QuickToken : BaseUI
         GetUI<TMP_Text>(GameObjects.Count.ToString()).text = _count.ToString();
     }
 
+    public void DecreaseCount()
+    {
+        if (!GetActiveToken())
+            return;
+        _count--;
+        if (_count > 0)
+            GetUI<TMP_Text>(GameObjects.Count.ToString()).text = _count.ToString();
+        else
+            SetActiveToken(false);
+    }
 
     public bool GetActiveToken()
     {

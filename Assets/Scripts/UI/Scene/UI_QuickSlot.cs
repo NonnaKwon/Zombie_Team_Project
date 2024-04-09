@@ -1,14 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class UI_QuickSlot : BaseUI
 {
     Inventory _inventory;
     List<UI_QuickToken> _quickItemInfo;
-    int[] weaponSlotRange = { 0, 1 };
-    int[] usableSlotRange = { 2, 7 };
+    Item[] _items = { null, null, null, null, null, null, null };
+    int[] usableSlotRange = { 3, 7 };
     enum Gameobjects
     {
 
@@ -34,15 +36,16 @@ public class UI_QuickSlot : BaseUI
         WeaponData weapon = item as WeaponData;
         if(weapon != null) //무기아이템
         {
-            for(int i = weaponSlotRange[0] ; i<= weaponSlotRange[1] ; i++)
-            {
-                if(!_quickItemInfo[i].GetActiveToken())
-                {
-                    _quickItemInfo[i].SetActiveToken(true);
-                    _quickItemInfo[i].SetData(item,count);
-                    break;
-                }
-            }
+            int index = 0;
+            if (weapon.ItemName.Equals("Gun"))
+                index = 0;
+            else if (weapon.ItemName.Equals("Bat"))
+                index = 1;
+            else
+                index = 2;
+            _items[index] = FindItemClass(item);
+            _quickItemInfo[index].SetActiveToken(true);
+            _quickItemInfo[index].SetData(item, count);
         }
         else //소비아이템
         {
@@ -50,6 +53,7 @@ public class UI_QuickSlot : BaseUI
             {
                 if (!_quickItemInfo[i].GetActiveToken())
                 {
+                    _items[i] = FindItemClass(item);
                     _quickItemInfo[i].SetActiveToken(true);
                     _quickItemInfo[i].SetData(item, count);
                     break;
@@ -57,4 +61,73 @@ public class UI_QuickSlot : BaseUI
             }
         }
     }
+
+    private void OnOne(InputValue value)
+    {
+        UseItem(0);
+    }
+
+    private void OnTwo(InputValue value)
+    {
+        UseItem(1);
+    }
+
+    private void OnThree(InputValue value)
+    {
+        UseItem(2);
+    }
+
+    private void OnFour(InputValue value)
+    {
+        UseItem(3);
+    }
+
+    private void OnFive(InputValue value)
+    {
+        UseItem(4);
+    }
+
+    private void OnSix(InputValue value)
+    {
+        UseItem(5);
+    }
+
+    private void OnSeven(InputValue value)
+    {
+        UseItem(6);
+    }
+
+    private void UseItem(int index)
+    {
+        _items[index].SetData();
+        _items[index].UseItem();
+        _inventory.RemoveItem(_items[index].Data);
+        _quickItemInfo[index].DecreaseCount();
+    }
+
+    private Item FindItemClass(ItemData data)
+    {
+        switch(data.ItemName)
+        {
+            case "Gun":
+                return new GunItem();
+            case "Bat":
+                return new BatItem();
+            case "Grenade":
+                return new Grenade();
+            case "water":
+                return new Water();
+            case "bullet":
+                return new Bullet();
+            case "energybar":
+                return new EnergyBar();
+            case "can":
+                return new CannedFood();
+            case "coffee":
+                return new Coffee();
+            default:
+                return null;
+        }
+    }
+
 }
