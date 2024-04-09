@@ -1,9 +1,20 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
+    public int BulletCount
+    {
+        get { return _bullet; }
+        set
+        {
+            _bullet = value;
+            BulletChange?.Invoke();
+            Debug.Log(_bullet + "invoke");
+        }
+    }
     private class ItemEntity
     {
         public ItemData Item;
@@ -16,8 +27,10 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    public event Action BulletChange;
     private List<ItemEntity> items = new List<ItemEntity>();
     public int ItemSize { get { return items.Count; } }
+    private int _bullet = 0;
 
     private void Start()
     {
@@ -26,21 +39,16 @@ public class Inventory : MonoBehaviour
 
     public void AddItem(ItemData item)
     {
-        for(int i=0;i<items.Count;i++)
-        {
-            if (items[i].Item.ItemName.Equals(item.ItemName))
-            {
-                items[i].Count++;
-                return;
-            }
-        }
-
-        ItemEntity itemToken = new ItemEntity(item,1);
-        items.Add(itemToken);
+        AddItem(item, 1);
     }
 
     public void AddItem(ItemData item,int count)
     {
+        if (item.ItemName.Equals("bullet"))
+        {
+            BulletCount += count;
+        }
+
         for (int i = 0; i < items.Count; i++)
         {
             if (items[i].Item.ItemName.Equals(item.ItemName))
@@ -64,6 +72,10 @@ public class Inventory : MonoBehaviour
                     items.RemoveAt(i);
                 else
                     items[i].Count--;
+                if (item.ItemName.Equals("bullet"))
+                {
+                    BulletCount--;
+                }
             }
         }
     }

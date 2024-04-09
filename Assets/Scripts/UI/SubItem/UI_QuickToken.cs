@@ -12,8 +12,7 @@ public class UI_QuickToken : BaseUI
     enum GameObjects
     {
         Slot,
-        Count,
-        WeaponCount
+        Count
     }
 
     private void Start()
@@ -25,23 +24,16 @@ public class UI_QuickToken : BaseUI
     {
         GetUI(GameObjects.Slot.ToString()).SetActive(active);
         GetUI(GameObjects.Count.ToString()).SetActive(active);
-        GetUI(GameObjects.WeaponCount.ToString()).SetActive(active);
-        if(active)
-        {
-            if(_item as WeaponData != null)
-                GetUI(GameObjects.Count.ToString()).SetActive(false);
-            else
-                GetUI(GameObjects.WeaponCount.ToString()).SetActive(false);
-        }
     }
 
     public void SetData(ItemData data,int count)
     {
         _item = data;
         _count = count;
-        GetUI<Image>(GameObjects.Slot.ToString()).sprite = _item.image;
         GetUI<TMP_Text>(GameObjects.Count.ToString()).text = _count.ToString();
+        GetUI<Image>(GameObjects.Slot.ToString()).sprite = _item.image;
     }
+
 
     public void DecreaseCount()
     {

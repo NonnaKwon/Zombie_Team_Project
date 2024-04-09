@@ -12,6 +12,7 @@ public class Gun : Weapon
 
     LineRenderer _lineRenderer;
     RigBuilder _rigBuilder;
+    Inventory _inventory;
 
     protected override void Awake()
     {
@@ -19,6 +20,11 @@ public class Gun : Weapon
         _curBullet = _maxBullet;
         _lineRenderer = GetComponent<LineRenderer>();
         _rigBuilder = GetComponentInParent<RigBuilder>();
+    }
+
+    private void Start()
+    {
+        _inventory = Manager.Game.Player.GetComponent<Inventory>();
     }
 
     protected override void OnEnable()
@@ -34,13 +40,12 @@ public class Gun : Weapon
    
     public override void Attack()
     {
+        if (_inventory.BulletCount == 0)
+            return;
+        _inventory.BulletCount--;
         Debug.Log("ÃÑ½ô");
         OnAttack = true;
-        if (_curBullet == 0)
-            return;
-        _curBullet--;
 
-        Debug.Log(_curBullet);
         Vector3 dir = Manager.Game.Player.transform.forward;
         if (Physics.Raycast(_muzzlePoint.position, dir, out RaycastHit hitInfo, _data.attackRange))
         {
