@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static Define;
 
 public class FightController : MonoBehaviour, IDamagable
 {
-    [SerializeField] Weapon _curWeapon;
-
+    [SerializeField] Weapon[] _weapons;
     public float AttackSpeed { set { _curWeapon.AttackSpeed = value; } }
     public float AttackSpeedBase { get { return _curWeapon.AttackSpeedBase; } }
 
@@ -20,6 +21,7 @@ public class FightController : MonoBehaviour, IDamagable
     Inventory _inventory;
     Animator _animator;
     PlayerController _player;
+    Weapon _curWeapon;
 
     private void Awake()
     {
@@ -28,9 +30,7 @@ public class FightController : MonoBehaviour, IDamagable
 
     private void Start()
     {
-        _curWeapon.gameObject.SetActive(true);
         Manager.Game.GameUI.SetMaxHP(_hp);
-
         _uiInventory = Manager.Game.GameUI.GetComponentInChildren<UI_Inventory>();
         _inventory = GetComponent<Inventory>();
         _uiInventory.gameObject.SetActive(false);
@@ -46,6 +46,27 @@ public class FightController : MonoBehaviour, IDamagable
             _curWeapon.Attack();
     }
     
+    public void SetWeapon(Item item)
+    {
+        if(_curWeapon != null)
+        {
+            if (_curWeapon._data == item.Data)
+                return;
+            _curWeapon.gameObject.SetActive(false);
+            _curWeapon = null;
+        }
+
+        for(int i=0;i<_weapons.Length;i++)
+        {
+            if (item.Data == _weapons[i]._data)
+            {
+                _curWeapon = _weapons[i];
+                _weapons[i].gameObject.SetActive(true);
+                return;
+            }
+        }
+    }
+
     public void TakeDamage(float damage)
     {
         _hp -= damage;

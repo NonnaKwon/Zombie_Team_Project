@@ -101,8 +101,11 @@ public class UI_QuickSlot : BaseUI
     {
         _items[index].SetData();
         _items[index].UseItem();
-        _inventory.RemoveItem(_items[index].Data);
-        _quickItemInfo[index].DecreaseCount();
+        if(usableSlotRange[0]-2 <= index && index <= usableSlotRange[1]-1) //수류탄~소비아이템만
+        {
+            _inventory.RemoveItem(_items[index].Data);
+            _quickItemInfo[index].DecreaseCount();
+        }
     }
 
     private Item FindItemClass(ItemData data)
