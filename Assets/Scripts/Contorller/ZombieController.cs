@@ -114,6 +114,8 @@ public class ZombieController : MonoBehaviour, IDamagable
             time = 0;
             Debug.Log("플레이어 공격");
             attackPoint.Hit(attackDamage);
+            animator.SetBool("IsAttack", true);
+            animator.SetBool("Bite", true);
             if (ZombieType.crawl == type)
                 animator.Play("Bite");
             else
