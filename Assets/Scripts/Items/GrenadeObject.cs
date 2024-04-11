@@ -8,12 +8,14 @@ public class GrenadeObject : MonoBehaviour
     Rigidbody _rigid;
     float _power;
     AttackPoint _attackPoint;
+    PooledObject _explosion;
 
     private void Awake()
     {
         _rigid = GetComponent<Rigidbody>();
         _attackPoint = GetComponentInChildren<AttackPoint>();
         _data = Manager.Resource.Load<WeaponData>("Data/Grenade");
+        _explosion = Manager.Resource.Load<PooledObject>("Prefabs/Effects/Explosion");
         _power = 7f;
     }
     private void OnTriggerEnter(Collider other)
@@ -35,7 +37,8 @@ public class GrenadeObject : MonoBehaviour
     {
         _attackPoint.SetRange(_data.attackRange);
         _attackPoint.Hit(_data.minDamage, _data.maxDamage);
+        Manager.Pool.GetPool(_explosion, transform.position, transform.rotation);
         yield return new WaitForSeconds(0.5f);
-        Destroy(this);
+        Destroy(gameObject);
     }
 }

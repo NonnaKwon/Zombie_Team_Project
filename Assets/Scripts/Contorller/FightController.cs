@@ -78,8 +78,8 @@ public class FightController : MonoBehaviour, IDamagable
 
     IEnumerator CoThrow()
     {
-        Vector3 pos = transform.position + transform.forward * 2f + Vector3.up * 2.3f;
         yield return new WaitForSeconds(1.3f);
+        Vector3 pos = transform.position + transform.forward * 2f + Vector3.up * 2.3f;
         GrenadeObject grenade = Instantiate(_grenadePrefab, pos, transform.rotation);
         grenade.ForwardForce(transform.forward * 100f);
     }
