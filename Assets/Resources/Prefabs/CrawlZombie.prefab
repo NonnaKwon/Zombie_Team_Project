@@ -5223,8 +5223,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7735741366644206081}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.71868587, y: -0, z: -0, w: 0.695335}
+  m_LocalPosition: {x: 0, y: 0.8596296, z: -0.87354195}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5261,7 +5261,7 @@ Transform:
   - {fileID: 4726133748307915793}
   - {fileID: 3248566070452744046}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 91.892, y: 0, z: 0}
 --- !u!95 &8456509384374529459
 Animator:
   serializedVersion: 5
@@ -5358,6 +5358,7 @@ MonoBehaviour:
   hp: 100
   dropItems:
   - {fileID: 523629600143528482, guid: 00e129fd14abcdd4a9026f1a1c3a031e, type: 3}
+  bloodEffectPrefab: {fileID: 0}
 --- !u!1 &7747010305132527323
 GameObject:
   m_ObjectHideFlags: 0

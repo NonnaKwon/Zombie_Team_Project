@@ -4976,10 +4976,11 @@ MonoBehaviour:
   sightRange: 10
   attackRange: 1
   timeBetweenAttacks: 1.2
-  zombieSpeed: 0.7
+  zombieSpeed: 0.1
   hp: 100
   dropItems:
   - {fileID: 523629600143528482, guid: 00e129fd14abcdd4a9026f1a1c3a031e, type: 3}
+  bloodEffectPrefab: {fileID: 0}
 --- !u!1 &8224484140138190221
 GameObject:
   m_ObjectHideFlags: 0
