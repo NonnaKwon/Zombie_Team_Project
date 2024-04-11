@@ -22,6 +22,8 @@ public class FightController : MonoBehaviour, IDamagable
     Animator _animator;
     PlayerController _player;
     Weapon _curWeapon;
+    GrenadeObject _grenadePrefab;
+
 
     private void Awake()
     {
@@ -34,8 +36,9 @@ public class FightController : MonoBehaviour, IDamagable
         _uiInventory = Manager.Game.GameUI.GetComponentInChildren<UI_Inventory>();
         _inventory = GetComponent<Inventory>();
         _uiInventory.gameObject.SetActive(false);
-
+        _animator = GetComponentInChildren<Animator>();
         _player = GetComponent<PlayerController>();
+        _grenadePrefab = Manager.Resource.Load<GrenadeObject>("Prefabs/Weapon/Grenade");
     }
 
     private void OnAttack(InputValue value)
@@ -65,6 +68,20 @@ public class FightController : MonoBehaviour, IDamagable
                 return;
             }
         }
+    }
+
+    public void ThrowGrenade()
+    {
+        _animator.Play("Grenade");
+        StartCoroutine(CoThrow());
+    }
+
+    IEnumerator CoThrow()
+    {
+        Vector3 pos = transform.position + transform.forward * 2f + Vector3.up * 2.3f;
+        yield return new WaitForSeconds(1.3f);
+        GrenadeObject grenade = Instantiate(_grenadePrefab, pos, transform.rotation);
+        grenade.ForwardForce(transform.forward * 100f);
     }
 
     public void TakeDamage(float damage)

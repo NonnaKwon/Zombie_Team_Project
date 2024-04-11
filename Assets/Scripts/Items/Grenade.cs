@@ -6,7 +6,7 @@ public class Grenade : Item
 {
     public override void UseItem()
     {
-        throw new System.NotImplementedException();
+        Manager.Game.Player.GetComponent<FightController>().ThrowGrenade();
     }
 
     public override void SetData()

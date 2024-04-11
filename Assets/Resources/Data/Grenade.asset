@@ -19,5 +19,5 @@ MonoBehaviour:
   minDamage: 5
   maxDamage: 20
   animationLayer: Base
-  attackRange: 30
+  attackRange: 5
   attackSpeed: 1

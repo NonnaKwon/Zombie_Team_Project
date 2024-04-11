@@ -5,7 +5,7 @@ using static Define;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] GameObject _mousePointer;
+    public GameObject MousePointer;
 
     private Vector3 _moveDir;
 
@@ -116,7 +116,7 @@ public class PlayerController : MonoBehaviour
                 transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, 5f * Time.deltaTime);
             }
         }
-        _mousePointer.transform.position = transform.position + transform.forward + new Vector3(0,1f,0);
+        MousePointer.transform.position = transform.position + transform.forward + new Vector3(0,1f,0);
     }
     private void Move()
     {
