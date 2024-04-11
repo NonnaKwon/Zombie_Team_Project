@@ -64,7 +64,10 @@ public class UI_ItemToken : BaseUI
         }
 
         Manager.Game.Player.Coin -= _item.price;
-        Manager.Game.Player.GetComponent<Inventory>().AddItem(_item);
+        if(_item.ItemName.Equals("bullet"))
+            Manager.Game.Player.GetComponent<Inventory>().AddItem(_item,10);
+        else
+            Manager.Game.Player.GetComponent<Inventory>().AddItem(_item);
 
         _count--;
         _connectShop.UpdateData(_item, _count);
