@@ -9,12 +9,54 @@ public class TransparencyController : MonoBehaviour
     public float transparency; // 적용할 투명도 값
     public LayerMask obstacleLayer; // 장애물 레이어
 
-    private Shader transparentShader; // Transparent Shader
+    [SerializeField] Material transparentMaterial; // Transparent Material
+    private Dictionary<Renderer, Material> originalMaterials = new Dictionary<Renderer, Material>(); // 객체의 원래 Shader 저장용
+
+    private void Update()
+    {
+        Vector3 directionToPlayer = player.position - mainCamera.transform.position;
+        float distanceToPlayer = Vector3.Distance(player.position, mainCamera.transform.position);
+
+        RaycastHit[] hits = Physics.RaycastAll(mainCamera.transform.position, directionToPlayer, distanceToPlayer, obstacleLayer);
+
+        // 모든 렌더러를 임시로 저장할 리스트
+        List<Renderer> renderers = new List<Renderer>();
+
+        foreach (RaycastHit hit in hits)
+        {
+            Renderer hitRenderer = hit.collider.GetComponent<Renderer>();
+            if (hitRenderer != null)
+            {
+                // 기존 Shader를 저장 (처음 감지될 때만)
+                if (!originalMaterials.ContainsKey(hitRenderer))
+                {
+                    originalMaterials[hitRenderer] = hitRenderer.material;
+                }
+
+                // Transparent Shader로 변경하고 투명도 적용
+                hitRenderer.material = transparentMaterial;
+                renderers.Add(hitRenderer);
+            }
+        }
+
+        // 원래 셰이더로 복원해야 하는 렌더러 처리
+        foreach (var pair in new Dictionary<Renderer, Material>(originalMaterials))
+        {
+            if (!renderers.Contains(pair.Key))
+            {
+                pair.Key.material = pair.Value;
+                // 복원한 렌더러는 사전에서 제거
+                originalMaterials.Remove(pair.Key);
+            }
+        }
+    }
+
+    /*private Shader transparentShader; // Transparent Shader
     private Dictionary<Renderer, Shader> originalShaders = new Dictionary<Renderer, Shader>(); // 객체의 원래 Shader 저장용
 
     private void Start()
     {
-        transparentShader = Shader.Find("TransParent");
+        transparentShader = Shader.Find("Assets/Resources/Materials/TransParent1");
     }
 
     private void Update()
@@ -62,5 +104,5 @@ public class TransparencyController : MonoBehaviour
                 originalShaders.Remove(pair.Key);
             }
         }
-    }
+    }*/
 }
