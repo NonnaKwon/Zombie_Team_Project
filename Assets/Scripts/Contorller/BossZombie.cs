@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Define;
 using UnityEngine.Animations.Rigging;
+using Unity.VisualScripting;
 
-public class BossZombie : MonoBehaviour
+public class BossZombie : MonoBehaviour, IDamagable
 {
-    public int maxHp = 5000;
+    public int maxHp = 100;
     private int curHp;
     public float attackRange = 1.5f;
     public float sightRange = 15.0f; // 플레이어 감지 범위
@@ -18,8 +19,9 @@ public class BossZombie : MonoBehaviour
     private Transform player;
     private Animator animator;
     private Rigidbody rigid;
-    [SerializeField] AttackPoint attackPoints;
+    public GameObject[] dropItem;
     [SerializeField] ZombieType type;
+    [SerializeField] float attackDamage;
 
     private enum BossPhase { Phase1, Phase2, Phase3 }
     private BossPhase currentPhase = BossPhase.Phase1;
@@ -28,7 +30,8 @@ public class BossZombie : MonoBehaviour
     {
         Idle,
         Chase,
-        Attack
+        Attack,
+        Die
     }
     enum ZombieType
     {
@@ -48,7 +51,6 @@ public class BossZombie : MonoBehaviour
         animator = GetComponent<Animator>();
         currentState = ZombieState.Idle;
         animator.SetInteger("ZombieType", (int)type);
-        attackPoints = GetComponentInChildren<AttackPoint>();
     }
     void Update()
     {
@@ -105,6 +107,7 @@ public class BossZombie : MonoBehaviour
         if (distanceToPlayer <= attackRange)
         {
             currentState = ZombieState.Attack;
+            animator.SetBool("IsChase", true);
         }
         else if (distanceToPlayer > sightRange)
         {
@@ -129,7 +132,6 @@ public class BossZombie : MonoBehaviour
                 // 1페이즈: 플레이어가 근접 공격 범위 내에 있을 경우 근접 공격 실행
                 if (distanceToPlayer <= attackRange)
                 {
-                    animator.SetTrigger("IsAttack");
                     animator.Play("IsAttack");
                 }
                 break;
@@ -140,6 +142,10 @@ public class BossZombie : MonoBehaviour
                 if (!IsInvoking("FireBlood"))
                 {
                     InvokeRepeating("FireBlood", 0f, 2f); // 2초마다 피토 발사
+                    if ( curHp <= 0)
+                    {
+                        Destroy(FireBloodPrefab);
+                    }
                 }
                 break;
         }
@@ -150,18 +156,53 @@ public class BossZombie : MonoBehaviour
         for (int i = 0; i < 200; i++) // 200마리 소환
         {
             // 소환 위치를 랜덤하게 결정하기 위해 CreatePoints 중 하나를 무작위로 선택
-            Transform summonPoint = CreatePoints[Random.Range(0, CreatePoints.Length)];
-            Instantiate(zombiePrefab, summonPoint.position, Quaternion.identity);
+            Transform CreatePoint = CreatePoints[Random.Range(0, CreatePoints.Length)];
+            Instantiate(zombiePrefab, CreatePoint.position, Quaternion.identity);
         }
     }
 
     void FireBlood()
     {
+        animator.Play("FireBlood");
         Instantiate(FireBloodPrefab, attackPoint.position, Quaternion.LookRotation(player.position - attackPoint.position));
     }
 
-    public void MeleeAttackDamage()
+    public void TakeDamage(float damage)
     {
-        
+        curHp -= (int)damage;
+
+        // 혈흔 효과 생성
+        GameObject bloodEffect = TakeHitManager.Instance.GetBloodEffect();
+        bloodEffect.transform.position = transform.position; // 혈흔 효과 위치를 좀비 위치로 설정
+
+        StartCoroutine(ReturnBloodEffectToPool(bloodEffect));
+
+        if (curHp <= 0)
+        {
+            Die();
+            Debug.Log("보스 죽음");
+        }
+    }
+
+    IEnumerator ReturnBloodEffectToPool(GameObject bloodEffect)
+    {
+        yield return new WaitForSeconds(1); // 혈흔 효과 지속 시간
+        TakeHitManager.Instance.ReturnToPool(bloodEffect);
+    }
+
+    private void Die()
+    {
+        animator.Play("Die");
+        DropItem();
+        Destroy(gameObject);
+    }
+
+    private void DropItem()
+    {
+        if (dropItem.Length > 0)
+        {
+            int randomIndex = Random.Range(0, dropItem.Length);
+            Instantiate(dropItem[randomIndex], transform.position, Quaternion.identity);
+        }
     }
 }
