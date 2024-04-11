@@ -79,7 +79,7 @@ public class StatusController : MonoBehaviour
                 _stamina += isPlus ? value : -value;
                 if(!isPlus)
                     _decreaseStaminaAmount += value;
-                _connectUI.ChangeData('S', _stamina, isPlus);
+                _connectUI.ChangeData('S', _stamina);
                 break;
         }
     }
