@@ -44,7 +44,6 @@ public class UI_InvenItemToken : BaseUI, IPointerClickHandler
         _count = count;
         _item = item;
         InitData();
-
     }
 
     private void InitData()

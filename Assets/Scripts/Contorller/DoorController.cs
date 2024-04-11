@@ -9,6 +9,7 @@ public class DoorController : InteracterController
 {
     [SerializeField] StructureType _type;
     private bool _isGet = false;
+    private UI_GetPopup _getPopup;
 
     private class ItemEntity
     {
@@ -62,6 +63,7 @@ public class DoorController : InteracterController
                 _existingItems.Add(new ItemEntity(new Grenade(), Random.Range(2, 5)));
                 break;
         }
+        _getPopup = Manager.Resource.Load<UI_GetPopup>("Prefabs/UI/Popup/UI_GetPopup");
     }
 
     public override void Interact()
@@ -70,10 +72,12 @@ public class DoorController : InteracterController
         if (_isGet)
             return;
         Inventory playerInventory = Manager.Game.Player.GetComponent<Inventory>();
+        UI_GetPopup makePopup = Manager.UI.ShowPopUpUI(_getPopup);
         for (int i=0;i< _existingItems.Count;i++)
         {
             _existingItems[i].item.SetData();
             playerInventory.AddItem(_existingItems[i].item.Data, _existingItems[i].count);
+            makePopup.UpdateItemList(_existingItems[i].item.Data, _existingItems[i].count);
             Debug.Log(_existingItems[i].item.Data.name + "È¹µæ!");
         }
         _isGet = true;
