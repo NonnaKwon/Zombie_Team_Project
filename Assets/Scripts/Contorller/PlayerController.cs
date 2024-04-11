@@ -203,6 +203,11 @@ public class PlayerController : MonoBehaviour
     {
         public IdleState(PlayerController owner) : base(owner) { }
 
+        public override void Enter()
+        {
+            owner._canMove = true;
+        }
+
         public override void Update()
         {
 
