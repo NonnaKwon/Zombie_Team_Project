@@ -2,93 +2,98 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossZombie : MonoBehaviour, IDamagable
+public class BossZombie : MonoBehaviour
 {
-    [SerializeField] AttackPoint attackPoint;
-    [SerializeField] float attackDamage;
-    public GameObject[] dropItem;
-    public float attackRange;
-    public float speed;
     public int maxHp = 5000;
-    public int curHp;
+    private int curHp;
+    public float meleeAttackRange = 1.5f;
+    public float noticeRange = 15.0f; // 플레이어 감지 범위
+    public GameObject projectilePrefab; // 원거리 공격용 프로젝트
+    public Transform attackPoint; // 공격 발사 위치
+    public GameObject zombiePrefab; // 소환할 좀비 프리팹
+    public Transform[] CreatePoints; // 좀비 소환 위치
+    private Transform player;
+    private Animator animator;
 
     private enum BossPhase { Phase1, Phase2, Phase3 }
-    private BossPhase curPhase = BossPhase.Phase1;
+    private BossPhase currentPhase = BossPhase.Phase1;
 
     void Start()
     {
         curHp = maxHp;
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        animator = GetComponent<Animator>();
+        StartCoroutine(PhaseManager());
     }
 
     void Update()
     {
-        CheckPhase();
-    }
-
-    private void CheckPhase()
-    {
-        float hpPercentage = (float)curHp / maxHp;
-
-        if (hpPercentage > 0.7f)
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        if (distanceToPlayer <= noticeRange)
         {
-            SetPhase(BossPhase.Phase1);
-        }
-        else if (hpPercentage > 0.3f)
-        {
-            SetPhase(BossPhase.Phase2);
-        }
-        else
-        {
-            SetPhase(BossPhase.Phase3);
+            AttackPlayer(distanceToPlayer);
         }
     }
 
-    private void SetPhase(BossPhase newPhase)
+    IEnumerator PhaseManager()
     {
-        if (curPhase != newPhase)
+        while (curHp > 0)
         {
-            curPhase = newPhase;
-            OnPhaseChange(newPhase);
+            if (curHp < maxHp * 0.3)
+            {
+                currentPhase = BossPhase.Phase3;
+                CancelInvoke("CreateZombies"); // 3페이즈가 되면 소환 중단
+            }
+            else if (curHp < maxHp * 0.7 && currentPhase == BossPhase.Phase1)
+            {
+                currentPhase = BossPhase.Phase2;
+                CreateZombies(); // 2페이즈에서 한 번에 좀비 200마리 소환
+            }
+
+            yield return new WaitForSeconds(5f); // 5초마다 체크
         }
     }
 
-    private void OnPhaseChange(BossPhase phase)
+    void AttackPlayer(float distanceToPlayer)
     {
-        switch (phase)
+        switch (currentPhase)
         {
             case BossPhase.Phase1:
-                // 근접 공격
+                // 1페이즈: 플레이어가 근접 공격 범위 내에 있을 경우 근접 공격 실행
+                if (distanceToPlayer <= meleeAttackRange)
+                {
+                    animator.SetTrigger("MeleeAttack");
+                }
                 break;
             case BossPhase.Phase2:
-                // 좀비 200마리 소환 및 체력 회복
                 break;
             case BossPhase.Phase3:
-                // 원거리 공격
+                // 3페이즈: 원거리 공격 실행. 플레이어가 더 멀리 있을 경우 원거리 공격을 사용
+                if (!IsInvoking("FireBlood"))
+                {
+                    InvokeRepeating("FireBlood", 0f, 2f); // 2초마다 피토 발사
+                }
                 break;
         }
     }
 
-    public void TakeDamage(float damage)
+    void CreateZombies()
     {
-        curHp -= (int)damage;
-        if (curHp <= 0)
+        for (int i = 0; i < 200; i++) // 200마리 소환
         {
-            Die();
+            // 소환 위치를 랜덤하게 결정하기 위해 CreatePoints 중 하나를 무작위로 선택
+            Transform summonPoint = CreatePoints[Random.Range(0, CreatePoints.Length)];
+            Instantiate(zombiePrefab, summonPoint.position, Quaternion.identity);
         }
-    }
-    private void Die()
-    {
-        Debug.Log("보스 사망");
-        DropItem();
-        Destroy(gameObject);
     }
 
-    private void DropItem()
+    void LaunchProjectile()
     {
-        if (dropItem.Length > 0)
-        {
-            int randomIndex = Random.Range(0, dropItem.Length);
-            Instantiate(dropItem[randomIndex], transform.position, Quaternion.identity);
-        }
+        Instantiate(projectilePrefab, attackPoint.position, Quaternion.LookRotation(player.position - attackPoint.position));
+    }
+
+    public void MeleeAttackDamage()
+    {
+        
     }
 }
