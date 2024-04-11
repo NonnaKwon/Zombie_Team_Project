@@ -20,7 +20,7 @@ public class GrenadeObject : MonoBehaviour
     {
         MapController map = other.GetComponent<MapController>();
         if (map != null)
-            Bang();
+            StartCoroutine(Bang());
     }
 
     public void ForwardForce(Vector3 targetPos)
@@ -31,9 +31,11 @@ public class GrenadeObject : MonoBehaviour
     }
 
 
-    private void Bang()
+    IEnumerator Bang()
     {
         _attackPoint.SetRange(_data.attackRange);
         _attackPoint.Hit(_data.minDamage, _data.maxDamage);
+        yield return new WaitForSeconds(0.5f);
+        Destroy(this);
     }
 }
