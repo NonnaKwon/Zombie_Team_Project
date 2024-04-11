@@ -12,7 +12,6 @@ public class Inventory : MonoBehaviour
         {
             _bullet = value;
             BulletChange?.Invoke();
-            Debug.Log(_bullet + "invoke");
         }
     }
     private class ItemEntity

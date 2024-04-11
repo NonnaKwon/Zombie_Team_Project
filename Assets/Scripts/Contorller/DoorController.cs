@@ -80,6 +80,7 @@ public class DoorController : InteracterController
             makePopup.UpdateItemList(_existingItems[i].item.Data, _existingItems[i].count);
             Debug.Log(_existingItems[i].item.Data.name + "È¹µæ!");
         }
+        makePopup.CreateList();
         _isGet = true;
     }
 
