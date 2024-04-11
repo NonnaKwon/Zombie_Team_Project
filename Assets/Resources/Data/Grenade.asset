@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 21300000, guid: 977a3584cccc37d4684703a574d7474a, type: 3}
   ItemName: Grenade
-  price: 1000
+  price: 100
   info: 
-  minDamage: 5
-  maxDamage: 20
+  minDamage: 50
+  maxDamage: 200
   animationLayer: Base
   attackRange: 5
   attackSpeed: 1
