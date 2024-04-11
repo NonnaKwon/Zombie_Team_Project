@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 public class ZombieController : MonoBehaviour, IDamagable
 {
@@ -21,6 +23,7 @@ public class ZombieController : MonoBehaviour, IDamagable
     private ZombieState currentState;
     public float hp = 100;
     public GameObject[] dropItems;
+    public GameObject bloodEffectPrefab;
 
     private enum ZombieState
     {
@@ -37,7 +40,7 @@ public class ZombieController : MonoBehaviour, IDamagable
     }
     private void Start()
     {
-        bloodEffect = Resources.Load<GameObject>("Weapon");
+        bloodEffect = Resources.Load<GameObject>("Blood");
     }
 
     private void Awake()
@@ -114,6 +117,8 @@ public class ZombieController : MonoBehaviour, IDamagable
             time = 0;
             Debug.Log("플레이어 공격");
             attackPoint.Hit(attackDamage);
+            animator.SetBool("IsAttack", true);
+            animator.SetBool("Bite", true);
             if (ZombieType.crawl == type)
                 animator.Play("Bite");
             else
@@ -148,11 +153,23 @@ public class ZombieController : MonoBehaviour, IDamagable
     {
         hp -= damage;
         animator.SetTrigger("TakeHit");
-        // Manager. 오브젝트풀 사용
+
+        // 혈흔 효과 생성
+        GameObject bloodEffect = TakeHitManager.Instance.GetBloodEffect();
+        bloodEffect.transform.position = transform.position; // 혈흔 효과 위치를 좀비 위치로 설정
+
+        StartCoroutine(ReturnBloodEffectToPool(bloodEffect));
+
         if (hp <= 0)
         {
             Die();
             Debug.Log("좀비 죽음");
         }
+    }
+
+    IEnumerator ReturnBloodEffectToPool(GameObject bloodEffect)
+    {
+        yield return new WaitForSeconds(1); // 혈흔 효과 지속 시간
+        TakeHitManager.Instance.ReturnToPool(bloodEffect);
     }
 }

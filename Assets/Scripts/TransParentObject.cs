@@ -4,15 +4,24 @@ using UnityEngine;
 
 public class TransparentObject : MonoBehaviour
 {
-    public Renderer renderer;
+    private Color initialColor;
+    private Material material;
 
-    void Start()
+    void Awake()
     {
-        renderer = GetComponent<Renderer>();
+        material = GetComponent<Renderer>().material;
+        initialColor = material.color;
+    }
 
-        renderer.material.shader = Shader.Find("TransParent");
+    public void MakeTransparent()
+    {
+        Color color = initialColor;
+        color.a = 0.3f;
+        material.color = color;
+    }
 
-        // 반투명으로 만듬
-        renderer.material.color = new Color(renderer.material.color.r, renderer.material.color.g, renderer.material.color.b, 0.5f);
+    public void MakeOpaque()
+    {
+        material.color = initialColor;
     }
 }

@@ -3689,6 +3689,37 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.00014692545, y: 0.8645886, z: -0.029707357}
     m_Extent: {x: 1.0270948, y: 0.966004, z: 0.2803008}
   m_DirtyAABB: 0
+--- !u!1 &4880549581881852282
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5020612813235920510}
+  m_Layer: 0
+  m_Name: FireBloodPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5020612813235920510
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4880549581881852282}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.00000008940696, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.03, y: -0.09, z: 0.02}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.49999994}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5280090093879239895}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4919399142278839171
 GameObject:
   m_ObjectHideFlags: 0
@@ -4062,9 +4093,9 @@ GameObject:
   - component: {fileID: 8667450345800296281}
   - component: {fileID: 2808194788683251708}
   - component: {fileID: 1776488136883052398}
-  - component: {fileID: 7038594121971497311}
+  - component: {fileID: -6036622843353472648}
   m_Layer: 6
-  m_Name: WalkZombieB
+  m_Name: BossZombie
   m_TagString: Zombie
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4079,8 +4110,8 @@ Transform:
   m_GameObject: {fileID: 5780363829149477456}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 3.4953396, y: 0.32, z: -64.059}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7948565838692559781}
@@ -4127,7 +4158,7 @@ Animator:
   m_GameObject: {fileID: 5780363829149477456}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: ffdfcb810f2918b4f8fe9f917f07bc78, type: 3}
-  m_Controller: {fileID: 9100000, guid: dc022bd3da46d9d4bbe6cde6a002d3c6, type: 2}
+  m_Controller: {fileID: 9100000, guid: 45df1fb519069b942bc6d62960a43f91, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -4185,10 +4216,10 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.2
-  m_Height: 1.8
+  m_Height: 1.9835255
   m_Direction: 1
-  m_Center: {x: -0.02, y: 0.9, z: 0.01}
---- !u!114 &7038594121971497311
+  m_Center: {x: -0.040000007, y: 0.9254383, z: 0.019999996}
+--- !u!114 &-6036622843353472648
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4197,22 +4228,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 5780363829149477456}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f5138a142db4b540832cfce06d45c0b, type: 3}
+  m_Script: {fileID: 11500000, guid: 52f6228fa5e308644a185d4335b1f40e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHp: 5000
+  attackRange: 1.5
+  sightRange: 15
+  zombieSpeed: 0
+  FireBloodPrefab: {fileID: 949490118563712436, guid: b8dba7f7aed478b49969a61ae67588bd, type: 3}
+  attackPoint: {fileID: 0}
+  zombiePrefab: {fileID: 5780363829149477456}
+  CreatePoints: []
+  attackPoints: {fileID: 0}
   type: 0
-  attackPoint: {fileID: 8138594120678617632}
-  attackDamage: 3
-  player: {fileID: 3524292467188578206, guid: 093b594236d32bb44ac7f692f978d7b1, type: 3}
-  rigid: {fileID: 2808194788683251708}
-  animator: {fileID: 8667450345800296281}
-  sightRange: 10
-  attackRange: 1
-  timeBetweenAttacks: 1
-  zombieSpeed: 0.8
-  hp: 100
-  dropItems:
-  - {fileID: 523629600143528482, guid: 00e129fd14abcdd4a9026f1a1c3a031e, type: 3}
 --- !u!1 &5800592414205554942
 GameObject:
   m_ObjectHideFlags: 0
@@ -4408,7 +4436,8 @@ Transform:
   m_LocalPosition: {x: -0.000045919798, y: 0.06247511, z: 0.02164003}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5020612813235920510}
   m_Father: {fileID: 6416550203634205831}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6426301610850833748
