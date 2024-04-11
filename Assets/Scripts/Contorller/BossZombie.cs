@@ -107,7 +107,6 @@ public class BossZombie : MonoBehaviour, IDamagable
         if (distanceToPlayer <= attackRange)
         {
             currentState = ZombieState.Attack;
-            animator.SetBool("IsChase", true);
         }
         else if (distanceToPlayer > sightRange)
         {
@@ -126,13 +125,19 @@ public class BossZombie : MonoBehaviour, IDamagable
 
     void AttackPlayer(float distanceToPlayer)
     {
+        if (Vector3.Distance(player.position, transform.position) > attackRange)
+        {
+            currentState = ZombieState.Chase;
+            animator.SetBool("IsChase", true);
+        }
+
         switch (currentPhase)
         {
             case BossPhase.Phase1:
                 // 1페이즈: 플레이어가 근접 공격 범위 내에 있을 경우 근접 공격 실행
                 if (distanceToPlayer <= attackRange)
                 {
-                    animator.Play("IsAttack");
+                    animator.Play("Attack");
                 }
                 break;
             case BossPhase.Phase2:
