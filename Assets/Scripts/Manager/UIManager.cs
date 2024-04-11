@@ -69,7 +69,7 @@ public class UIManager : Singleton<UIManager>
         else
         {
             popUpBlocker.gameObject.SetActive(false);
-            Time.timeScale = prevTimeScale;
+            Time.timeScale = 1f;
         }
         _onPopup = false;
         if(isIdle)

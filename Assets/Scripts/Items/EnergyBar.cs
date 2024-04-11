@@ -6,7 +6,8 @@ public class EnergyBar : Item
 {
     public override void UseItem()
     {
-        throw new System.NotImplementedException();
+        StatusController sc = Manager.Game.Player.GetComponent<StatusController>();
+        sc.ChangeData(Define.Status.Stamina, 0.3f, true);
     }
 
     public override void SetData()

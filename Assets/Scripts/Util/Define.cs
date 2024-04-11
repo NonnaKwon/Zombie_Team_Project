@@ -41,4 +41,12 @@ public class Define
         hospital
     }
 
+    public enum Status
+    {
+        Hunger,
+        Thirst,
+        Fatigue,
+        Stamina
+    }
+
 }
