@@ -1,23 +1,39 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Define;
+using UnityEngine.Animations.Rigging;
 
 public class BossZombie : MonoBehaviour
 {
     public int maxHp = 5000;
     private int curHp;
-    public float meleeAttackRange = 1.5f;
-    public float noticeRange = 15.0f; // 플레이어 감지 범위
-    public GameObject projectilePrefab; // 원거리 공격용 프로젝트
+    public float attackRange = 1.5f;
+    public float sightRange = 15.0f; // 플레이어 감지 범위
+    public float zombieSpeed;
+    public GameObject FireBloodPrefab; // 원거리 공격용 프로젝트
     public Transform attackPoint; // 공격 발사 위치
     public GameObject zombiePrefab; // 소환할 좀비 프리팹
     public Transform[] CreatePoints; // 좀비 소환 위치
     private Transform player;
     private Animator animator;
+    private Rigidbody rigid;
+    [SerializeField] AttackPoint attackPoints;
+    [SerializeField] ZombieType type;
 
     private enum BossPhase { Phase1, Phase2, Phase3 }
     private BossPhase currentPhase = BossPhase.Phase1;
-
+    private ZombieState currentState;
+    private enum ZombieState
+    {
+        Idle,
+        Chase,
+        Attack
+    }
+    enum ZombieType
+    {
+        Boss
+    }
     void Start()
     {
         curHp = maxHp;
@@ -25,11 +41,29 @@ public class BossZombie : MonoBehaviour
         animator = GetComponent<Animator>();
         StartCoroutine(PhaseManager());
     }
-
+    private void Awake()
+    {
+        player = Manager.Game.Player.gameObject.transform;
+        rigid = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
+        currentState = ZombieState.Idle;
+        animator.SetInteger("ZombieType", (int)type);
+        attackPoints = GetComponentInChildren<AttackPoint>();
+    }
     void Update()
     {
+        switch (currentState)
+        {
+            case ZombieState.Idle:
+                LookForPlayer();
+                break;
+            case ZombieState.Chase:
+                ChasePlayer();
+                break;
+        }
+
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
-        if (distanceToPlayer <= noticeRange)
+        if (distanceToPlayer <= sightRange)
         {
             AttackPlayer(distanceToPlayer);
         }
@@ -53,6 +87,39 @@ public class BossZombie : MonoBehaviour
             yield return new WaitForSeconds(5f); // 5초마다 체크
         }
     }
+    private void LookForPlayer()
+    {
+        float distanceToPlayer = Vector3.Distance(player.position, transform.position);
+
+        if (distanceToPlayer <= sightRange)
+        {
+            currentState = ZombieState.Chase;
+            animator.SetBool("IsChase", true);
+        }
+    }
+
+    private void ChasePlayer()
+    {
+        float distanceToPlayer = Vector3.Distance(player.position, transform.position);
+
+        if (distanceToPlayer <= attackRange)
+        {
+            currentState = ZombieState.Attack;
+        }
+        else if (distanceToPlayer > sightRange)
+        {
+            currentState = ZombieState.Idle;
+            animator.SetBool("IsChase", false);
+        }
+        else
+        {
+            Vector3 direction = (player.position - transform.position).normalized;
+            Vector3 newPosition = transform.position + direction * zombieSpeed * Time.deltaTime;
+            rigid.MovePosition(newPosition);
+
+            transform.LookAt(new Vector3(player.position.x, transform.position.y, player.position.z));
+        }
+    }
 
     void AttackPlayer(float distanceToPlayer)
     {
@@ -60,9 +127,10 @@ public class BossZombie : MonoBehaviour
         {
             case BossPhase.Phase1:
                 // 1페이즈: 플레이어가 근접 공격 범위 내에 있을 경우 근접 공격 실행
-                if (distanceToPlayer <= meleeAttackRange)
+                if (distanceToPlayer <= attackRange)
                 {
-                    animator.SetTrigger("MeleeAttack");
+                    animator.SetTrigger("IsAttack");
+                    animator.Play("IsAttack");
                 }
                 break;
             case BossPhase.Phase2:
@@ -89,7 +157,7 @@ public class BossZombie : MonoBehaviour
 
     void LaunchProjectile()
     {
-        Instantiate(projectilePrefab, attackPoint.position, Quaternion.LookRotation(player.position - attackPoint.position));
+        Instantiate(FireBloodPrefab, attackPoint.position, Quaternion.LookRotation(player.position - attackPoint.position));
     }
 
     public void MeleeAttackDamage()

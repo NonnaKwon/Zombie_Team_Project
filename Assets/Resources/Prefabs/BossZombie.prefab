@@ -4079,7 +4079,7 @@ Transform:
   m_GameObject: {fileID: 5780363829149477456}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 8.550887, y: 1.67, z: -58.697}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4127,7 +4127,7 @@ Animator:
   m_GameObject: {fileID: 5780363829149477456}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: ffdfcb810f2918b4f8fe9f917f07bc78, type: 3}
-  m_Controller: {fileID: 9100000, guid: dc022bd3da46d9d4bbe6cde6a002d3c6, type: 2}
+  m_Controller: {fileID: 9100000, guid: 45df1fb519069b942bc6d62960a43f91, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -4185,9 +4185,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.2
-  m_Height: 1.8
+  m_Height: 1.9835255
   m_Direction: 1
-  m_Center: {x: -0.02, y: 0.9, z: 0.01}
+  m_Center: {x: -0.040000007, y: 0.9254383, z: 0.019999996}
 --- !u!114 &-6036622843353472648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4200,13 +4200,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52f6228fa5e308644a185d4335b1f40e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackPoint: {fileID: 0}
-  attackDamage: 10
-  dropItem: []
-  attackRange: 3
   maxHp: 5000
-  curHp: 5000
-  speed: 2
+  attackRange: 1.5
+  sightRange: 15
+  zombieSpeed: 0
+  FireBloodPrefab: {fileID: 949490118563712436, guid: b8dba7f7aed478b49969a61ae67588bd, type: 3}
+  attackPoint: {fileID: 0}
+  zombiePrefab: {fileID: 5780363829149477456}
+  CreatePoints: []
+  attackPoints: {fileID: 0}
+  type: 0
 --- !u!1 &5800592414205554942
 GameObject:
   m_ObjectHideFlags: 0

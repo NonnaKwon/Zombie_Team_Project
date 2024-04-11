@@ -13,7 +13,7 @@ public class TakeHitManager : MonoBehaviour
     {
         if (Instance != null)
         {
-            Debug.LogWarning("More than one instance of TakeHitManager found!");
+            Debug.LogWarning(".");
             Destroy(gameObject);
             return;
         }
@@ -51,7 +51,6 @@ public class TakeHitManager : MonoBehaviour
         }
     }
 
-    // 사용한 혈흔 효과 객체를 다시 풀로 반환하는 메서드
     public void ReturnToPool(GameObject bloodEffect)
     {
         bloodEffect.SetActive(false);
