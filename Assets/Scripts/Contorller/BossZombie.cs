@@ -155,7 +155,7 @@ public class BossZombie : MonoBehaviour
         }
     }
 
-    void LaunchProjectile()
+    void FireBlood()
     {
         Instantiate(FireBloodPrefab, attackPoint.position, Quaternion.LookRotation(player.position - attackPoint.position));
     }

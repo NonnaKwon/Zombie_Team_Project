@@ -3689,6 +3689,37 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.00014692545, y: 0.8645886, z: -0.029707357}
     m_Extent: {x: 1.0270948, y: 0.966004, z: 0.2803008}
   m_DirtyAABB: 0
+--- !u!1 &4880549581881852282
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5020612813235920510}
+  m_Layer: 0
+  m_Name: FireBloodPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5020612813235920510
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4880549581881852282}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.00000008940696, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.03, y: -0.09, z: 0.02}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.49999994}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5280090093879239895}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4919399142278839171
 GameObject:
   m_ObjectHideFlags: 0
@@ -4079,7 +4110,7 @@ Transform:
   m_GameObject: {fileID: 5780363829149477456}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.550887, y: 1.67, z: -58.697}
+  m_LocalPosition: {x: 3.4953396, y: 0.32, z: -64.059}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4405,7 +4436,8 @@ Transform:
   m_LocalPosition: {x: -0.000045919798, y: 0.06247511, z: 0.02164003}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5020612813235920510}
   m_Father: {fileID: 6416550203634205831}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6426301610850833748
