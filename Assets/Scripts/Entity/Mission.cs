@@ -8,7 +8,7 @@ public class Mission
 {
     public int id;
     public string mission;
-    public int coin;
-    public int boss;
+    public int coinGoal;
+    public int bossGoal;
     public bool isComplete;
 }

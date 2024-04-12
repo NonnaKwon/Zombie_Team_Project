@@ -33,8 +33,7 @@ public class UI_GameScene : InGameUI
 
     private void Start()
     {
-        Debug.Log(GetUI<TMP_Text>(GameObjects.Coin.ToString()));
-        Debug.Log(GetUI<Slider>(GameObjects.StaminaSlider.ToString()));
+
     }
     private void Update()
     {
