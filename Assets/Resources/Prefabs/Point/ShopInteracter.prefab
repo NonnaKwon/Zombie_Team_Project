@@ -244,6 +244,8 @@ MonoBehaviour:
     count: 10
   - item: {fileID: 11400000, guid: cf529568c85d36149a90948730ad2e9b, type: 2}
     count: 10
+  - item: {fileID: 11400000, guid: 335c16dd3e42edc499334e9384008867, type: 2}
+    count: 10
 --- !u!1 &5501917878306825394
 GameObject:
   m_ObjectHideFlags: 0

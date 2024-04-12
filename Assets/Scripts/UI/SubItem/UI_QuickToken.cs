@@ -9,6 +9,7 @@ public class UI_QuickToken : BaseUI
 {
     ItemData _item;
     int _count;
+
     enum GameObjects
     {
         Slot,
@@ -35,15 +36,24 @@ public class UI_QuickToken : BaseUI
     }
 
 
-    public void DecreaseCount()
+    public int DecreaseCount()
     {
         if (!GetActiveToken())
-            return;
+            return 0;
         _count--;
         if (_count > 0)
             GetUI<TMP_Text>(GameObjects.Count.ToString()).text = _count.ToString();
         else
             SetActiveToken(false);
+        return _count;
+    }
+
+    public void IncreaseCount(int count)
+    {
+        if (!GetActiveToken())
+            return;
+        _count += count;
+        GetUI<TMP_Text>(GameObjects.Count.ToString()).text = _count.ToString();
     }
 
     public bool GetActiveToken()

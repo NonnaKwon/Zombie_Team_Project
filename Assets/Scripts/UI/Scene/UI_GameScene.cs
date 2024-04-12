@@ -8,6 +8,7 @@ public class UI_GameScene : InGameUI
 {
     private float _passTime = Define.PLAY_TIME;
     private UI_QuickSlot _quickSlot;
+    public UI_QuickSlot QuickSlot { get { return _quickSlot; } }
     enum GameObjects
     {
         PlayerHP,

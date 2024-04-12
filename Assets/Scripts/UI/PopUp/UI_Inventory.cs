@@ -8,7 +8,7 @@ public class UI_Inventory : PopUpUI
 {
     private Inventory _inventory;
     List<UI_InvenItemToken> _invenItemInfo;
-    private int count = 0;
+    private int _count = 0;
     private bool isInit = false;
     enum GameObjects
     {
@@ -52,13 +52,12 @@ public class UI_Inventory : PopUpUI
         {
             if(!_invenItemInfo[i].GetActiveToken())
                 _invenItemInfo[i].SetActiveToken(true);
-            int itemNum;
-            ItemData item = _inventory.GetData(i, out itemNum);
+            ItemData item = _inventory.GetData(i, out int itemNum);
             _invenItemInfo[i].SetData(item,itemNum);
         }
-        while (count-- > _inventory.ItemSize)
-            _invenItemInfo[count].SetActiveToken(false);
-        count = _inventory.ItemSize;
+        while (_count-- > _inventory.ItemSize)
+            _invenItemInfo[_count].SetActiveToken(false);
+        _count = _inventory.ItemSize;
     }
 
 }

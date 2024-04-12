@@ -26,6 +26,7 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    UI_QuickSlot _quickSlot;
     public event Action BulletChange;
     private List<ItemEntity> items = new List<ItemEntity>();
     public int ItemSize { get { return items.Count; } }
@@ -33,7 +34,7 @@ public class Inventory : MonoBehaviour
 
     private void Start()
     {
-
+        _quickSlot = Manager.Game.GameUI.QuickSlot;
     }
 
     public void AddItem(ItemData item)
@@ -48,11 +49,16 @@ public class Inventory : MonoBehaviour
             BulletCount += count;
         }
 
+        _quickSlot.PlusCountQuickSort(item, count);
+
         for (int i = 0; i < items.Count; i++)
         {
             if (items[i].Item.ItemName.Equals(item.ItemName))
             {
-                items[i].Count += count;
+                if (item as WeaponData != null && !item.ItemName.Equals("Grenade"))
+                    Manager.Game.Player.Coin += item.price;
+                else
+                    items[i].Count += count;
                 return;
             }
         }

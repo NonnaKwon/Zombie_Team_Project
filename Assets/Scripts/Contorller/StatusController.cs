@@ -73,6 +73,8 @@ public class StatusController : MonoBehaviour
                 break;
             case Status.Stamina:
                 _stamina += isPlus ? value : -value;
+                if (_stamina > 1)
+                    _stamina = 1;
                 if(!isPlus)
                     _decreaseStaminaAmount += value;
                 _connectUI.ChangeData('S', _stamina);

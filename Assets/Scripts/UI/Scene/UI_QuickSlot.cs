@@ -2,8 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEditor.Progress;
 
 public class UI_QuickSlot : BaseUI
 {
@@ -51,6 +53,7 @@ public class UI_QuickSlot : BaseUI
             else
                 index = 2;
             _items[index] = FindItemClass(item);
+            _items[index].SetData();
             _quickItemInfo[index].SetActiveToken(true);
             _quickItemInfo[index].SetData(item, count);
         }
@@ -63,11 +66,28 @@ public class UI_QuickSlot : BaseUI
                 if (!_quickItemInfo[i].GetActiveToken())
                 {
                     _items[i] = FindItemClass(item);
+                    _items[i].SetData();
                     _quickItemInfo[i].SetActiveToken(true);
                     _quickItemInfo[i].SetData(item, count);
                     break;
                 }
             }
+        }
+    }
+
+    public void PlusCountQuickSort(ItemData data ,int count)
+    {
+        WeaponData weapon = data as WeaponData;
+        if (weapon != null)
+            return;
+        //겹치는 버그 해결 -> 파밍이 되면, 숫자 업데이트
+        for (int i = usableSlotRange[0]; i <= usableSlotRange[1]; i++)
+        {
+            if (_items[i] != null && _items[i].Data.ItemName.Equals(data.ItemName))
+            {
+                _quickItemInfo[i].IncreaseCount(count);
+            }
+
         }
     }
 
@@ -116,12 +136,15 @@ public class UI_QuickSlot : BaseUI
 
     private void UseItem(int index)
     {
-        _items[index].SetData();
+        if (_items[index] == null)
+            return;
         _items[index].UseItem();
-        if(usableSlotRange[0]-2 <= index && index <= usableSlotRange[1]-1) //수류탄~소비아이템만
+        if(usableSlotRange[0]-1 <= index && index <= usableSlotRange[1]-1) //수류탄~소비아이템만
         {
             _inventory.RemoveItem(_items[index].Data);
-            _quickItemInfo[index].DecreaseCount();
+            int leftCount = _quickItemInfo[index].DecreaseCount();
+            if (leftCount == 0)
+                _items[index] = null;
         }
     }
 
