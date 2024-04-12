@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static Define;
@@ -30,7 +28,6 @@ public class StatusController : MonoBehaviour
 
     private const float DECREASE = 0.04f / 60; //분당이어서 초당으로 계산.
     private const float DECREASE_STAMINA = 0.05f;
-    private const float DECREASE_STAMINA_FATIGUE = 0.01f;
     private const float INCREASE_STAMINA = 0.03f;
 
     private float _frame;
@@ -39,18 +36,17 @@ public class StatusController : MonoBehaviour
     void Start()
     {
         _connectUI = Manager.Game.GameUI;
-        _frame = 1 / Time.deltaTime;
+        _frame = 1 / Time.unscaledDeltaTime;
 
         _playerController = Manager.Game.Player;
         _fightController = _playerController.gameObject.GetComponent<FightController>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (_onDash)
             ChangeData(Status.Stamina, DECREASE_STAMINA / _frame);
-        else
+        else if(_stamina < 1)
             ChangeData(Status.Stamina, INCREASE_STAMINA / _frame, true);
         ChangeData(Status.Hunger,  DECREASE / _frame);
         ChangeData(Status.Thirst,  DECREASE / _frame);
