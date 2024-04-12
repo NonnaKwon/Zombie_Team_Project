@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Define
 {
+    public const int GET_COIN_AMOUNT = 10;
     public const int JUMP_MAX_COUNT = 1;
     public const float PLAY_TIME = 50 * 60; //50Ка
     public enum Scene

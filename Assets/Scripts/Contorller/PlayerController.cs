@@ -173,8 +173,7 @@ public class PlayerController : MonoBehaviour
 
         if (other.gameObject.CompareTag("Item")) // 내가 추가한 스크립트
         {
-            // 아이템 픽업 로직
-            // 예: 인벤토리에 아이템 추가
+            Coin = Coin + Define.GET_COIN_AMOUNT;
             Destroy(other.gameObject); // 아이템을 게임 세계에서 제거
         }
     }
