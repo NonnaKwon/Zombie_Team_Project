@@ -5358,7 +5358,6 @@ MonoBehaviour:
   hp: 100
   dropItems:
   - {fileID: 523629600143528482, guid: 00e129fd14abcdd4a9026f1a1c3a031e, type: 3}
-  bloodEffectPrefab: {fileID: 0}
 --- !u!1 &7747010305132527323
 GameObject:
   m_ObjectHideFlags: 0
