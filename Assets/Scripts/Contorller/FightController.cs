@@ -33,6 +33,7 @@ public class FightController : MonoBehaviour, IDamagable
     {
         Manager.Game.GameUI.SetMaxHP(_hp);
         _uiInventory = Manager.Game.GameUI.GetComponentInChildren<UI_Inventory>();
+        _uiInventory.SetInit();
         _inventory = GetComponent<Inventory>();
         _animator = GetComponentInChildren<Animator>();
         _player = GetComponent<PlayerController>();

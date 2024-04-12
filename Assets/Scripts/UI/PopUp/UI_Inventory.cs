@@ -22,8 +22,11 @@ public class UI_Inventory : PopUpUI
         _inventory = Manager.Game.Player.GetComponent<Inventory>();
     }
 
-    private void Start()
+
+    public void SetInit()
     {
+        if (isInit)
+            return;
         _invenItemInfo = GetComponentsInChildren<UI_InvenItemToken>().ToList();
         foreach (UI_InvenItemToken token in _invenItemInfo)
         {
