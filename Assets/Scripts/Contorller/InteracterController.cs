@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using static Define;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public abstract class InteracterController : MonoBehaviour, IInteractable
 {
