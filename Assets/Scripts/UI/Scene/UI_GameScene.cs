@@ -27,8 +27,8 @@ public class UI_GameScene : InGameUI
         base.Awake();
         Manager.Game.GameUI = this;
         _quickSlot = GetComponentInChildren<UI_QuickSlot>();
-        //Manager.Game.Player.CoinChange -= SetCoin;
-        //Manager.Game.Player.CoinChange += SetCoin;
+        Manager.Game.Player.CoinChange -= SetCoin;
+        Manager.Game.Player.CoinChange += SetCoin;
     }
 
     private void Start()

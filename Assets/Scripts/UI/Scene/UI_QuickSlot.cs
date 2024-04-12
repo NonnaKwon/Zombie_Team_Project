@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEditor.Progress;
 
 public class UI_QuickSlot : BaseUI
 {

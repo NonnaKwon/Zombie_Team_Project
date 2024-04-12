@@ -20,6 +20,11 @@ public class MissionController : MonoBehaviour
         Manager.Game.Mission = this;
     }
 
+    private void Start()
+    {
+        _connectUI = Manager.Game.GameUI.GetComponent<UI_Mission>();
+    }
+
     public Mission CurrentMission()
     {
         return _missionList[_nowMission];

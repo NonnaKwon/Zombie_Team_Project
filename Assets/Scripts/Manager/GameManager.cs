@@ -20,7 +20,7 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
-        _mission.ConnectUI = GameUI.GetComponentInChildren<UI_Mission>();
+        
     }
 
     
