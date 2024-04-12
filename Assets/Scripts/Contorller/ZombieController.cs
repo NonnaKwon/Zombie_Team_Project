@@ -53,7 +53,6 @@ public class ZombieController : MonoBehaviour, IDamagable
 
     private void Update()
     {
-        Debug.Log(this.gameObject);
         switch (currentState)
         {
             case ZombieState.Idle:

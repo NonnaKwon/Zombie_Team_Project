@@ -9,6 +9,7 @@ public class BaseUI : MonoBehaviour
     protected virtual void Awake()
     {
         Bind();
+        Debug.Log("Bind");
     }
 
     private void Bind()

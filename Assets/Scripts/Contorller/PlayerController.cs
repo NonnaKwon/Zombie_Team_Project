@@ -60,8 +60,6 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         PlayerInit();
-
-
     }
 
     public void PlayerInit()

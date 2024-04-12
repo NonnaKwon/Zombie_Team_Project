@@ -27,13 +27,14 @@ public class UI_GameScene : InGameUI
         base.Awake();
         Manager.Game.GameUI = this;
         _quickSlot = GetComponentInChildren<UI_QuickSlot>();
-
+        //Manager.Game.Player.CoinChange -= SetCoin;
+        //Manager.Game.Player.CoinChange += SetCoin;
     }
 
     private void Start()
     {
-        Manager.Game.Player.CoinChange -= SetCoin;
-        Manager.Game.Player.CoinChange += SetCoin;
+        Debug.Log(GetUI<TMP_Text>(GameObjects.Coin.ToString()));
+        Debug.Log(GetUI<Slider>(GameObjects.StaminaSlider.ToString()));
     }
     private void Update()
     {
@@ -46,8 +47,10 @@ public class UI_GameScene : InGameUI
     {
         _quickSlot.AddQuickSlot(item, count);
     }
+
     public void SetCoin(int amount)
     {
+        Debug.Log(GetUI<TMP_Text>(GameObjects.Coin.ToString()));
         GetUI<TMP_Text>(GameObjects.Coin.ToString()).text = amount.ToString();
     }
 
