@@ -42,8 +42,6 @@ public class UI_Mission : BaseUI
     private void PercentCal(int coin)
     {
         _currentCoin = coin;
-        Debug.Log(_currentCoin);
-        Debug.Log(_currentMission.coinGoal);
         GetUI<TMP_Text>(GameObjects.Percent.ToString()).text = ((int)(((float)_currentCoin / _currentMission.coinGoal) * 100f)).ToString("D2");
         IsComplete();
     }
