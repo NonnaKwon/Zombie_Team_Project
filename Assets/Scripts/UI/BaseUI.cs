@@ -26,6 +26,7 @@ public class BaseUI : MonoBehaviour
         {
             componentDic.TryAdd($"{child.gameObject.name}_{components.GetType().Name}", child);
         }
+
     }
 
     public GameObject GetUI(string name)

@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using UnityEngine;
 
 public class UI_Inventory : PopUpUI           
 {
     private Inventory _inventory;
     List<UI_InvenItemToken> _invenItemInfo;
     private int count = 0;
+    private bool isInit = false;
     enum GameObjects
     {
         Items,
@@ -17,16 +19,25 @@ public class UI_Inventory : PopUpUI
     protected override void Awake()
     {
         base.Awake();
+    }
+
+    private void Start()
+    {
         _invenItemInfo = GetComponentsInChildren<UI_InvenItemToken>().ToList();
-        foreach(UI_InvenItemToken token in _invenItemInfo)
+        foreach (UI_InvenItemToken token in _invenItemInfo)
         {
             token.SetActiveToken(false);
         }
         _inventory = Manager.Game.Player.GetComponent<Inventory>();
+        isInit = true;
     }
 
     private void OnEnable()
     {
+        if(!isInit)
+        {
+            return;
+        }
         UpdateInventory();
     }
 

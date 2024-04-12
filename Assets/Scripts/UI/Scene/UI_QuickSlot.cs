@@ -20,16 +20,16 @@ public class UI_QuickSlot : BaseUI
     protected override void Awake()
     {
         base.Awake();
+    }
+
+    private void Start()
+    {
         _quickItemInfo = GetComponentsInChildren<UI_QuickToken>().ToList();
         foreach (UI_QuickToken token in _quickItemInfo)
         {
             token.SetActiveToken(false);
         }
         _inventory = Manager.Game.Player.GetComponent<Inventory>();
-    }
-
-    private void Start()
-    {
         _inventory.BulletChange -= BulletChange;
         _inventory.BulletChange += BulletChange;
     }
