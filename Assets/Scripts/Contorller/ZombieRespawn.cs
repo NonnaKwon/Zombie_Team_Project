@@ -42,7 +42,8 @@ public class ZombieRespawn : MonoBehaviour
                         if (layer.Contain(hit.collider.gameObject.layer))
                         {
                             int prefabIndex = Random.Range(0, zombiePrefabs.Count);
-                            Instantiate(zombiePrefabs[prefabIndex], spawnPoint, Quaternion.identity);
+                            GameObject go = Instantiate(zombiePrefabs[prefabIndex], spawnPoint, Quaternion.identity);
+                            Debug.Log(go);
                         }
                     }
                 }

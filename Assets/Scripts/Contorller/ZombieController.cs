@@ -17,13 +17,11 @@ public class ZombieController : MonoBehaviour, IDamagable
     public float zombieSpeed;
     private float time = 0;
     public float MoveSpeed { get { return zombieSpeed; } }
-    private Vector3 moveDir;
-    private GameObject bloodEffect;
+    private PooledObject bloodEffect;
 
     private ZombieState currentState;
     public float hp = 100;
     public GameObject[] dropItems;
-    public GameObject bloodEffectPrefab;
 
     private enum ZombieState
     {
@@ -40,7 +38,7 @@ public class ZombieController : MonoBehaviour, IDamagable
     }
     private void Start()
     {
-        bloodEffect = Resources.Load<GameObject>("Blood");
+        bloodEffect = Manager.Resource.Load<PooledObject>("Prefabs/Effects/BloodEffect");
     }
 
     private void Awake()
@@ -55,6 +53,7 @@ public class ZombieController : MonoBehaviour, IDamagable
 
     private void Update()
     {
+        Debug.Log(this.gameObject);
         switch (currentState)
         {
             case ZombieState.Idle:
@@ -136,10 +135,6 @@ public class ZombieController : MonoBehaviour, IDamagable
         animator.SetTrigger("Die");
         DropItem();
         Destroy(gameObject);
-        if(hp <= 0)
-        {
-            Destroy(bloodEffect);
-        }
     }
 
     private void DropItem()
@@ -155,11 +150,13 @@ public class ZombieController : MonoBehaviour, IDamagable
     {
         hp -= damage;
 
-        // Ç÷Èç È¿°ú »ý¼º
-        GameObject bloodEffect = TakeHitManager.Instance.GetBloodEffect();
-        bloodEffect.transform.position = transform.position; // Ç÷Èç È¿°ú À§Ä¡¸¦ Á»ºñ À§Ä¡·Î ¼³Á¤
+        Manager.Pool.GetPool(bloodEffect, transform.position + new Vector3(0, 1.5f, 0),transform.rotation);
 
-        StartCoroutine(ReturnBloodEffectToPool(bloodEffect));
+        // Ç÷Èç È¿°ú »ý¼º
+        //GameObject bloodEffect = TakeHitManager.Instance.GetBloodEffect();
+        //bloodEffect.transform.position = transform.position; // Ç÷Èç È¿°ú À§Ä¡¸¦ Á»ºñ À§Ä¡·Î ¼³Á¤
+
+        //StartCoroutine(ReturnBloodEffectToPool(bloodEffect));
 
         if (hp <= 0)
         {
@@ -168,9 +165,9 @@ public class ZombieController : MonoBehaviour, IDamagable
         }
     }
 
-    IEnumerator ReturnBloodEffectToPool(GameObject bloodEffect)
-    {
-        yield return new WaitForSeconds(1); // Ç÷Èç È¿°ú Áö¼Ó ½Ã°£
-        TakeHitManager.Instance.ReturnToPool(bloodEffect);
-    }
+    //IEnumerator ReturnBloodEffectToPool(GameObject bloodEffect)
+    //{
+    //    yield return new WaitForSeconds(1); // Ç÷Èç È¿°ú Áö¼Ó ½Ã°£
+    //    TakeHitManager.Instance.ReturnToPool(bloodEffect);
+    //}
 }

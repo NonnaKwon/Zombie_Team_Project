@@ -12,7 +12,6 @@ public class BossZombie : MonoBehaviour, IDamagable
     public float attackRange = 1.5f;
     public float sightRange = 15.0f; // 플레이어 감지 범위
     public float zombieSpeed;
-    public GameObject FireBloodPrefab; // 원거리 공격용 프로젝트
     public Transform attackPoint; // 공격 발사 위치
     public GameObject zombiePrefab; // 소환할 좀비 프리팹
     public Transform[] CreatePoints; // 좀비 소환 위치
@@ -22,6 +21,8 @@ public class BossZombie : MonoBehaviour, IDamagable
     public GameObject[] dropItem;
     [SerializeField] ZombieType type;
     [SerializeField] float attackDamage;
+    private PooledObject bloodEffect;
+    private PooledObject fireBloodEffect;
 
     private enum BossPhase { Phase1, Phase2, Phase3 }
     private BossPhase currentPhase = BossPhase.Phase1;
@@ -39,10 +40,15 @@ public class BossZombie : MonoBehaviour, IDamagable
     }
     void Start()
     {
+        currentPhase = BossPhase.Phase3;
+
+
         curHp = maxHp;
         player = GameObject.FindGameObjectWithTag("Player").transform;
         animator = GetComponent<Animator>();
         StartCoroutine(PhaseManager());
+        bloodEffect = Manager.Resource.Load<PooledObject>("Prefabs/Effects/BloodEffect");
+        fireBloodEffect = Manager.Resource.Load<PooledObject>("Prefabs/Effects/FireBloodEffect");
     }
     private void Awake()
     {
@@ -139,9 +145,9 @@ public class BossZombie : MonoBehaviour, IDamagable
                 {
                     animator.Play("Attack");
                 }
-                Debug.Log("1페이즈");
                 break;
             case BossPhase.Phase2:
+                Debug.Log("2페이즈");
                 // CreateZombies();
                 break;
             case BossPhase.Phase3:
@@ -150,7 +156,6 @@ public class BossZombie : MonoBehaviour, IDamagable
                 if (!IsInvoking("FireBlood"))
                 {
                     InvokeRepeating("FireBlood", 0f, 2f); // 2초마다 피토 발사
-                    Destroy(FireBloodPrefab, 1f);
                 }
                 break;
         }
@@ -165,22 +170,32 @@ public class BossZombie : MonoBehaviour, IDamagable
             Instantiate(zombiePrefab, CreatePoint.position, Quaternion.identity);
         }
     }
-
+    void HealBoss()
+    {
+        if (currentPhase == BossPhase.Phase2)
+        {
+            curHp += 1000; // 예시: 체력 1000 회복
+            curHp = Mathf.Min(curHp, maxHp); // 최대 체력을 초과하지 않게 조정
+        }
+    }
     void FireBlood()
     {
         animator.Play("FireBlood");
-        Instantiate(FireBloodPrefab, attackPoint.position + new Vector3(0, 3f, 0), Quaternion.LookRotation(player.position - attackPoint.position));
+        Manager.Pool.GetPool(fireBloodEffect, transform.position + new Vector3(0, 3f, 0), transform.rotation);
+
     }
 
     public void TakeDamage(float damage)
     {
         curHp -= (int)damage;
 
-        // 혈흔 효과 생성
-        GameObject bloodEffect = TakeHitManager.Instance.GetBloodEffect();
-        bloodEffect.transform.position = transform.position + new Vector3(0,2f,0); // 혈흔 효과 위치를 좀비 위치로 설정
+        Manager.Pool.GetPool(bloodEffect, transform.position + new Vector3(0, 2.5f, 0), transform.rotation);
 
-        StartCoroutine(ReturnBloodEffectToPool(bloodEffect));
+        // 혈흔 효과 생성
+        //GameObject bloodEffect = TakeHitManager.Instance.GetBloodEffect();
+        //bloodEffect.transform.position = transform.position + new Vector3(0,2f,0); // 혈흔 효과 위치를 좀비 위치로 설정
+
+        //StartCoroutine(ReturnBloodEffectToPool(bloodEffect));
 
         if (curHp <= 0)
         {

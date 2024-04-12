@@ -4279,7 +4279,6 @@ GameObject:
   - component: {fileID: 1184995416955884278}
   - component: {fileID: 4490771508726951150}
   - component: {fileID: 7687534259579004962}
-  - component: {fileID: -4327438940864829268}
   m_Layer: 6
   m_Name: WalkZombie
   m_TagString: Zombie
@@ -4430,20 +4429,6 @@ MonoBehaviour:
   hp: 100
   dropItems:
   - {fileID: 523629600143528482, guid: 00e129fd14abcdd4a9026f1a1c3a031e, type: 3}
-  bloodEffectPrefab: {fileID: 0}
---- !u!114 &-4327438940864829268
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6353557080926403095}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 836dc2446a5658446b700e696af3d992, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bloodEffectPrefab: {fileID: 897332203157100770, guid: e64573a43dc2ac54b818a7deeab20403, type: 3}
 --- !u!1 &6575534185515480877
 GameObject:
   m_ObjectHideFlags: 0

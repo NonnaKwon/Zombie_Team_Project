@@ -4202,7 +4202,6 @@ GameObject:
   - component: {fileID: 2808194788683251708}
   - component: {fileID: 1776488136883052398}
   - component: {fileID: -6036622843353472648}
-  - component: {fileID: -1531530415860560528}
   m_Layer: 6
   m_Name: BossZombie
   m_TagString: Zombie
@@ -4353,19 +4352,6 @@ MonoBehaviour:
   - {fileID: 523629600143528482, guid: 00e129fd14abcdd4a9026f1a1c3a031e, type: 3}
   type: 0
   attackDamage: 10
---- !u!114 &-1531530415860560528
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5780363829149477456}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 836dc2446a5658446b700e696af3d992, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bloodEffectPrefab: {fileID: 897332203157100770, guid: e64573a43dc2ac54b818a7deeab20403, type: 3}
 --- !u!1 &5800592414205554942
 GameObject:
   m_ObjectHideFlags: 0
