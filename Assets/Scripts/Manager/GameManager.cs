@@ -13,11 +13,16 @@ public class GameManager : Singleton<GameManager>
     }
 
     public UI_GameScene GameUI { get; set; }
+    public MissionController Mission { get { return _mission; } set { _mission = value; } }
 
     private PlayerController _player;
-    public void Test()
+    private MissionController _mission;
+
+    private void Start()
     {
-        Debug.Log(GetInstanceID());
+        _mission.ConnectUI = GameUI.GetComponentInChildren<UI_Mission>();
     }
+
+    
 
 }

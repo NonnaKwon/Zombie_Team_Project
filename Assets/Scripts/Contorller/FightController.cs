@@ -71,6 +71,7 @@ public class FightController : MonoBehaviour, IDamagable
 
     public void ThrowGrenade()
     {
+        _player.ChangeAnimationLayer("Base Layer");
         _animator.Play("Grenade");
         StartCoroutine(CoThrow());
     }
@@ -81,6 +82,7 @@ public class FightController : MonoBehaviour, IDamagable
         Vector3 pos = transform.position + transform.forward * 2f + Vector3.up * 2.3f;
         GrenadeObject grenade = Instantiate(_grenadePrefab, pos, transform.rotation);
         grenade.ForwardForce(transform.forward * 100f);
+        _player.ChangeAnimationLayer(_curWeapon._data.animationLayer);
     }
 
     public void TakeDamage(float damage)

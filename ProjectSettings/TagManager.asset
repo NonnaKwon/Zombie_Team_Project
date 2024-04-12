@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Zombie
   - Building
+  - Item
   layers:
   - Default
   - TransparentFX
