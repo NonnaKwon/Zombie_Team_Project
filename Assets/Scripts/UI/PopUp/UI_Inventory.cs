@@ -19,6 +19,7 @@ public class UI_Inventory : PopUpUI
     protected override void Awake()
     {
         base.Awake();
+        _inventory = Manager.Game.Player.GetComponent<Inventory>();
     }
 
     private void Start()
@@ -28,8 +29,8 @@ public class UI_Inventory : PopUpUI
         {
             token.SetActiveToken(false);
         }
-        _inventory = Manager.Game.Player.GetComponent<Inventory>();
         isInit = true;
+        gameObject.SetActive(false);
     }
 
     private void OnEnable()
