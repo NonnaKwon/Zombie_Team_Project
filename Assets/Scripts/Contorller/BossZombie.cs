@@ -107,7 +107,6 @@ public class BossZombie : MonoBehaviour, IDamagable
         if (distanceToPlayer <= attackRange)
         {
             currentState = ZombieState.Attack;
-            animator.SetBool("IsChase", true);
         }
         else if (distanceToPlayer > sightRange)
         {
@@ -126,26 +125,32 @@ public class BossZombie : MonoBehaviour, IDamagable
 
     void AttackPlayer(float distanceToPlayer)
     {
+        if (Vector3.Distance(player.position, transform.position) > attackRange)
+        {
+            currentState = ZombieState.Chase;
+            animator.SetBool("IsChase", true);
+        }
+
         switch (currentPhase)
         {
             case BossPhase.Phase1:
                 // 1페이즈: 플레이어가 근접 공격 범위 내에 있을 경우 근접 공격 실행
                 if (distanceToPlayer <= attackRange)
                 {
-                    animator.Play("IsAttack");
+                    animator.Play("Attack");
                 }
+                Debug.Log("1페이즈");
                 break;
             case BossPhase.Phase2:
+                // CreateZombies();
                 break;
             case BossPhase.Phase3:
                 // 3페이즈: 원거리 공격 실행. 플레이어가 더 멀리 있을 경우 원거리 공격을 사용
+                Debug.Log("3페이즈");
                 if (!IsInvoking("FireBlood"))
                 {
                     InvokeRepeating("FireBlood", 0f, 2f); // 2초마다 피토 발사
-                    if ( curHp <= 0)
-                    {
-                        Destroy(FireBloodPrefab);
-                    }
+                    Destroy(FireBloodPrefab, 1f);
                 }
                 break;
         }
@@ -153,7 +158,7 @@ public class BossZombie : MonoBehaviour, IDamagable
 
     void CreateZombies()
     {
-        for (int i = 0; i < 200; i++) // 200마리 소환
+        for (int i = 0; i < 5; i++) // 200마리 소환
         {
             // 소환 위치를 랜덤하게 결정하기 위해 CreatePoints 중 하나를 무작위로 선택
             Transform CreatePoint = CreatePoints[Random.Range(0, CreatePoints.Length)];
@@ -164,7 +169,7 @@ public class BossZombie : MonoBehaviour, IDamagable
     void FireBlood()
     {
         animator.Play("FireBlood");
-        Instantiate(FireBloodPrefab, attackPoint.position, Quaternion.LookRotation(player.position - attackPoint.position));
+        Instantiate(FireBloodPrefab, attackPoint.position + new Vector3(0, 3f, 0), Quaternion.LookRotation(player.position - attackPoint.position));
     }
 
     public void TakeDamage(float damage)
@@ -173,7 +178,7 @@ public class BossZombie : MonoBehaviour, IDamagable
 
         // 혈흔 효과 생성
         GameObject bloodEffect = TakeHitManager.Instance.GetBloodEffect();
-        bloodEffect.transform.position = transform.position; // 혈흔 효과 위치를 좀비 위치로 설정
+        bloodEffect.transform.position = transform.position + new Vector3(0,2f,0); // 혈흔 효과 위치를 좀비 위치로 설정
 
         StartCoroutine(ReturnBloodEffectToPool(bloodEffect));
 

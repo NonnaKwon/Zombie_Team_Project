@@ -154,7 +154,6 @@ public class ZombieController : MonoBehaviour, IDamagable
     public void TakeDamage(float damage)
     {
         hp -= damage;
-        animator.SetTrigger("TakeHit");
 
         // Ç÷Èç È¿°ú »ý¼º
         GameObject bloodEffect = TakeHitManager.Instance.GetBloodEffect();
