@@ -32,7 +32,8 @@ public class UI_GameScene : InGameUI
 
     private void Start()
     {
-        
+        Manager.Game.Player.CoinChange -= SetCoin;
+        Manager.Game.Player.CoinChange += SetCoin;
     }
     private void Update()
     {

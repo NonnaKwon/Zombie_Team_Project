@@ -1,6 +1,8 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System;
+
 using static Define;
 
 public class PlayerController : MonoBehaviour
@@ -33,10 +35,11 @@ public class PlayerController : MonoBehaviour
         set 
         { 
             _coin = value;
-            Manager.Game.GameUI.SetCoin(_coin);
+            CoinChange?.Invoke(_coin);
         } 
     }
 
+    public event Action<int> CoinChange;
 
     private void Awake()
     {

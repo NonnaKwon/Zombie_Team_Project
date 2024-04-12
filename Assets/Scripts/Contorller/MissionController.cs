@@ -6,16 +6,12 @@ using UnityEngine;
 public class MissionController : MonoBehaviour
 {
     private int _nowMission;
-    UI_Mission _connectUI;
-    public UI_Mission ConnectUI { set { _connectUI = value; } }
+    private int _coinGoal;
+    private int _bossGoal;
 
-    [Serializable]
-    private class Mission
-    {
-        public int id;
-        public string mission;
-        public bool isComplete;
-    }
+    UI_Mission _connectUI;
+
+    public UI_Mission ConnectUI { set { _connectUI = value; } }
 
     [SerializeField] List<Mission> _missionList = new List<Mission>();
 
@@ -24,9 +20,9 @@ public class MissionController : MonoBehaviour
         Manager.Game.Mission = this;
     }
 
-    public string CurrentMission()
+    public Mission CurrentMission()
     {
-        return _missionList[_nowMission].mission;
+        return _missionList[_nowMission];
     }
     
 }
