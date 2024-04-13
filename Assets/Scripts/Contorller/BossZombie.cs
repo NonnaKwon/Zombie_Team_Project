@@ -23,6 +23,8 @@ public class BossZombie : MonoBehaviour, IDamagable
     [SerializeField] float attackDamage;
     private PooledObject bloodEffect;
     private PooledObject fireBloodEffect;
+    public Transform FireBloodPoint;
+
 
     private enum BossPhase { Phase1, Phase2, Phase3 }
     private BossPhase currentPhase = BossPhase.Phase1;
@@ -41,7 +43,6 @@ public class BossZombie : MonoBehaviour, IDamagable
     void Start()
     {
         currentPhase = BossPhase.Phase3;
-
 
         curHp = maxHp;
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -181,8 +182,7 @@ public class BossZombie : MonoBehaviour, IDamagable
     void FireBlood()
     {
         animator.Play("FireBlood");
-        Manager.Pool.GetPool(fireBloodEffect, transform.position + new Vector3(0, 3f, 0), transform.rotation);
-
+        Manager.Pool.GetPool(fireBloodEffect, transform.position + new Vector3(1f, 3f, 0), transform.rotation);
     }
 
     public void TakeDamage(float damage)
