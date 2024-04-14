@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static Define;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class GameScene : BaseScene
 {
