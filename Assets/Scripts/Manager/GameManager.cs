@@ -1,9 +1,19 @@
 using System;
 using UnityEngine;
+using static Define;
 
 public class GameManager : Singleton<GameManager>
 {
+    private PlayerController _player;
+    private MissionController _mission;
+    private UI_GameScene _gameUI;
+
+    private int _bossCount = 0;
+    private int _zombieCount = 0;
+
+    public event Action BossChange;
     public int BossCount { get { return _bossCount; } set { _bossCount = value; BossChange?.Invoke(); } }
+    public int ZombieCount { get { return _zombieCount; }}
     public PlayerController Player 
     { get
         {
@@ -29,18 +39,18 @@ public class GameManager : Singleton<GameManager>
     }
     public MissionController Mission { get { return _mission; } set { _mission = value; } }
 
-    private PlayerController _player;
-    private MissionController _mission;
-    private UI_GameScene _gameUI;
-
-    private int _bossCount = 0;
-    public event Action BossChange;
+    
 
     private void Start()
     {
         
     }
 
-    
+    public void ShowEnding(EndingType endingType)
+    {
+        Manager.Scene.LoadEndingScene("EndingScene", endingType);
+    }
+
+
 
 }

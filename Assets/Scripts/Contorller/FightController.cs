@@ -92,7 +92,7 @@ public class FightController : MonoBehaviour, IDamagable
         _animator.Play("GetHit");
         if (_hp <= 0)
         {
-            _player.StateMachine.ChangeState(Define.PlayerState.Die);
+            Manager.Game.ShowEnding(EndingType.Breakthrough);
         }
     }
 

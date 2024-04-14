@@ -6,9 +6,9 @@ using UnityEngine.UI;
 
 public class UI_GameScene : InGameUI
 {
-    private float _passTime = Define.PLAY_TIME;
     private UI_QuickSlot _quickSlot;
     public UI_QuickSlot QuickSlot { get { return _quickSlot; } }
+    public float PassTime;
     enum GameObjects
     {
         PlayerHP,
@@ -37,9 +37,8 @@ public class UI_GameScene : InGameUI
     }
     private void Update()
     {
-        _passTime -= Time.deltaTime;
-        GetUI<TMP_Text>(GameObjects.Min.ToString()).text = ((int)_passTime / 60).ToString("D2");
-        GetUI<TMP_Text>(GameObjects.Sec.ToString()).text = ((int)_passTime % 60).ToString("D2");
+        GetUI<TMP_Text>(GameObjects.Min.ToString()).text = ((int)PassTime / 60).ToString("D2");
+        GetUI<TMP_Text>(GameObjects.Sec.ToString()).text = ((int)PassTime % 60).ToString("D2");
     }
 
     public void AddQuickSlot(ItemData item,int count)
@@ -49,7 +48,6 @@ public class UI_GameScene : InGameUI
 
     public void SetCoin(int amount)
     {
-        Debug.Log(GetUI<TMP_Text>(GameObjects.Coin.ToString()));
         GetUI<TMP_Text>(GameObjects.Coin.ToString()).text = amount.ToString();
     }
 

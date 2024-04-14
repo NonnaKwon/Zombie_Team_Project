@@ -121,6 +121,7 @@ public class PlayerController : MonoBehaviour
         }
         MousePointer.transform.position = transform.position + transform.forward + new Vector3(0,1f,0);
     }
+
     private void Move()
     {
         float speed = _onDash ? _curSpeed * _dashSpeedPercent : _curSpeed;
