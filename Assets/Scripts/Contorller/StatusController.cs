@@ -5,7 +5,6 @@ using static Define;
 
 public class StatusController : MonoBehaviour
 {
-
     UI_GameScene _connectUI;
     FightController _fightController;
     PlayerController _playerController;
@@ -31,6 +30,8 @@ public class StatusController : MonoBehaviour
     private const float INCREASE_STAMINA = 0.03f;
 
     private float _frame;
+
+    
 
     // Start is called before the first frame update
     void Start()
@@ -62,6 +63,8 @@ public class StatusController : MonoBehaviour
             case Status.Hunger:
                 _hunger += isPlus ? value : -value;
                 _connectUI.ChangeData('H', _hunger);
+                if (_hunger <= 0)
+                    Manager.Game.ShowEnding(EndingType.InsatiableHunger);
                 break;
             case Status.Thirst:
                 _thirst += isPlus ? value : -value;

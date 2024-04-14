@@ -10,7 +10,8 @@ public class Define
     public enum Scene
     {
         TItle,
-        Game
+        Game,
+        Ending
     }
 
     public enum PlayerState
@@ -50,4 +51,14 @@ public class Define
         Stamina
     }
 
+
+    public enum EndingType
+    {
+        InsatiableHunger,
+        Breakthrough,
+        GroundZero,
+        Hope,
+        HopeFromDespair,
+        DespairFromHope
+    }
 }
