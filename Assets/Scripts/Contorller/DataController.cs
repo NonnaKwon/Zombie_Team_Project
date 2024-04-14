@@ -4,7 +4,7 @@ using UnityEngine;
 public class DataController : Singleton<DataController>
 {
     private string dataPath;
-    private PlayGameData gameData;  // Changed class name
+    private PlayGameData gameData;
 
     void Awake()
     {
@@ -17,11 +17,11 @@ public class DataController : Singleton<DataController>
         if (File.Exists(dataPath))
         {
             string json = File.ReadAllText(dataPath);
-            gameData = JsonUtility.FromJson<PlayGameData>(json);  // Changed class name
+            gameData = JsonUtility.FromJson<PlayGameData>(json);
         }
         else
         {
-            gameData = new PlayGameData();  // Changed class name
+            gameData = new PlayGameData();
         }
     }
 
