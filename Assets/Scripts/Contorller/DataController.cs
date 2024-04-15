@@ -1,50 +1,36 @@
+using System;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Playables;
+using UnityEngine.UIElements.Experimental;
 
-public class DataController : Singleton<DataController>
+public class DataController :MonoBehaviour
 {
-    private string dataPath;
-    private PlayGameData gameData;
-
-    void Awake()
+    void Start()
     {
-        dataPath = Path.Combine(Application.persistentDataPath, "gameData.json");
-        LoadGameData();
+        Manager.Data.LoadData();
+        DataManager.Instance.AddGoldCoins(1);
+        Manager.Data.SaveData();
+        int loadCoin = Manager.Data.GameData.GoldCoins;
+    }
+    // 코인 획득
+    public void EarnCoins(int coinsEarned)
+    {
+        DataManager.Instance.AddGoldCoins(coinsEarned);
     }
 
-    public void LoadGameData()
+    // 코인 사용
+    public void SpendCoins(int coinsSpent)
     {
-        if (File.Exists(dataPath))
-        {
-            string json = File.ReadAllText(dataPath);
-            gameData = JsonUtility.FromJson<PlayGameData>(json);
-        }
-        else
-        {
-            gameData = new PlayGameData();
-        }
+        DataManager.Instance.AddGoldCoins(-coinsSpent);
     }
 
-    public void SaveGameData()
-    {
-        string json = JsonUtility.ToJson(gameData);
-        File.WriteAllText(dataPath, json);
-    }
 
-    public int GetGold()
-    {
-        return gameData.gold;
-    }
 
-    public void AddGold(int amount)
+    // 데이터 리셋
+    public void ResetGameData()
     {
-        gameData.gold += amount;
-        SaveGameData();
+        DataManager.Instance.NewData();
+        DataManager.Instance.SaveData();
     }
-}
-
-[System.Serializable]
-public class PlayGameData
-{
-    public int gold = 0;
 }
