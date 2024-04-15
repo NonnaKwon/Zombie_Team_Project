@@ -39,15 +39,21 @@ public class UI_EndingScene : InGameUI
         GetUI(GameObjects.Three.ToString()).SetActive(false);
     }
 
-    public IEnumerator FlowEnding()
+    public void FlowEnding()
     {
-        yield return FadeIn();
+        if (_ending == EndingType.Breakthrough)
+            GetUI(GameObjects.Two.ToString()).SetActive(true);
+        else
+            GetUI(GameObjects.One.ToString()).SetActive(true);
+        _fade.gameObject.SetActive(false);
     }
 
     public void SetImage(EndingType ending)
     {
         _ending = ending;
-        GetUI<Image>(GameObjects.Ending.ToString()).sprite = _images[(int)_ending];
+        Image img = GetUI<Image>(GameObjects.Ending.ToString());
+        if (img != null)
+            img.sprite = _images[(int)_ending];
     }
 
     IEnumerator FadeOut()

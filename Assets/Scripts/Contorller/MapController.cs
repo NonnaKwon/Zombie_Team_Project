@@ -8,7 +8,7 @@ public class MapController : MonoBehaviour
     private bool _spawnComplete = false;
     private int[] _rotateRandomList = { 0, 90, 180 };
 
-    private const float POS_DISTANCE = 70f;
+    private const float POS_DISTANCE = 68f;
 
     void Start()
     {

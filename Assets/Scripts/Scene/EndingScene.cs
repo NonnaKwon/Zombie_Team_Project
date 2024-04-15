@@ -10,7 +10,8 @@ public class EndingScene : BaseScene
     public override IEnumerator LoadingRoutine()
     {
         ConnectUI.SetImage(Ending);
-        yield return ConnectUI.FlowEnding();
+        ConnectUI.FlowEnding();
+        yield return null;
     }
 
     

@@ -1398,6 +1398,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 117cf0fe2d1009e448269a8b8a880b5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bossPrefab: {fileID: 0}
 --- !u!1 &1938636321
 GameObject:
   m_ObjectHideFlags: 0
@@ -1771,6 +1772,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1678265488862487484, guid: 79897ee5c3e8f2b42bce4784bb9f7a1d, type: 3}
+      propertyPath: _type
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1882609585391780013, guid: 79897ee5c3e8f2b42bce4784bb9f7a1d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
