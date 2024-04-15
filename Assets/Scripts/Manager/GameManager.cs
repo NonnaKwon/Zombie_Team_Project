@@ -9,11 +9,9 @@ public class GameManager : Singleton<GameManager>
     private UI_GameScene _gameUI;
 
     private int _bossCount = 0;
-    private int _zombieCount = 0;
 
     public event Action BossChange;
     public int BossCount { get { return _bossCount; } set { _bossCount = value; BossChange?.Invoke(); } }
-    public int ZombieCount { get { return _zombieCount; }}
     public PlayerController Player 
     { get
         {

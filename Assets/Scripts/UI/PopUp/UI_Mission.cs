@@ -78,7 +78,7 @@ public class UI_Mission : BaseUI
     public void SetCurrentMission(Mission mission)
     {
         _currentMission = mission;
-        if (GetUI(GameObjects.BossRec.ToString()).activeSelf == true)
+        if (_currentMission.bossGoal != 0)
             GetUI<TMP_Text>(GameObjects.BossGoal.ToString()).text = _currentMission.bossGoal.ToString("D2");
     }
 }

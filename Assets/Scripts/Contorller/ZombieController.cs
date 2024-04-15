@@ -16,12 +16,14 @@ public class ZombieController : MonoBehaviour, IDamagable
     public float timeBetweenAttacks;
     public float zombieSpeed;
     private float time = 0;
+    private float releaseDis = 150f;
     public float MoveSpeed { get { return zombieSpeed; } }
     private PooledObject bloodEffect;
 
     private ZombieState currentState;
     public float hp = 100;
-    public GameObject[] dropItems;
+    PooledObject coin;
+
 
     private enum ZombieState
     {
@@ -39,6 +41,8 @@ public class ZombieController : MonoBehaviour, IDamagable
     private void Start()
     {
         bloodEffect = Manager.Resource.Load<PooledObject>("Prefabs/Effects/BloodEffect");
+        coin = Manager.Resource.Load<PooledObject>("Prefabs/GoldCoins");
+
     }
 
     private void Awake()
@@ -65,13 +69,7 @@ public class ZombieController : MonoBehaviour, IDamagable
                 AttackPlayer();
                 break;
         }
-        // MoveAnimator();
     }
-
-    //private void MoveAnimator()
-    //{
-    //    animator.SetFloat("velocity", (moveDir * zombieSpeed).magnitude);
-    //}
 
     private void LookForPlayer()
     {
@@ -82,6 +80,8 @@ public class ZombieController : MonoBehaviour, IDamagable
             currentState = ZombieState.Chase;
             animator.SetBool("IsChase", true);
         }
+        else if (distanceToPlayer >= releaseDis)
+            GetComponent<PooledObject>().Release();
     }
 
     private void ChasePlayer()
@@ -113,7 +113,6 @@ public class ZombieController : MonoBehaviour, IDamagable
         if (time > timeBetweenAttacks)
         {
             time = 0;
-            Debug.Log("플레이어 공격");
             attackPoint.Hit(attackDamage);
             if (ZombieType.crawl == type)
                 animator.Play("Bite");
@@ -129,20 +128,17 @@ public class ZombieController : MonoBehaviour, IDamagable
     }
 
 
-    private void Die()
+    IEnumerator CoDie()
     {
         animator.SetTrigger("Die");
+        yield return new WaitForSecondsRealtime(1.5f);
         DropItem();
-        Destroy(gameObject);
+        GetComponent<PooledObject>().Release();
     }
 
     private void DropItem()
     {
-        if (dropItems.Length > 0)
-        {
-            int randomIndex = Random.Range(0, dropItems.Length);
-            Instantiate(dropItems[randomIndex], transform.position, Quaternion.identity);
-        }
+        Manager.Pool.GetPool(coin, transform.position, transform.rotation);
     }
 
     public void TakeDamage(float damage)
@@ -151,22 +147,11 @@ public class ZombieController : MonoBehaviour, IDamagable
 
         Manager.Pool.GetPool(bloodEffect, transform.position + new Vector3(0, 1.5f, 0),transform.rotation);
 
-        // 혈흔 효과 생성
-        //GameObject bloodEffect = TakeHitManager.Instance.GetBloodEffect();
-        //bloodEffect.transform.position = transform.position; // 혈흔 효과 위치를 좀비 위치로 설정
-
-        //StartCoroutine(ReturnBloodEffectToPool(bloodEffect));
-
         if (hp <= 0)
         {
-            Die();
+            StartCoroutine(CoDie());
             Debug.Log("좀비 죽음");
         }
     }
 
-    //IEnumerator ReturnBloodEffectToPool(GameObject bloodEffect)
-    //{
-    //    yield return new WaitForSeconds(1); // 혈흔 효과 지속 시간
-    //    TakeHitManager.Instance.ReturnToPool(bloodEffect);
-    //}
 }

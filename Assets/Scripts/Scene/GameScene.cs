@@ -6,6 +6,7 @@ using static Define;
 public class GameScene : BaseScene
 {
     private float _passTime = PLAY_TIME;
+    
 
     GameManager _game;
     UI_Prologue _prologue;
@@ -13,6 +14,11 @@ public class GameScene : BaseScene
     PooledObject _explosion;
     PooledObject _bloodEffect;
     PooledObject _fireBlood;
+    PooledObject _crawlZombie;
+    PooledObject _runZombie;
+    PooledObject _walkZombie;
+    PooledObject _coin;
+
     private void Start()
     {
         _game = Manager.Game;
@@ -21,11 +27,19 @@ public class GameScene : BaseScene
         _explosion = Manager.Resource.Load<PooledObject>("Prefabs/Effects/Explosion");
         _bloodEffect = Manager.Resource.Load<PooledObject>("Prefabs/Effects/BloodEffect");
         _fireBlood = Manager.Resource.Load<PooledObject>("Prefabs/Effects/FireBloodEffect");
+        _crawlZombie = Manager.Resource.Load<PooledObject>("Prefabs/CrawlZombie");
+        _runZombie = Manager.Resource.Load<PooledObject>("Prefabs/RunZombie");
+        _walkZombie = Manager.Resource.Load<PooledObject>("Prefabs/WalkZombie");
+        _coin = Manager.Resource.Load<PooledObject>("Prefabs/GoldCoins");
 
         Manager.Pool.CreatePool(_muzzleFlash, 10, 10);
         Manager.Pool.CreatePool(_explosion, 5, 5);
+        Manager.Pool.CreatePool(_coin, 5, 5);
         Manager.Pool.CreatePool(_bloodEffect, 20, 20);
         Manager.Pool.CreatePool(_fireBlood, 10, 10);
+        Manager.Pool.CreatePool(_crawlZombie, ZOMBIE_POOL_SIZE, ZOMBIE_POOL_SIZE);
+        Manager.Pool.CreatePool(_runZombie, ZOMBIE_POOL_SIZE, ZOMBIE_POOL_SIZE);
+        Manager.Pool.CreatePool(_walkZombie, ZOMBIE_POOL_SIZE, ZOMBIE_POOL_SIZE);
     }
 
     private void Update()
@@ -36,11 +50,11 @@ public class GameScene : BaseScene
         {
             if (_game.Player.Coin < 5000)
                 _game.ShowEnding(EndingType.GroundZero);
-            else if (_game.Player.Coin < 10000) // && 그라운드 제로 엔딩 해금이면. (구현되면 추가할 것)
+            else if (_game.Player.Coin < 10000)
                 _game.ShowEnding(EndingType.Hope);
-            else if (_game.ZombieCount < 500) // && 희망 엔딩 해금이면
+            else if (_game.BossCount < 3) //수정해야함
                 _game.ShowEnding(EndingType.HopeFromDespair);
-            else // && 희망 엔딩 해금이면
+            else
                 _game.ShowEnding(EndingType.DespairFromHope);
         }
     }

@@ -235,12 +235,13 @@ public class BossZombie : MonoBehaviour, IDamagable
     IEnumerator ReturnBloodEffectToPool(GameObject bloodEffect)
     {
         yield return new WaitForSeconds(1); // Ç÷Èç È¿°ú Áö¼Ó ½Ã°£
-        TakeHitManager.Instance.ReturnToPool(bloodEffect);
+        //TakeHitManager.Instance.ReturnToPool(bloodEffect);
     }
 
     private void Die()
     {
         animator.Play("Die");
+        Manager.Game.BossCount += 1;
         DropItem();
         Destroy(gameObject);
     }
