@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GrenadeObject : MonoBehaviour
 {
+    [SerializeField] LayerMask _layer;
     WeaponData _data;
     Rigidbody _rigid;
     float _power;
@@ -22,6 +23,12 @@ public class GrenadeObject : MonoBehaviour
     {
         MapController map = other.GetComponent<MapController>();
         if (map != null)
+            StartCoroutine(Bang());
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (_layer.Contain(collision.gameObject.layer))
             StartCoroutine(Bang());
     }
 
