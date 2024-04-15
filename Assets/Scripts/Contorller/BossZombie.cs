@@ -238,6 +238,14 @@ public class BossZombie : MonoBehaviour, IDamagable
         //TakeHitManager.Instance.ReturnToPool(bloodEffect);
     }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.CompareTag("Bat"))
+        {
+            SoundManager.instance.PlayMeleeHitSound();
+        }
+    }
+
     private void Die()
     {
         animator.Play("Die");

@@ -39,4 +39,30 @@ public class SoundManager : Singleton<SoundManager>
 
         sfxSource.Stop();
     }
+
+    public static SoundManager instance;
+
+    [SerializeField]
+    private AudioClip meleeHitSound;
+    private AudioSource audioSource;
+    [SerializeField] public AudioClip gunshotSound;
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+        audioSource = GetComponent<AudioSource>();
+    }
+
+    public void PlayMeleeHitSound()
+    {
+        audioSource.PlayOneShot(meleeHitSound);
+    }
 }
