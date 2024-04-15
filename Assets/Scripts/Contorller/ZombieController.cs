@@ -7,6 +7,7 @@ public class ZombieController : MonoBehaviour, IDamagable
     [SerializeField] ZombieType type;
     [SerializeField] AttackPoint attackPoint;
     [SerializeField] float attackDamage;
+
     public Transform player;
     public Rigidbody rigid;
     public Animator animator;

@@ -4343,8 +4343,7 @@ MonoBehaviour:
   attackRange: 1.5
   sightRange: 15
   zombieSpeed: 2
-  FireBloodPrefab: {fileID: 949490118563712436, guid: b8dba7f7aed478b49969a61ae67588bd, type: 3}
-  attackPoint: {fileID: 0}
+  attackPoint: {fileID: 7948565838692559781}
   zombiePrefab: {fileID: 5780363829149477456}
   CreatePoints:
   - {fileID: 0}
@@ -4352,6 +4351,7 @@ MonoBehaviour:
   - {fileID: 523629600143528482, guid: 00e129fd14abcdd4a9026f1a1c3a031e, type: 3}
   type: 0
   attackDamage: 10
+  FireBloodPoint: {fileID: 0}
 --- !u!1 &5800592414205554942
 GameObject:
   m_ObjectHideFlags: 0
