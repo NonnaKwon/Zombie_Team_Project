@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
 
     private StateMachine<PlayerState> _stateMachine;
     public StateMachine<PlayerState> StateMachine { get { return _stateMachine; } }
+    public bool CanDash { get; set; } = true;
     public Vector2 MousePos { get { return _mousePos; } }
     public float MoveSpeed { get { return _moveSpeed; } }
     public float CurSpeed { set { _curSpeed = value; } }
@@ -133,7 +134,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnDash(InputValue value)
     {
-        if (value.isPressed)
+        if (value.isPressed && CanDash)
             _onDash = true;
         else
             _onDash = false;

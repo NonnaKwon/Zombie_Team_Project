@@ -63,8 +63,6 @@ public class StatusController : MonoBehaviour
             case Status.Hunger:
                 _hunger += isPlus ? value : -value;
                 _connectUI.ChangeData('H', _hunger);
-                if (_hunger <= 0)
-                    Manager.Game.ShowEnding(EndingType.InsatiableHunger);
                 break;
             case Status.Thirst:
                 _thirst += isPlus ? value : -value;
@@ -88,7 +86,9 @@ public class StatusController : MonoBehaviour
     private void UpdateStateEffect()
     {
         if (_hunger <= 0)
-            Manager.Game.Player.StateMachine.ChangeState(Define.PlayerState.Die);
+        {
+            Manager.Game.ShowEnding(EndingType.InsatiableHunger);
+        }
 
         for(int i=_step-1; i>=0;i--)
         {
@@ -107,6 +107,13 @@ public class StatusController : MonoBehaviour
                 break;
             }
         }
+
+        if(_stamina <= 0)
+        {
+            _stamina = 0;
+            _playerController.CanDash = false;
+        }else if(!_playerController.CanDash && _stamina > 0)
+            _playerController.CanDash = true;
 
         if (_decreaseStaminaAmount >= DECREASE_STAMINA)
         {
