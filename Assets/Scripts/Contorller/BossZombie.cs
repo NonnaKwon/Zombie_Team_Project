@@ -4,6 +4,7 @@ using UnityEngine;
 using static Define;
 using UnityEngine.Animations.Rigging;
 using Unity.VisualScripting;
+using System.Security.Cryptography;
 
 public class BossZombie : MonoBehaviour, IDamagable
 {
@@ -23,6 +24,8 @@ public class BossZombie : MonoBehaviour, IDamagable
     [SerializeField] float attackDamage;
     private PooledObject bloodEffect;
     private PooledObject fireBloodEffect;
+    public Transform FireBloodPoint;
+
 
     private enum BossPhase { Phase1, Phase2, Phase3 }
     private BossPhase currentPhase = BossPhase.Phase1;
@@ -41,7 +44,6 @@ public class BossZombie : MonoBehaviour, IDamagable
     void Start()
     {
         currentPhase = BossPhase.Phase3;
-
 
         curHp = maxHp;
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -89,7 +91,7 @@ public class BossZombie : MonoBehaviour, IDamagable
             else if (curHp < maxHp * 0.7 && currentPhase == BossPhase.Phase1)
             {
                 currentPhase = BossPhase.Phase2;
-                CreateZombies(); // 2페이즈에서 한 번에 좀비 200마리 소환
+                CreateZombie();
             }
 
             yield return new WaitForSeconds(5f); // 5초마다 체크
@@ -148,7 +150,7 @@ public class BossZombie : MonoBehaviour, IDamagable
                 break;
             case BossPhase.Phase2:
                 Debug.Log("2페이즈");
-                // CreateZombies();
+                CreateZombie();
                 break;
             case BossPhase.Phase3:
                 // 3페이즈: 원거리 공격 실행. 플레이어가 더 멀리 있을 경우 원거리 공격을 사용
@@ -159,17 +161,38 @@ public class BossZombie : MonoBehaviour, IDamagable
                 }
                 break;
         }
-    }
 
-    void CreateZombies()
-    {
-        for (int i = 0; i < 5; i++) // 200마리 소환
+        if (fireBloodEffect != null && FireBloodPoint != null)
         {
-            // 소환 위치를 랜덤하게 결정하기 위해 CreatePoints 중 하나를 무작위로 선택
-            Transform CreatePoint = CreatePoints[Random.Range(0, CreatePoints.Length)];
-            Instantiate(zombiePrefab, CreatePoint.position, Quaternion.identity);
+            // FireBlood 이펙트를 FireBloodPoint 위치에 생성
+            var effect = PoolManager.Instance.GetPool(fireBloodEffect, FireBloodPoint.position, Quaternion.identity);
+            effect.transform.forward = FireBloodPoint.forward; // 이펙트 방향 조정
         }
     }
+
+    void StartCreateZombies()
+    {
+        StartCoroutine(CreateZombiesRoutine());
+    }
+
+    IEnumerator CreateZombiesRoutine()
+    {
+        int count = 0;
+        while (count < 200) // 총 200마리 생성
+        {
+            CreateZombie(); // 단일 좀비 생성
+            count++;
+            if (count % 10 == 0) // 10마리마다 잠시 대기
+                yield return new WaitForSeconds(2);
+        }
+    }
+
+    void CreateZombie()
+    {
+        Transform CreatePoint = CreatePoints[Random.Range(0, CreatePoints.Length)];
+        Instantiate(zombiePrefab, CreatePoint.position, Quaternion.identity);
+    }
+
     void HealBoss()
     {
         if (currentPhase == BossPhase.Phase2)
@@ -181,9 +204,14 @@ public class BossZombie : MonoBehaviour, IDamagable
     void FireBlood()
     {
         animator.Play("FireBlood");
-        Manager.Pool.GetPool(fireBloodEffect, transform.position + new Vector3(0, 3f, 0), transform.rotation);
+        Manager.Pool.GetPool(fireBloodEffect, transform.position + new Vector3(1f, 3f, 0), transform.rotation);
 
+        if (Vector3.Distance(transform.position, player.transform.position) < 3f) // 플레이어가 좀비로부터 n 미터 이내에 있을 경우
+        {
+            // player.TakeDamage(10); // 플레이어 TakeDamage 설정
+        }
     }
+
 
     public void TakeDamage(float damage)
     {
