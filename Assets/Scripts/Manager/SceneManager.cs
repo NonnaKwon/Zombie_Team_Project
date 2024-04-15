@@ -97,13 +97,15 @@ public class SceneManager : Singleton<SceneManager>
 
         Manager.UI.EnsureEventSystem();
 
-        BaseScene curScene = GetCurScene();
-        yield return curScene.LoadingRoutine();
+        EndingScene curScene = GetCurScene() as EndingScene;
+        curScene.Ending = endingType;
 
         Time.timeScale = 1f;
 
         yield return FadeIn(ending);
         ending.gameObject.SetActive(false);
+
+        yield return curScene.LoadingRoutine();
     }
 
     IEnumerator FadeOut(Image fade)

@@ -26,7 +26,7 @@ public class FightController : MonoBehaviour, IDamagable
 
     private void Awake()
     {
-        _hp = 100;
+        _hp = 10;
     }
 
     private void Start()

@@ -4,10 +4,13 @@ using UnityEngine;
 using static Define;
 public class EndingScene : BaseScene
 {
-    EndingType _ending;   
+    public EndingType Ending;
+    public UI_EndingScene ConnectUI;
+
     public override IEnumerator LoadingRoutine()
     {
-        yield return null;
+        ConnectUI.SetImage(Ending);
+        yield return ConnectUI.FlowEnding();
     }
 
     
