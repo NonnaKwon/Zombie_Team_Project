@@ -26,7 +26,9 @@ public class ZombieRespawn : MonoBehaviour
 
     IEnumerator SpawnZombie()
     {
-        while(true)
+        yield return new WaitForSeconds(3 * 60f); //3Ка
+
+        while (true)
         {
             yield return new WaitForSeconds(spawnTime);
             Vector3 spawnPoint = FindSpawnLocation();
@@ -35,8 +37,6 @@ public class ZombieRespawn : MonoBehaviour
                 if (layer.Contain(hit.collider.gameObject.layer))
                 {
                     int prefabIndex = Random.Range(0, zombiePrefabs.Count);
-                    Debug.Log(zombiePrefabs.Count);
-                    Debug.Log(zombiePrefabs[prefabIndex]);
                     Manager.Pool.GetPool(zombiePrefabs[prefabIndex], spawnPoint, Quaternion.identity);
                 }
             }

@@ -5348,17 +5348,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 2
   attackPoint: {fileID: 0}
-  attackDamage: 3
+  attackDamage: 10
   player: {fileID: 3524292467188578206, guid: 093b594236d32bb44ac7f692f978d7b1, type: 3}
   rigid: {fileID: 3137637956487318408}
   animator: {fileID: 8456509384374529459}
-  sightRange: 10
+  sightRange: 25
   attackRange: 0.5
   timeBetweenAttacks: 0.5
   zombieSpeed: 0.6
   hp: 100
-  dropItems:
-  - {fileID: 523629600143528482, guid: 00e129fd14abcdd4a9026f1a1c3a031e, type: 3}
 --- !u!114 &-5349242913705834454
 MonoBehaviour:
   m_ObjectHideFlags: 0

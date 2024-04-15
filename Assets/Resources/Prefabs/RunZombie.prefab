@@ -4974,13 +4974,11 @@ MonoBehaviour:
   player: {fileID: 3524292467188578206, guid: 093b594236d32bb44ac7f692f978d7b1, type: 3}
   rigid: {fileID: 5459167979706364587}
   animator: {fileID: 5420633709241321314}
-  sightRange: 10
+  sightRange: 50
   attackRange: 1
   timeBetweenAttacks: 1.2
-  zombieSpeed: 0.1
+  zombieSpeed: 1.5
   hp: 100
-  dropItems:
-  - {fileID: 523629600143528482, guid: 00e129fd14abcdd4a9026f1a1c3a031e, type: 3}
 --- !u!114 &-7034999846106213263
 MonoBehaviour:
   m_ObjectHideFlags: 0
