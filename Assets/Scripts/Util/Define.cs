@@ -7,6 +7,7 @@ public class Define
     public const int GET_COIN_AMOUNT = 10;
     public const int JUMP_MAX_COUNT = 1;
     public const float PLAY_TIME = 50 * 60; //50Ка
+    public const float BOSS_PLAY_TIME = 20 * 60; //20Ка ШФ
     public const int MAX_ZOMBIE = 100;
     public const int ZOMBIE_POOL_SIZE = 15;
     public enum Scene

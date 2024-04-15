@@ -5,8 +5,9 @@ using static Define;
 
 public class GameScene : BaseScene
 {
+    [SerializeField] GameObject _bossPrefab;
     private float _passTime = PLAY_TIME;
-    
+    private bool isBoss = false;
 
     GameManager _game;
     UI_Prologue _prologue;
@@ -46,7 +47,13 @@ public class GameScene : BaseScene
     {
         _passTime -= Time.unscaledDeltaTime;
         _game.GameUI.PassTime = _passTime;
-        if (_passTime <= 0)
+        if(!isBoss && _passTime <= PLAY_TIME - BOSS_PLAY_TIME)
+        {
+            Vector3 insPos = _game.Player.transform.position + new Vector3(5f,0,5f);
+            Instantiate(_bossPrefab, insPos, _game.transform.rotation);
+            isBoss = true;
+        }
+        else if (_passTime <= 0)
         {
             if (_game.Player.Coin < 5000)
                 _game.ShowEnding(EndingType.GroundZero);
