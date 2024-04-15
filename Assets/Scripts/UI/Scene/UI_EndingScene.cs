@@ -77,6 +77,7 @@ public class UI_EndingScene : InGameUI
             _fade.color = Color.Lerp(fadeOutColor, fadeInColor, rate);
             yield return null;
         }
+
         _fade.gameObject.SetActive(false);
     }
 

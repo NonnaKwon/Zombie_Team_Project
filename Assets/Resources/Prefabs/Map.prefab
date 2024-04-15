@@ -2397,6 +2397,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 2276741894482693431}
     m_Modifications:
     - target: {fileID: -8517426446402808589, guid: c4255dab667981743baa596a177430d4, type: 3}
+      propertyPath: spawnTime
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8517426446402808589, guid: c4255dab667981743baa596a177430d4, type: 3}
       propertyPath: layer.m_Bits
       value: 8
       objectReference: {fileID: 0}
