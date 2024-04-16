@@ -26,7 +26,7 @@ public class ZombieRespawn : MonoBehaviour
 
     IEnumerator SpawnZombie()
     {
-        //yield return new WaitForSeconds(3 * 60f); //3Ка
+        yield return new WaitForSeconds(3 * 60f); //3Ка
 
         while (true)
         {

@@ -17,7 +17,7 @@ public class GrenadeObject : MonoBehaviour
         _attackPoint = GetComponentInChildren<AttackPoint>();
         _data = Manager.Resource.Load<WeaponData>("Data/Grenade");
         _explosion = Manager.Resource.Load<PooledObject>("Prefabs/Effects/Explosion");
-        _power = 7f;
+        _power = 4f;
         explosionSound = Resources.Load<AudioClip>("Grenade");
     }
     private void OnTriggerEnter(Collider other)
@@ -38,6 +38,32 @@ public class GrenadeObject : MonoBehaviour
         Vector3 dir = (targetPos - transform.position).normalized;
         dir = new Vector3(dir.x, 0, dir.z);
         _rigid.velocity = new Vector3(0, _power, 0) + dir * _power;
+    }
+
+    public void ForwardForce2(Vector3 targetPos)
+    {
+        StartCoroutine(CoForce(targetPos));
+    }
+
+    IEnumerator CoForce(Vector3 targetPos)
+    {
+        Vector3 startPos = transform.position;
+        Vector3 mid = new Vector3(startPos.x + (startPos.x - targetPos.x) / 2, 10f, startPos.z + (startPos.z - targetPos.z) / 2);
+        Debug.Log(startPos + ":" + targetPos + "=" + mid);
+        float time = 0;
+        float duration = 2f;
+        while (true)
+        {
+            if (time > 1f)
+                time = 0f;
+
+            Vector3 p1 = Vector3.Lerp(startPos, mid, time);
+            Vector3 p2 = Vector3.Lerp(mid, targetPos, time);
+            transform.position = Vector3.Lerp(p1, p2, time);
+
+            time += Time.deltaTime / duration;
+            yield return null;
+        }
     }
 
 
