@@ -77,5 +77,6 @@ public class GrenadeObject : MonoBehaviour
         Manager.Sound.PlaySFX(_audio);
         yield return new WaitForSeconds(0.5f);
         Destroy(gameObject);
+
     }
 }

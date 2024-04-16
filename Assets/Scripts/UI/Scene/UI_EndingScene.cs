@@ -42,7 +42,7 @@ public class UI_EndingScene : InGameUI
     public void FlowEnding()
     {
         if (_ending == EndingType.Breakthrough)
-            GetUI(GameObjects.Two.ToString()).SetActive(true);
+            StartCoroutine(CoEndingFlowTwo());
         else
             GetUI(GameObjects.One.ToString()).SetActive(true);
         _fade.gameObject.SetActive(false);
@@ -54,6 +54,13 @@ public class UI_EndingScene : InGameUI
         Image img = GetUI<Image>(GameObjects.Ending.ToString());
         if (img != null)
             img.sprite = _images[(int)_ending];
+    }
+    IEnumerator CoEndingFlowTwo()
+    {
+        GetUI(GameObjects.Two.ToString()).SetActive(true);
+        GetUI(GameObjects.NextButton2.ToString()).SetActive(false);
+        yield return new WaitForSeconds(15f);
+        GetUI(GameObjects.NextButton2.ToString()).SetActive(true);
     }
 
     IEnumerator FadeOut()
@@ -70,7 +77,6 @@ public class UI_EndingScene : InGameUI
             yield return null;
         }
     }
-
     IEnumerator FadeIn()
     {
         float rate = 0;

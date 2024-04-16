@@ -20,7 +20,7 @@ public class Gun : Weapon
     {
         base.Awake();
 
-        _audio = Manager.Resource.Load<AudioClip>("Sounds/Gunshot");
+        _audio = Manager.Resource.Load<AudioClip>("Sounds/pistol");
         _curBullet = _maxBullet;
         _lineRenderer = GetComponent<LineRenderer>();
         _rigBuilder = GetComponentInParent<RigBuilder>();
