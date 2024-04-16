@@ -11,15 +11,17 @@ public class GrenadeObject : MonoBehaviour
     float _power;
     AttackPoint _attackPoint;
     PooledObject _explosion;
-    AudioClip explosionSound;
+    AudioClip _audio;
+
     private void Awake()
     {
+        _audio = Manager.Resource.Load<AudioClip>("Sounds/Grenade");
+
         _rigid = GetComponent<Rigidbody>();
         _attackPoint = GetComponentInChildren<AttackPoint>();
         _data = Manager.Resource.Load<WeaponData>("Data/Grenade");
         _explosion = Manager.Resource.Load<PooledObject>("Prefabs/Effects/Explosion");
         _power = 4f;
-        explosionSound = Resources.Load<AudioClip>("Grenade");
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -72,8 +74,8 @@ public class GrenadeObject : MonoBehaviour
         _attackPoint.SetRange(_data.attackRange);
         _attackPoint.Hit(_data.minDamage, _data.maxDamage);
         Manager.Pool.GetPool(_explosion, transform.position, transform.rotation);
+        Manager.Sound.PlaySFX(_audio);
         yield return new WaitForSeconds(0.5f);
-        //SoundManager.Instance.PlaySFX(explosionSound);
         Destroy(gameObject);
     }
 }

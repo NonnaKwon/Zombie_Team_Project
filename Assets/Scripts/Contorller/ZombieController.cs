@@ -7,6 +7,7 @@ public class ZombieController : MonoBehaviour, IDamagable
     [SerializeField] ZombieType type;
     [SerializeField] AttackPoint attackPoint;
     [SerializeField] float attackDamage;
+    [SerializeField] AudioClip dieSound;
 
     public Transform player;
     public Rigidbody rigid;
@@ -24,6 +25,7 @@ public class ZombieController : MonoBehaviour, IDamagable
     private ZombieState currentState;
     public float hp = 100;
     PooledObject coin;
+    //AudioClip hitSound;
 
     [SerializeField] private AudioClip death1Clip;
 
@@ -44,7 +46,6 @@ public class ZombieController : MonoBehaviour, IDamagable
     {
         bloodEffect = Manager.Resource.Load<PooledObject>("Prefabs/Effects/BloodEffect");
         coin = Manager.Resource.Load<PooledObject>("Prefabs/GoldCoins");
-
     }
 
     private void Awake()
@@ -133,6 +134,7 @@ public class ZombieController : MonoBehaviour, IDamagable
     IEnumerator CoDie()
     {
         animator.SetTrigger("Die");
+        Manager.Sound.PlaySFX(dieSound);
         yield return new WaitForSecondsRealtime(1.5f);
         DropItem();
         SoundManager.Instance.PlaySFX(death1Clip);
@@ -148,11 +150,9 @@ public class ZombieController : MonoBehaviour, IDamagable
         hp -= damage;
 
         Manager.Pool.GetPool(bloodEffect, transform.position + new Vector3(0, 1.5f, 0),transform.rotation);
-
         if (hp <= 0)
         {
             StartCoroutine(CoDie());
-            Debug.Log("Á»ºñ Á×À½");
         }
     }
 

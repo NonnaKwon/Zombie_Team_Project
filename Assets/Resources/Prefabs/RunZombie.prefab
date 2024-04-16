@@ -4971,6 +4971,7 @@ MonoBehaviour:
   type: 1
   attackPoint: {fileID: 9191865385183099761}
   attackDamage: 3
+  dieSound: {fileID: 8300000, guid: 0cb9afc50d9cebd4e9698537e6bfea16, type: 3}
   player: {fileID: 3524292467188578206, guid: 093b594236d32bb44ac7f692f978d7b1, type: 3}
   rigid: {fileID: 5459167979706364587}
   animator: {fileID: 5420633709241321314}
@@ -4979,6 +4980,7 @@ MonoBehaviour:
   timeBetweenAttacks: 1.2
   zombieSpeed: 1.5
   hp: 100
+  death1Clip: {fileID: 0}
 --- !u!114 &-7034999846106213263
 MonoBehaviour:
   m_ObjectHideFlags: 0
