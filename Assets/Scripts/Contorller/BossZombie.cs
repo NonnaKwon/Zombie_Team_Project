@@ -8,8 +8,8 @@ using System.Security.Cryptography;
 
 public class BossZombie : MonoBehaviour, IDamagable
 {
-    public int maxHp = 100;
-    private int curHp;
+    public int maxHp = 5000;
+    public int curHp;
     public float attackRange = 1.5f;
     public float sightRange = 15.0f; // 플레이어 감지 범위
     public float zombieSpeed;
@@ -25,6 +25,8 @@ public class BossZombie : MonoBehaviour, IDamagable
     private PooledObject fireBloodEffect;
     public Transform FireBloodPoint;
 
+    private bool canMove = true;
+    
 
     private float time = 0;
     private enum BossPhase { Phase1, Phase2, Phase3 }
@@ -42,10 +44,10 @@ public class BossZombie : MonoBehaviour, IDamagable
     {
         Boss
     }
+
     void Start()
     {
         currentPhase = BossPhase.Phase3;
-
         curHp = maxHp;
         player = GameObject.FindGameObjectWithTag("Player").transform;
         animator = GetComponent<Animator>();
@@ -111,6 +113,8 @@ public class BossZombie : MonoBehaviour, IDamagable
 
     private void ChasePlayer()
     {
+        if (!canMove)
+            return;
         float distanceToPlayer = Vector3.Distance(player.position, transform.position);
 
         if (distanceToPlayer <= attackRange)
@@ -132,6 +136,7 @@ public class BossZombie : MonoBehaviour, IDamagable
         }
     }
 
+    float attackSpeed = 3f;
     void AttackPlayer()
     {
         time += Time.deltaTime;
@@ -143,7 +148,7 @@ public class BossZombie : MonoBehaviour, IDamagable
             return;
         }
 
-        if (time <= 2f) //2초마다 공격
+        if (time <= attackSpeed) //2초마다 공격
             return;
         time = 0;
         switch (currentPhase)
@@ -154,10 +159,12 @@ public class BossZombie : MonoBehaviour, IDamagable
             case BossPhase.Phase2:
                 Debug.Log("2페이즈");
                 StartCoroutine(Attack());
-                CreateZombie();
+                StartCoroutine(StartCreateZombies());
                 break;
             case BossPhase.Phase3:
-                StartCoroutine(Attack());
+                Debug.Log("3페이즈");
+                attackSpeed = 15f;
+                StartCoroutine(BossAttack());
                 break;
         }
     }
@@ -165,37 +172,39 @@ public class BossZombie : MonoBehaviour, IDamagable
     IEnumerator Attack()
     {
         animator.Play("Attack");
-        yield return new WaitForSeconds(1.4f);
+        yield return new WaitForSeconds(0.3f);
         attackPoint.Hit(attackDamage);
-        if (currentPhase == BossPhase.Phase3)
-        {
-            yield return new WaitForSeconds(0.6f);
-            animator.Play("FireBlood");
-            yield return new WaitForSeconds(0.6f);
+    }
 
+    IEnumerator BossAttack()
+    {
+        yield return FireBlood();
+
+        int attackCount = 10;
+        while(attackCount-- >= 0)
+        {
+            animator.Play("Attack");
+            yield return new WaitForSeconds(0.5f);
+            attackPoint.Hit(attackDamage);
+            yield return new WaitForSeconds(1f); //공격 속도
         }
     }
 
-    void StartCreateZombies()
-    {
-        StartCoroutine(CreateZombiesRoutine());
-    }
 
-    IEnumerator CreateZombiesRoutine()
+
+    IEnumerator StartCreateZombies()
     {
-        int count = 0;
-        while (count < 200) // 총 200마리 생성
+        int count = 20;
+        while (count >= 0) // 총 20마리 생성
         {
-            CreateZombie(); // 단일 좀비 생성
-            count++;
-            if (count % 10 == 0) // 10마리마다 잠시 대기
-                yield return new WaitForSeconds(2);
+            CreateZombie();
+            yield return new WaitForSeconds(0.5f);
         }
     }
 
     void CreateZombie()
     {
-        float range = 10f;
+        float range = 15f;
         Vector3 InstPos = transform.position + new Vector3(Random.Range(-range, range), 0, Random.Range(-range, range));
         Instantiate(zombiePrefab, InstPos, Quaternion.identity);
     }
@@ -209,10 +218,15 @@ public class BossZombie : MonoBehaviour, IDamagable
         }
     }
 
-    void FireBlood()
+    IEnumerator FireBlood()
     {
+        canMove = false;
         animator.Play("FireBlood");
-        Manager.Pool.GetPool(fireBloodEffect, transform.position + new Vector3(1f, 3f, 0), transform.rotation);
+        yield return new WaitForSeconds(0.6f);
+        Manager.Pool.GetPool(fireBloodEffect, transform.position + transform.forward*1.2f + new Vector3(0, 2.7f, 0), transform.rotation);
+        canMove = true;
+        yield return new WaitForSeconds(0.5f);
+
     }
 
 
@@ -235,13 +249,7 @@ public class BossZombie : MonoBehaviour, IDamagable
         //TakeHitManager.Instance.ReturnToPool(bloodEffect);
     }
 
-    void OnCollisionEnter(Collision collision)
-    {
-        if (collision.collider.CompareTag("Bat"))
-        {
-            SoundManager.instance.PlayMeleeHitSound();
-        }
-    }
+   
 
     private void Die()
     {
