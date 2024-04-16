@@ -7,12 +7,20 @@ public class MapController : MonoBehaviour
     MapController _mapPrefab;
     private bool _spawnComplete = false;
     private int[] _rotateRandomList = { 0, 90, 180 };
-
-    private const float POS_DISTANCE = 70f;
+    private const float POS_DISTANCE = 68f;
+    private float DESTROY_DISTANCE = POS_DISTANCE * 3;
+    PlayerController _player;
 
     void Start()
     {
         _mapPrefab = Manager.Resource.Load<MapController>("Prefabs/Map");
+        _player = Manager.Game.Player;
+    }
+
+    private void Update()
+    {
+        if (Vector3.Distance(transform.position, _player.gameObject.transform.position) >= DESTROY_DISTANCE)
+            Destroy(gameObject);
     }
 
     public void SpawnMap()
@@ -43,15 +51,18 @@ public class MapController : MonoBehaviour
         if (Physics.Raycast(startPos, (spawnPos - startPos),out RaycastHit hit))
         {
             //¹º°¡¿¡ ºÎ‹HÇû´Ù
-            if (hit.collider.gameObject.GetComponent<MapController>() != null)
+            if (hit.collider.gameObject.GetComponent<MapController>() != null
+                || hit.collider.gameObject.GetComponentInParent<MapController>() != null)
+            {
                 return;
+            }
         }
 
         //¸ÊÀÌ ¾ø´Ù¸é, ½ºÆù ½ÃÀÛ
         int randomRotate = Random.Range(0, 3);
 
-        MapController spawnMap = Instantiate<MapController>(_mapPrefab, spawnPos, transform.rotation);
+        MapController spawnMap = Instantiate(_mapPrefab, spawnPos, transform.rotation);
         spawnMap.transform.Rotate(new Vector3(0, _rotateRandomList[randomRotate], 0));
-        spawnMap.transform.parent = transform;
+        spawnMap.transform.parent = transform.root;
     }
 }

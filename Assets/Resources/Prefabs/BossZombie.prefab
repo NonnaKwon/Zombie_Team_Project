@@ -4339,19 +4339,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52f6228fa5e308644a185d4335b1f40e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 5000
-  attackRange: 1.5
-  sightRange: 15
+  maxHp: 10000
+  curHp: 0
+  attackRange: 3
+  sightRange: 25
   zombieSpeed: 2
-  FireBloodPrefab: {fileID: 949490118563712436, guid: b8dba7f7aed478b49969a61ae67588bd, type: 3}
-  attackPoint: {fileID: 0}
-  zombiePrefab: {fileID: 5780363829149477456}
-  CreatePoints:
-  - {fileID: 0}
+  attackPoint: {fileID: 8138594120678617632}
+  zombiePrefab: {fileID: 6353557080926403095, guid: f2d21f22ab700a9448ed68f2dfc18371, type: 3}
   dropItem:
   - {fileID: 523629600143528482, guid: 00e129fd14abcdd4a9026f1a1c3a031e, type: 3}
   type: 0
   attackDamage: 10
+  dieAudio: {fileID: 8300000, guid: 258d88e5c6c048f4b9b8ff91c6405114, type: 3}
+  FireBloodPoint: {fileID: 0}
 --- !u!1 &5800592414205554942
 GameObject:
   m_ObjectHideFlags: 0
@@ -6145,7 +6145,7 @@ Transform:
   m_GameObject: {fileID: 9028187063159220620}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.83, y: 1.356, z: 0}
+  m_LocalPosition: {x: -0.11, y: 0.94, z: 0.85}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6163,7 +6163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91e4a2585741e8944838cd5ee4d66763, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackRange: 1.3
+  _attackRange: 2
   _mask:
     serializedVersion: 2
     m_Bits: 128

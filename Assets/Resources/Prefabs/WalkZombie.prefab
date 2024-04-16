@@ -1569,7 +1569,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3622641468401602797}
   - component: {fileID: 2823979465534074370}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: AttackPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4279,6 +4279,7 @@ GameObject:
   - component: {fileID: 1184995416955884278}
   - component: {fileID: 4490771508726951150}
   - component: {fileID: 7687534259579004962}
+  - component: {fileID: 70692212403311212}
   m_Layer: 6
   m_Name: WalkZombie
   m_TagString: Zombie
@@ -4419,16 +4420,30 @@ MonoBehaviour:
   type: 0
   attackPoint: {fileID: 2823979465534074370}
   attackDamage: 3
+  dieSound: {fileID: 8300000, guid: 0cb9afc50d9cebd4e9698537e6bfea16, type: 3}
   player: {fileID: 3524292467188578206, guid: 093b594236d32bb44ac7f692f978d7b1, type: 3}
   rigid: {fileID: 1184995416955884278}
   animator: {fileID: 7142349063083142999}
-  sightRange: 10
+  sightRange: 50
   attackRange: 1
   timeBetweenAttacks: 1
   zombieSpeed: 0.8
   hp: 100
-  dropItems:
-  - {fileID: 523629600143528482, guid: 00e129fd14abcdd4a9026f1a1c3a031e, type: 3}
+  death1Clip: {fileID: 0}
+--- !u!114 &70692212403311212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6353557080926403095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 481092cc15e545d48820e7d078f98942, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoRelease: 0
+  releaseTime: 0
 --- !u!1 &6575534185515480877
 GameObject:
   m_ObjectHideFlags: 0

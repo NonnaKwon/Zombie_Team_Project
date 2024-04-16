@@ -16,6 +16,7 @@ public class UI_Mission : BaseUI
         MissionContent,
         Percent,
         BossCount,
+        BossGoal,
         CoinRec,
         BossRec,
         MissionList
@@ -77,5 +78,7 @@ public class UI_Mission : BaseUI
     public void SetCurrentMission(Mission mission)
     {
         _currentMission = mission;
+        if (_currentMission.bossGoal != 0)
+            GetUI<TMP_Text>(GameObjects.BossGoal.ToString()).text = _currentMission.bossGoal.ToString("D2");
     }
 }

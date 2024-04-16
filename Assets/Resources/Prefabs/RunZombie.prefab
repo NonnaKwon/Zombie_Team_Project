@@ -4045,7 +4045,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8752628779142272755}
   - component: {fileID: 9191865385183099761}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: AttackPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4830,6 +4830,7 @@ GameObject:
   - component: {fileID: 5459167979706364587}
   - component: {fileID: 217821051945644354}
   - component: {fileID: 8699540420468034892}
+  - component: {fileID: -7034999846106213263}
   m_Layer: 6
   m_Name: RunZombie
   m_TagString: Zombie
@@ -4970,16 +4971,30 @@ MonoBehaviour:
   type: 1
   attackPoint: {fileID: 9191865385183099761}
   attackDamage: 3
+  dieSound: {fileID: 8300000, guid: 0cb9afc50d9cebd4e9698537e6bfea16, type: 3}
   player: {fileID: 3524292467188578206, guid: 093b594236d32bb44ac7f692f978d7b1, type: 3}
   rigid: {fileID: 5459167979706364587}
   animator: {fileID: 5420633709241321314}
-  sightRange: 10
+  sightRange: 50
   attackRange: 1
   timeBetweenAttacks: 1.2
-  zombieSpeed: 0.1
+  zombieSpeed: 1.5
   hp: 100
-  dropItems:
-  - {fileID: 523629600143528482, guid: 00e129fd14abcdd4a9026f1a1c3a031e, type: 3}
+  death1Clip: {fileID: 0}
+--- !u!114 &-7034999846106213263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8215388454793580449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 481092cc15e545d48820e7d078f98942, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoRelease: 0
+  releaseTime: 0
 --- !u!1 &8224484140138190221
 GameObject:
   m_ObjectHideFlags: 0

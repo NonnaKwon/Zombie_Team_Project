@@ -81,8 +81,9 @@ public class FightController : MonoBehaviour, IDamagable
         yield return new WaitForSeconds(1.3f);
         Vector3 pos = transform.position + transform.forward * 2f + Vector3.up * 2.3f;
         GrenadeObject grenade = Instantiate(_grenadePrefab, pos, transform.rotation);
-        grenade.ForwardForce(transform.forward * 100f);
-        _player.ChangeAnimationLayer(_curWeapon._data.animationLayer);
+        grenade.ForwardForce(_player.MousePointer.transform.position);
+        if(_curWeapon != null)
+            _player.ChangeAnimationLayer(_curWeapon._data.animationLayer);
     }
 
     public void TakeDamage(float damage)
@@ -92,7 +93,8 @@ public class FightController : MonoBehaviour, IDamagable
         _animator.Play("GetHit");
         if (_hp <= 0)
         {
-            _player.StateMachine.ChangeState(Define.PlayerState.Die);
+            Manager.Data.SetSaveCoins();
+            Manager.Game.ShowEnding(EndingType.Breakthrough);
         }
     }
 
