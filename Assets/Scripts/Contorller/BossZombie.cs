@@ -48,7 +48,6 @@ public class BossZombie : MonoBehaviour, IDamagable
 
     void Start()
     {
-        currentPhase = BossPhase.Phase3;
         curHp = maxHp;
         player = GameObject.FindGameObjectWithTag("Player").transform;
         animator = GetComponent<Animator>();
@@ -67,6 +66,7 @@ public class BossZombie : MonoBehaviour, IDamagable
 
     void Update()
     {
+        Debug.Log(currentState);
         switch (currentState)
         {
             case ZombieState.Idle:
@@ -245,13 +245,6 @@ public class BossZombie : MonoBehaviour, IDamagable
         }
     }
 
-    IEnumerator ReturnBloodEffectToPool(GameObject bloodEffect)
-    {
-        yield return new WaitForSeconds(1); // Ç÷Èç È¿°ú Áö¼Ó ½Ã°£
-        //TakeHitManager.Instance.ReturnToPool(bloodEffect);
-    }
-
-   
 
     private void Die()
     {

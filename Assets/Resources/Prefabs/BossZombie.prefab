@@ -4339,13 +4339,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52f6228fa5e308644a185d4335b1f40e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 5000
+  maxHp: 10000
   curHp: 0
   attackRange: 3
-  sightRange: 15
+  sightRange: 25
   zombieSpeed: 2
   attackPoint: {fileID: 8138594120678617632}
-  zombiePrefab: {fileID: 5780363829149477456}
+  zombiePrefab: {fileID: 6353557080926403095, guid: f2d21f22ab700a9448ed68f2dfc18371, type: 3}
   dropItem:
   - {fileID: 523629600143528482, guid: 00e129fd14abcdd4a9026f1a1c3a031e, type: 3}
   type: 0

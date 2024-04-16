@@ -11,7 +11,7 @@ public class ZombieController : MonoBehaviour, IDamagable
 
     public Transform player;
     public Rigidbody rigid;
-    public Animator animator;
+    Animator animator;
 
     public float sightRange, attackRange;
     private bool alreadyAttacked;
@@ -44,6 +44,8 @@ public class ZombieController : MonoBehaviour, IDamagable
     }
     private void Start()
     {
+        animator = GetComponent<Animator>();
+        animator.SetInteger("ZombieType", (int)type);
         bloodEffect = Manager.Resource.Load<PooledObject>("Prefabs/Effects/BloodEffect");
         coin = Manager.Resource.Load<PooledObject>("Prefabs/GoldCoins");
     }
@@ -54,7 +56,6 @@ public class ZombieController : MonoBehaviour, IDamagable
         rigid = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         currentState = ZombieState.Idle;
-        animator.SetInteger("ZombieType", (int)type);
         attackPoint = GetComponentInChildren<AttackPoint>();
     }
 

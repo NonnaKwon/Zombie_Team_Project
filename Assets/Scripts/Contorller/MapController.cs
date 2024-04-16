@@ -19,7 +19,7 @@ public class MapController : MonoBehaviour
 
     private void Update()
     {
-        if (Vector3.Distance(transform.position, _player.transform.position) >= DESTROY_DISTANCE)
+        if (Vector3.Distance(transform.position, _player.gameObject.transform.position) >= DESTROY_DISTANCE)
             Destroy(gameObject);
     }
 
@@ -63,6 +63,6 @@ public class MapController : MonoBehaviour
 
         MapController spawnMap = Instantiate(_mapPrefab, spawnPos, transform.rotation);
         spawnMap.transform.Rotate(new Vector3(0, _rotateRandomList[randomRotate], 0));
-        spawnMap.transform.parent = transform;
+        spawnMap.transform.parent = transform.root;
     }
 }

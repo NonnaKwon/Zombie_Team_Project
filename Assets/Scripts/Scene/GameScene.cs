@@ -6,6 +6,7 @@ using static Define;
 public class GameScene : BaseScene
 {
     [SerializeField] GameObject _bossPrefab;
+
     private float _passTime = PLAY_TIME;
     private bool isBoss = false;
 
@@ -47,7 +48,11 @@ public class GameScene : BaseScene
     {
         _passTime -= Time.unscaledDeltaTime;
         _game.GameUI.PassTime = _passTime;
-        if(!isBoss && _passTime <= PLAY_TIME - BOSS_PLAY_TIME)
+
+        if (!Manager.Game.IsSpawn && _passTime <= PLAY_TIME - SPAWN_TIME)
+            Manager.Game.IsSpawn = true;
+
+        if (!isBoss && _passTime <= PLAY_TIME - BOSS_PLAY_TIME)
         {
             Vector3 insPos = _game.Player.transform.position + new Vector3(5f,0,5f);
             Instantiate(_bossPrefab, insPos, _game.transform.rotation);

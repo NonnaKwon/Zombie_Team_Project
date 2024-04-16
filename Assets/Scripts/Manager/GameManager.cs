@@ -10,6 +10,7 @@ public class GameManager : Singleton<GameManager>
 
     private int _bossCount = 0;
 
+    public bool IsSpawn = false;
     public event Action BossChange;
     public int BossCount { get { return _bossCount; } set { _bossCount = value; BossChange?.Invoke(); } }
     public PlayerController Player 

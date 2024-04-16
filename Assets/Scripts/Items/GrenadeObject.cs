@@ -36,14 +36,8 @@ public class GrenadeObject : MonoBehaviour
             StartCoroutine(Bang());
     }
 
-    public void ForwardForce(Vector3 targetPos)
-    {
-        Vector3 dir = (targetPos - transform.position).normalized;
-        dir = new Vector3(dir.x, 0, dir.z);
-        _rigid.velocity = new Vector3(0, _power, 0) + dir * _power;
-    }
 
-    public void ForwardForce2(Vector3 targetPos)
+    public void ForwardForce(Vector3 targetPos)
     {
         StartCoroutine(CoForce(targetPos));
     }
