@@ -40,6 +40,10 @@ public class GameScene : BaseScene
         Manager.Pool.CreatePool(_crawlZombie, ZOMBIE_POOL_SIZE, ZOMBIE_POOL_SIZE);
         Manager.Pool.CreatePool(_runZombie, ZOMBIE_POOL_SIZE, ZOMBIE_POOL_SIZE);
         Manager.Pool.CreatePool(_walkZombie, ZOMBIE_POOL_SIZE, ZOMBIE_POOL_SIZE);
+
+        Manager.Data.LoadData();
+        Manager.Game.Player.Coin = Manager.Data.GameData.coin;
+        StartCoroutine(SaveCoin());
     }
 
     private void Update()
@@ -56,6 +60,16 @@ public class GameScene : BaseScene
                 _game.ShowEnding(EndingType.HopeFromDespair);
             else
                 _game.ShowEnding(EndingType.DespairFromHope);
+        }
+    }
+
+
+    IEnumerator SaveCoin()
+    {
+        while(true)
+        {
+            yield return new WaitForSecondsRealtime(SAVE_TIME);
+            Manager.Data.SetSaveCoins();
         }
     }
 

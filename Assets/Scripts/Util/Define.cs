@@ -9,6 +9,7 @@ public class Define
     public const float PLAY_TIME = 50 * 60; //50Ка
     public const int MAX_ZOMBIE = 100;
     public const int ZOMBIE_POOL_SIZE = 15;
+    public const int SAVE_TIME = 5*60;
     public enum Scene
     {
         TItle,

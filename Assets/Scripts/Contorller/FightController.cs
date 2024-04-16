@@ -92,6 +92,7 @@ public class FightController : MonoBehaviour, IDamagable
         _animator.Play("GetHit");
         if (_hp <= 0)
         {
+            Manager.Data.SetSaveCoins();
             Manager.Game.ShowEnding(EndingType.Breakthrough);
         }
     }
