@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GrenadeObject : MonoBehaviour
@@ -48,14 +49,13 @@ public class GrenadeObject : MonoBehaviour
     IEnumerator CoForce(Vector3 targetPos)
     {
         Vector3 startPos = transform.position;
-        Vector3 mid = new Vector3(startPos.x + (startPos.x - targetPos.x) / 2, 10f, startPos.z + (startPos.z - targetPos.z) / 2);
-        Debug.Log(startPos + ":" + targetPos + "=" + mid);
+        Vector3 mid = new Vector3(startPos.x + (targetPos.x - startPos.x) / 2, 10f, startPos.z + (targetPos.z - startPos.z) / 2);
         float time = 0;
-        float duration = 2f;
+        float duration = 1.2f;
         while (true)
         {
-            if (time > 1f)
-                time = 0f;
+            if (time >= duration)
+                break;
 
             Vector3 p1 = Vector3.Lerp(startPos, mid, time);
             Vector3 p2 = Vector3.Lerp(mid, targetPos, time);
@@ -73,7 +73,7 @@ public class GrenadeObject : MonoBehaviour
         _attackPoint.Hit(_data.minDamage, _data.maxDamage);
         Manager.Pool.GetPool(_explosion, transform.position, transform.rotation);
         yield return new WaitForSeconds(0.5f);
+        //SoundManager.Instance.PlaySFX(explosionSound);
         Destroy(gameObject);
-        SoundManager.Instance.PlaySFX(explosionSound);
     }
 }
