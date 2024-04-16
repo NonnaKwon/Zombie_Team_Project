@@ -6,7 +6,7 @@ public class Define
 {
     public const int GET_COIN_AMOUNT = 10;
     public const int JUMP_MAX_COUNT = 1;
-    public const float PLAY_TIME = 50 * 60; //50분
+    public const float PLAY_TIME = 30 * 60; //50분
     public const float BOSS_PLAY_TIME = 10 * 60; //20분 후
     public const int MAX_ZOMBIE = 100;
     public const int ZOMBIE_POOL_SIZE = 20;
