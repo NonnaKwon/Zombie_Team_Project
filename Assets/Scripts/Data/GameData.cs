@@ -7,5 +7,5 @@ using UnityEngine;
 [Serializable]
 public class GameData
 {
-    public int GoldCoins;
+    public int coin;
 }

@@ -32,6 +32,7 @@ public class DataManager : Singleton<DataManager>
 
     public void LoadData(int index = 0)
     {
+        Debug.Log("로드 완료");
         if (File.Exists($"{path}/{index}.txt") == false)
         {
             NewData();
@@ -48,26 +49,16 @@ public class DataManager : Singleton<DataManager>
             Debug.LogWarning($"Load data fail : {ex.Message}");
             NewData();
         }
+        
     }
     public bool ExistData(int index = 0)
     {
         return File.Exists($"{path}/{index}.txt");
     }
 
-    public void AddGoldCoins(int amount)
+    public void SetSaveCoins()
     {
-        gameData.GoldCoins += amount;
-        SaveData(0);
-    }
-
-    public int GetGoldCoins()
-    {
-        return gameData.GoldCoins;
-    }
-
-    public void ResetGameData()
-    {
-        DataManager.Instance.NewData();
-        DataManager.Instance.SaveData();
+        gameData.coin = Manager.Game.Player.Coin;
+        SaveData();
     }
 }
