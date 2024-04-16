@@ -53,7 +53,11 @@ public class UI_Inventory : PopUpUI
             if(!_invenItemInfo[i].GetActiveToken())
                 _invenItemInfo[i].SetActiveToken(true);
             ItemData item = _inventory.GetData(i, out int itemNum);
-            _invenItemInfo[i].SetData(item,itemNum);
+
+            if(item.ItemName.Equals("bullet"))
+                _invenItemInfo[i].SetData(item, _inventory.BulletCount);
+            else
+                _invenItemInfo[i].SetData(item,itemNum);
         }
         while (_count-- > _inventory.ItemSize)
             _invenItemInfo[_count].SetActiveToken(false);

@@ -25,6 +25,8 @@ public class UI_InvenItemToken : BaseUI, IPointerClickHandler
 
     public void SetActiveToken(bool active)
     {
+        if (active == false)
+            _isQuickAdd = false;
         GetUI(GameObjects.Data.ToString()).SetActive(active);
         GetUI(GameObjects.Slot.ToString()).SetActive(active);
     }
@@ -40,6 +42,10 @@ public class UI_InvenItemToken : BaseUI, IPointerClickHandler
         {
             SetActiveToken(false);
             return;
+        }
+        if (_isQuickAdd && _item != item)
+        {
+            _isQuickAdd = false;
         }
         _count = count;
         _item = item;
@@ -59,6 +65,7 @@ public class UI_InvenItemToken : BaseUI, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        Debug.Log(_isQuickAdd);
         if (!_isQuickAdd && eventData.button == PointerEventData.InputButton.Right)
         {
             Manager.Game.GameUI.AddQuickSlot(_item,_count);

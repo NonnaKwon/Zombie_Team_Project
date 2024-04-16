@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
 
     private StateMachine<PlayerState> _stateMachine;
     public StateMachine<PlayerState> StateMachine { get { return _stateMachine; } }
+    public bool CanDash { get; set; } = true;
     public Vector2 MousePos { get { return _mousePos; } }
     public float MoveSpeed { get { return _moveSpeed; } }
     public float CurSpeed { set { _curSpeed = value; } }
@@ -71,7 +72,7 @@ public class PlayerController : MonoBehaviour
         _dashSpeedPercent = 1.8f;
         _curSpeed = _moveSpeed;
         _animationLayer = 0;
-        Coin = 2450;
+        Coin = 0;
 
         if (_stateMachine.CurState != PlayerState.Idle)
             _stateMachine.ChangeState(PlayerState.Idle);
@@ -106,6 +107,7 @@ public class PlayerController : MonoBehaviour
                 Vector3 tmpDir = hit.point - transform.position;
                 Vector3 rotateDir = new Vector3(tmpDir.x, 0, tmpDir.z);
                 transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(rotateDir), 10f * Time.deltaTime);
+                MousePointer.transform.position = hit.point;
             }
         }
         else
@@ -118,8 +120,8 @@ public class PlayerController : MonoBehaviour
                 Quaternion lookRotation = Quaternion.LookRotation(forwardDir * _moveDir.z + rightDir * _moveDir.x);
                 transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, 5f * Time.deltaTime);
             }
+            MousePointer.transform.position = transform.position + transform.forward * 10f + new Vector3(0,1f,0);
         }
-        MousePointer.transform.position = transform.position + transform.forward + new Vector3(0,1f,0);
     }
 
     private void Move()
@@ -133,7 +135,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnDash(InputValue value)
     {
-        if (value.isPressed)
+        if (value.isPressed && CanDash)
             _onDash = true;
         else
             _onDash = false;

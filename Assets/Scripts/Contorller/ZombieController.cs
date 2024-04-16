@@ -7,9 +7,11 @@ public class ZombieController : MonoBehaviour, IDamagable
     [SerializeField] ZombieType type;
     [SerializeField] AttackPoint attackPoint;
     [SerializeField] float attackDamage;
+    [SerializeField] AudioClip dieSound;
+
     public Transform player;
     public Rigidbody rigid;
-    public Animator animator;
+    Animator animator;
 
     public float sightRange, attackRange;
     private bool alreadyAttacked;
@@ -23,6 +25,7 @@ public class ZombieController : MonoBehaviour, IDamagable
     private ZombieState currentState;
     public float hp = 100;
     PooledObject coin;
+    //AudioClip hitSound;
 
     [SerializeField] private AudioClip death1Clip;
 
@@ -41,9 +44,10 @@ public class ZombieController : MonoBehaviour, IDamagable
     }
     private void Start()
     {
+        animator = GetComponent<Animator>();
+        animator.SetInteger("ZombieType", (int)type);
         bloodEffect = Manager.Resource.Load<PooledObject>("Prefabs/Effects/BloodEffect");
         coin = Manager.Resource.Load<PooledObject>("Prefabs/GoldCoins");
-
     }
 
     private void Awake()
@@ -52,7 +56,6 @@ public class ZombieController : MonoBehaviour, IDamagable
         rigid = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         currentState = ZombieState.Idle;
-        animator.SetInteger("ZombieType", (int)type);
         attackPoint = GetComponentInChildren<AttackPoint>();
     }
 
@@ -114,7 +117,7 @@ public class ZombieController : MonoBehaviour, IDamagable
         if (time > timeBetweenAttacks)
         {
             time = 0;
-            attackPoint.Hit(attackDamage);
+            attackPoint.Hit(attackDamage,true);
             if (ZombieType.crawl == type)
                 animator.Play("Bite");
             else
@@ -132,18 +135,11 @@ public class ZombieController : MonoBehaviour, IDamagable
     IEnumerator CoDie()
     {
         animator.SetTrigger("Die");
+        Manager.Sound.PlaySFX(dieSound);
         yield return new WaitForSecondsRealtime(1.5f);
         DropItem();
         SoundManager.Instance.PlaySFX(death1Clip);
         GetComponent<PooledObject>().Release();
-    }
-
-    void OnCollisionEnter(Collision collision)
-    {
-        if (collision.collider.CompareTag("Bat"))
-        {
-            SoundManager.instance.PlayMeleeHitSound();
-        }
     }
     private void DropItem()
     {
@@ -155,11 +151,9 @@ public class ZombieController : MonoBehaviour, IDamagable
         hp -= damage;
 
         Manager.Pool.GetPool(bloodEffect, transform.position + new Vector3(0, 1.5f, 0),transform.rotation);
-
         if (hp <= 0)
         {
             StartCoroutine(CoDie());
-            Debug.Log("Á»ºñ Á×À½");
         }
     }
 

@@ -25,7 +25,8 @@ public class StatusController : MonoBehaviour
     private float[] _fatigueEffectRatio = { 0.02f, 0.05f, 0.08f };
     private float _staminaEffectRatio = 0.01f;
 
-    private const float DECREASE = 0.04f / 60; //분당이어서 초당으로 계산.
+    //private const float DECREASE = 0.04f / 60; //분당이어서 초당으로 계산.
+    private const float DECREASE = 0.1f / 60; //분당이어서 초당으로 계산.
     private const float DECREASE_STAMINA = 0.05f;
     private const float INCREASE_STAMINA = 0.03f;
 
@@ -63,8 +64,6 @@ public class StatusController : MonoBehaviour
             case Status.Hunger:
                 _hunger += isPlus ? value : -value;
                 _connectUI.ChangeData('H', _hunger);
-                if (_hunger <= 0)
-                    Manager.Game.ShowEnding(EndingType.InsatiableHunger);
                 break;
             case Status.Thirst:
                 _thirst += isPlus ? value : -value;
@@ -88,7 +87,9 @@ public class StatusController : MonoBehaviour
     private void UpdateStateEffect()
     {
         if (_hunger <= 0)
-            Manager.Game.Player.StateMachine.ChangeState(Define.PlayerState.Die);
+        {
+            Manager.Game.ShowEnding(EndingType.InsatiableHunger);
+        }
 
         for(int i=_step-1; i>=0;i--)
         {
@@ -107,6 +108,13 @@ public class StatusController : MonoBehaviour
                 break;
             }
         }
+
+        if(_stamina <= 0)
+        {
+            _stamina = 0;
+            _playerController.CanDash = false;
+        }else if(!_playerController.CanDash && _stamina > 0)
+            _playerController.CanDash = true;
 
         if (_decreaseStaminaAmount >= DECREASE_STAMINA)
         {

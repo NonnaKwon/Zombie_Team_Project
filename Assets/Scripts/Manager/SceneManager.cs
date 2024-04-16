@@ -78,16 +78,18 @@ public class SceneManager : Singleton<SceneManager>
     {
         ending.gameObject.SetActive(true);
         yield return FadeOut(ending);
-        Time.timeScale = 0f;
-        if (endingType == Define.EndingType.Breakthrough || endingType == Define.EndingType.InsatiableHunger)
-            ending.GetComponentInChildren<TMP_Text>().text = "You Die";
-        else
-            ending.GetComponentInChildren<TMP_Text>().text = "Clear";
+
         Manager.Pool.ClearPool();
         Manager.Sound.StopSFX();
         Manager.UI.ClearPopUpUI();
         Manager.UI.ClearWindowUI();
         Manager.UI.CloseInGameUI();
+
+        Time.timeScale = 0f;
+        if (endingType == Define.EndingType.Breakthrough || endingType == Define.EndingType.InsatiableHunger)
+            ending.GetComponentInChildren<TMP_Text>().text = "You Die";
+        else
+            ending.GetComponentInChildren<TMP_Text>().text = "Clear";
         AsyncOperation oper = UnitySceneManager.LoadSceneAsync(sceneName);
 
         while (oper.isDone == false)
@@ -97,13 +99,15 @@ public class SceneManager : Singleton<SceneManager>
 
         Manager.UI.EnsureEventSystem();
 
-        BaseScene curScene = GetCurScene();
+        EndingScene curScene = GetCurScene() as EndingScene;
+        curScene.Ending = endingType;
         yield return curScene.LoadingRoutine();
 
         Time.timeScale = 1f;
 
         yield return FadeIn(ending);
         ending.gameObject.SetActive(false);
+
     }
 
     IEnumerator FadeOut(Image fade)
