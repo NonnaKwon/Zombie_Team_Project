@@ -116,7 +116,7 @@ public class ZombieController : MonoBehaviour, IDamagable
         if (time > timeBetweenAttacks)
         {
             time = 0;
-            attackPoint.Hit(attackDamage);
+            attackPoint.Hit(attackDamage,true);
             if (ZombieType.crawl == type)
                 animator.Play("Bite");
             else

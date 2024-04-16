@@ -13,7 +13,7 @@ public class AttackPoint : MonoBehaviour
         _hitSound = Manager.Resource.Load<AudioClip>("Sounds/MeleeHit");
     }
 
-    public void Hit(float damage,bool isBat = false)
+    public void Hit(float damage,bool isSound = false)
     {
         int size = Physics.OverlapSphereNonAlloc(transform.position, _attackRange, _colliders, _mask);
         for (int i = 0; i < size; i++)
@@ -21,7 +21,7 @@ public class AttackPoint : MonoBehaviour
             IDamagable damagable = _colliders[i].gameObject.GetComponent<IDamagable>();
             if (damagable != null)
             {
-                if(isBat)
+                if(isSound)
                     Manager.Sound.PlaySFX(_hitSound);
                 damagable.TakeDamage(damage);
             }
