@@ -25,6 +25,7 @@ public class ZombieController : MonoBehaviour, IDamagable
     public float hp = 100;
     PooledObject coin;
 
+    [SerializeField] private AudioClip death1Clip;
 
     private enum ZombieState
     {
@@ -134,9 +135,17 @@ public class ZombieController : MonoBehaviour, IDamagable
         animator.SetTrigger("Die");
         yield return new WaitForSecondsRealtime(1.5f);
         DropItem();
+        SoundManager.Instance.PlaySFX(death1Clip);
         GetComponent<PooledObject>().Release();
     }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.CompareTag("Bat"))
+        {
+            SoundManager.instance.PlayMeleeHitSound();
+        }
+    }
     private void DropItem()
     {
         Manager.Pool.GetPool(coin, transform.position, transform.rotation);

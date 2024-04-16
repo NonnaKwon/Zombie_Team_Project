@@ -15,7 +15,6 @@ public class Gun : Weapon
     Inventory _inventory;
     PooledObject _muzzleFlash;
 
-
     protected override void Awake()
     {
         base.Awake();
@@ -73,6 +72,7 @@ public class Gun : Weapon
         StartCoroutine(DrawLine(_muzzlePoint.position, dir));
         _playerAnimator.Play("fire");
         _playerAnimator.SetFloat("attackSpeed", AttackSpeed);
+        SoundManager.Instance.PlaySFX(SoundManager.Instance.gunshotSound);
     }
 
     IEnumerator DrawLine(Vector3 startPos,Vector3 dir)

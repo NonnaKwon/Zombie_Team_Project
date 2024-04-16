@@ -20,6 +20,7 @@ public class DataManager : Singleton<DataManager>
 
     public void SaveData(int index = 0)
     {
+        Debug.Log("저장 완료");
         if (Directory.Exists(path) == false)
         {
             Directory.CreateDirectory(path);
@@ -48,9 +49,25 @@ public class DataManager : Singleton<DataManager>
             NewData();
         }
     }
-
     public bool ExistData(int index = 0)
     {
         return File.Exists($"{path}/{index}.txt");
+    }
+
+    public void AddGoldCoins(int amount)
+    {
+        gameData.GoldCoins += amount;
+        SaveData(0);
+    }
+
+    public int GetGoldCoins()
+    {
+        return gameData.GoldCoins;
+    }
+
+    public void ResetGameData()
+    {
+        DataManager.Instance.NewData();
+        DataManager.Instance.SaveData();
     }
 }
