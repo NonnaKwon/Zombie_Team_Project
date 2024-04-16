@@ -21,6 +21,7 @@ public class BossZombie : MonoBehaviour, IDamagable
     public GameObject[] dropItem;
     [SerializeField] ZombieType type;
     [SerializeField] float attackDamage;
+    [SerializeField] AudioClip dieAudio;
     private PooledObject bloodEffect;
     private PooledObject fireBloodEffect;
     public Transform FireBloodPoint;
@@ -239,6 +240,7 @@ public class BossZombie : MonoBehaviour, IDamagable
         if (curHp <= 0)
         {
             Die();
+            Manager.Sound.PlaySFX(dieAudio);
             Debug.Log("º¸½º Á×À½");
         }
     }

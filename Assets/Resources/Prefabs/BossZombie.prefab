@@ -4350,6 +4350,7 @@ MonoBehaviour:
   - {fileID: 523629600143528482, guid: 00e129fd14abcdd4a9026f1a1c3a031e, type: 3}
   type: 0
   attackDamage: 10
+  dieAudio: {fileID: 8300000, guid: 258d88e5c6c048f4b9b8ff91c6405114, type: 3}
   FireBloodPoint: {fileID: 0}
 --- !u!1 &5800592414205554942
 GameObject:
