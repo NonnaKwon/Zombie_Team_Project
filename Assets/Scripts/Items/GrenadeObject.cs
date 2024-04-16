@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GrenadeObject : MonoBehaviour
@@ -17,7 +18,7 @@ public class GrenadeObject : MonoBehaviour
         _attackPoint = GetComponentInChildren<AttackPoint>();
         _data = Manager.Resource.Load<WeaponData>("Data/Grenade");
         _explosion = Manager.Resource.Load<PooledObject>("Prefabs/Effects/Explosion");
-        _power = 7f;
+        _power = 4f;
         explosionSound = Resources.Load<AudioClip>("Grenade");
     }
     private void OnTriggerEnter(Collider other)
@@ -40,6 +41,31 @@ public class GrenadeObject : MonoBehaviour
         _rigid.velocity = new Vector3(0, _power, 0) + dir * _power;
     }
 
+    public void ForwardForce2(Vector3 targetPos)
+    {
+        StartCoroutine(CoForce(targetPos));
+    }
+
+    IEnumerator CoForce(Vector3 targetPos)
+    {
+        Vector3 startPos = transform.position;
+        Vector3 mid = new Vector3(startPos.x + (targetPos.x - startPos.x) / 2, 10f, startPos.z + (targetPos.z - startPos.z) / 2);
+        float time = 0;
+        float duration = 1.2f;
+        while (true)
+        {
+            if (time >= duration)
+                break;
+
+            Vector3 p1 = Vector3.Lerp(startPos, mid, time);
+            Vector3 p2 = Vector3.Lerp(mid, targetPos, time);
+            transform.position = Vector3.Lerp(p1, p2, time);
+
+            time += Time.deltaTime / duration;
+            yield return null;
+        }
+    }
+
 
     IEnumerator Bang()
     {
@@ -47,7 +73,7 @@ public class GrenadeObject : MonoBehaviour
         _attackPoint.Hit(_data.minDamage, _data.maxDamage);
         Manager.Pool.GetPool(_explosion, transform.position, transform.rotation);
         yield return new WaitForSeconds(0.5f);
+        //SoundManager.Instance.PlaySFX(explosionSound);
         Destroy(gameObject);
-        SoundManager.Instance.PlaySFX(explosionSound);
     }
 }

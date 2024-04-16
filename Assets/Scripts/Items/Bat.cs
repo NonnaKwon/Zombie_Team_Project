@@ -37,7 +37,7 @@ public class Bat : Weapon
     {
         float damage = Random.Range(_data.minDamage, _data.maxDamage);
         _attackPoint.Hit(damage);
-        SoundManager.instance.PlayMeleeHitSound();
+        //SoundManager.instance.PlayMeleeHitSound();
         OnAttack = false;
     }
 
