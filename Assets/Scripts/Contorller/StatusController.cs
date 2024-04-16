@@ -25,7 +25,8 @@ public class StatusController : MonoBehaviour
     private float[] _fatigueEffectRatio = { 0.02f, 0.05f, 0.08f };
     private float _staminaEffectRatio = 0.01f;
 
-    private const float DECREASE = 0.04f / 60; //분당이어서 초당으로 계산.
+    //private const float DECREASE = 0.04f / 60; //분당이어서 초당으로 계산.
+    private const float DECREASE = 0.1f / 60; //분당이어서 초당으로 계산.
     private const float DECREASE_STAMINA = 0.05f;
     private const float INCREASE_STAMINA = 0.03f;
 

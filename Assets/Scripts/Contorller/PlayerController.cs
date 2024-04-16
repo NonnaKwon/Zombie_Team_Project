@@ -107,6 +107,7 @@ public class PlayerController : MonoBehaviour
                 Vector3 tmpDir = hit.point - transform.position;
                 Vector3 rotateDir = new Vector3(tmpDir.x, 0, tmpDir.z);
                 transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(rotateDir), 10f * Time.deltaTime);
+                MousePointer.transform.position = hit.point;
             }
         }
         else
@@ -119,8 +120,8 @@ public class PlayerController : MonoBehaviour
                 Quaternion lookRotation = Quaternion.LookRotation(forwardDir * _moveDir.z + rightDir * _moveDir.x);
                 transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, 5f * Time.deltaTime);
             }
+            MousePointer.transform.position = transform.position + transform.forward * 10f + new Vector3(0,1f,0);
         }
-        MousePointer.transform.position = transform.position + transform.forward + new Vector3(0,1f,0);
     }
 
     private void Move()

@@ -21,12 +21,13 @@ public class BossZombie : MonoBehaviour, IDamagable
     public GameObject[] dropItem;
     [SerializeField] ZombieType type;
     [SerializeField] float attackDamage;
+    [SerializeField] AudioClip dieAudio;
     private PooledObject bloodEffect;
     private PooledObject fireBloodEffect;
     public Transform FireBloodPoint;
 
     private bool canMove = true;
-    
+    private int curCount = 0;
 
     private float time = 0;
     private enum BossPhase { Phase1, Phase2, Phase3 }
@@ -47,7 +48,6 @@ public class BossZombie : MonoBehaviour, IDamagable
 
     void Start()
     {
-        currentPhase = BossPhase.Phase3;
         curHp = maxHp;
         player = GameObject.FindGameObjectWithTag("Player").transform;
         animator = GetComponent<Animator>();
@@ -136,7 +136,7 @@ public class BossZombie : MonoBehaviour, IDamagable
         }
     }
 
-    float attackSpeed = 3f;
+    float attackSpeed = 1f;
     void AttackPlayer()
     {
         time += Time.deltaTime;
@@ -159,7 +159,8 @@ public class BossZombie : MonoBehaviour, IDamagable
             case BossPhase.Phase2:
                 Debug.Log("2페이즈");
                 StartCoroutine(Attack());
-                StartCoroutine(StartCreateZombies());
+                if(curCount <= 50)
+                    StartCoroutine(StartCreateZombies());
                 break;
             case BossPhase.Phase3:
                 Debug.Log("3페이즈");
@@ -191,20 +192,22 @@ public class BossZombie : MonoBehaviour, IDamagable
     }
 
 
-
+    
     IEnumerator StartCreateZombies()
     {
-        int count = 20;
-        while (count >= 0) // 총 20마리 생성
+        while (true)
         {
+            if (curCount >= 50)
+                break;
             CreateZombie();
+            curCount++;
             yield return new WaitForSeconds(0.5f);
         }
     }
 
     void CreateZombie()
     {
-        float range = 15f;
+        float range = 10f;
         Vector3 InstPos = transform.position + new Vector3(Random.Range(-range, range), 0, Random.Range(-range, range));
         Instantiate(zombiePrefab, InstPos, Quaternion.identity);
     }
@@ -239,17 +242,11 @@ public class BossZombie : MonoBehaviour, IDamagable
         if (curHp <= 0)
         {
             Die();
+            Manager.Sound.PlaySFX(dieAudio);
             Debug.Log("보스 죽음");
         }
     }
 
-    IEnumerator ReturnBloodEffectToPool(GameObject bloodEffect)
-    {
-        yield return new WaitForSeconds(1); // 혈흔 효과 지속 시간
-        //TakeHitManager.Instance.ReturnToPool(bloodEffect);
-    }
-
-   
 
     private void Die()
     {

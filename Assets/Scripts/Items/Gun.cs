@@ -14,10 +14,13 @@ public class Gun : Weapon
     RigBuilder _rigBuilder;
     Inventory _inventory;
     PooledObject _muzzleFlash;
+    AudioClip _audio;
 
     protected override void Awake()
     {
         base.Awake();
+
+        _audio = Manager.Resource.Load<AudioClip>("Sounds/pistol");
         _curBullet = _maxBullet;
         _lineRenderer = GetComponent<LineRenderer>();
         _rigBuilder = GetComponentInParent<RigBuilder>();
@@ -45,6 +48,8 @@ public class Gun : Weapon
         if (_inventory.BulletCount == 0)
             return;
         OnAttack = true;
+
+        Manager.Sound.PlaySFX(_audio);
         _inventory.BulletCount--;
         Manager.Pool.GetPool(_muzzleFlash, _muzzlePoint.position, _muzzlePoint.rotation);
         Vector3 dir = Manager.Game.Player.transform.forward;
@@ -57,7 +62,6 @@ public class Gun : Weapon
                 //몬스터 공격
                 float damage = Random.Range(_data.minDamage, _data.maxDamage);
                 damagable.TakeDamage(damage);
-                Debug.Log("Zombie : 공격당함");
             }
 
             Rigidbody rigid = hitInfo.collider.GetComponent<Rigidbody>();
@@ -72,7 +76,7 @@ public class Gun : Weapon
         StartCoroutine(DrawLine(_muzzlePoint.position, dir));
         _playerAnimator.Play("fire");
         _playerAnimator.SetFloat("attackSpeed", AttackSpeed);
-        SoundManager.Instance.PlaySFX(SoundManager.Instance.gunshotSound);
+        //SoundManager.Instance.PlaySFX(SoundManager.Instance.gunshotSound);
     }
 
     IEnumerator DrawLine(Vector3 startPos,Vector3 dir)
