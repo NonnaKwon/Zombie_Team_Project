@@ -6,7 +6,9 @@ using UnityEngine.UI;
 
 public class UI_GameScene : InGameUI
 {
-    private float _passTime = Define.PLAY_TIME;
+    private UI_QuickSlot _quickSlot;
+    public UI_QuickSlot QuickSlot { get { return _quickSlot; } }
+    public float PassTime;
     enum GameObjects
     {
         PlayerHP,
@@ -16,28 +18,40 @@ public class UI_GameScene : InGameUI
         StaminaSlider,
         Sec,
         Min,
-        Mission
+        Mission,
+        Coin
     }
 
     protected override void Awake()
     {
         base.Awake();
         Manager.Game.GameUI = this;
-
+        _quickSlot = GetComponentInChildren<UI_QuickSlot>();
+        Manager.Game.Player.CoinChange -= SetCoin;
+        Manager.Game.Player.CoinChange += SetCoin;
     }
 
     private void Start()
     {
-        
+
     }
     private void Update()
     {
-        _passTime -= Time.deltaTime;
-        GetUI<TMP_Text>(GameObjects.Min.ToString()).text = ((int)_passTime / 60).ToString("D2");
-        GetUI<TMP_Text>(GameObjects.Sec.ToString()).text = ((int)_passTime % 60).ToString("D2");
+        GetUI<TMP_Text>(GameObjects.Min.ToString()).text = ((int)PassTime / 60).ToString("D2");
+        GetUI<TMP_Text>(GameObjects.Sec.ToString()).text = ((int)PassTime % 60).ToString("D2");
     }
 
-    public void ChangeData(char state,float decreaseValue,bool isPlus = false)
+    public void AddQuickSlot(ItemData item,int count)
+    {
+        _quickSlot.AddQuickSlot(item, count);
+    }
+
+    public void SetCoin(int amount)
+    {
+        GetUI<TMP_Text>(GameObjects.Coin.ToString()).text = amount.ToString();
+    }
+
+    public void ChangeData(char state,float value)
     {
         string slider = "";
         switch (state)
@@ -55,11 +69,7 @@ public class UI_GameScene : InGameUI
                 slider = GameObjects.StaminaSlider.ToString();
                 break;
         }
-
-        if(isPlus)
-            GetUI<Slider>(slider).value += decreaseValue;
-        else
-            GetUI<Slider>(slider).value -= decreaseValue;
+        GetUI<Slider>(slider).value = value;
     }
 
     public void SetMaxHP(float maxHp)

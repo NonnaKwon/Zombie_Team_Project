@@ -9,6 +9,9 @@ public class Bat : Weapon
 
     Collider[] _colliders = new Collider[100];
 
+    public AudioClip attackSound;
+    public float soundDelay = 0.3f;
+
     protected override void Awake()
     {
         base.Awake();
@@ -21,6 +24,7 @@ public class Bat : Weapon
         _playerAnimator.Play("hit");
         _playerAnimator.SetFloat("attackSpeed", AttackSpeed);
         StartCoroutine(CoHit());
+        StartCoroutine(DelaySound(soundDelay));
     }
 
     IEnumerator CoHit()
@@ -33,7 +37,22 @@ public class Bat : Weapon
     {
         float damage = Random.Range(_data.minDamage, _data.maxDamage);
         _attackPoint.Hit(damage);
+        SoundManager.instance.PlayMeleeHitSound();
         OnAttack = false;
+    }
+
+    private IEnumerator DelaySound(float delay)
+    {
+        yield return new WaitForSeconds(delay); // 딜레이
+        SoundManager.Instance.PlaySFX(attackSound); // 딜레이 후 사운드 재생
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Zombie") || collision.gameObject.CompareTag("BossZombie"))
+        {
+            SoundManager.instance.PlayMeleeHitSound();
+        }
     }
 
 }

@@ -1,9 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
+    public int BulletCount
+    {
+        get { return _bullet; }
+        set
+        {
+            _bullet = value;
+            BulletChange?.Invoke();
+        }
+    }
     private class ItemEntity
     {
         public ItemData Item;
@@ -16,36 +26,39 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    UI_QuickSlot _quickSlot;
+    public event Action BulletChange;
     private List<ItemEntity> items = new List<ItemEntity>();
     public int ItemSize { get { return items.Count; } }
+    private int _bullet = 0;
 
     private void Start()
     {
-
+        _quickSlot = Manager.Game.GameUI.QuickSlot;
     }
 
     public void AddItem(ItemData item)
     {
-        for(int i=0;i<items.Count;i++)
-        {
-            if (items[i].Item.ItemName.Equals(item.ItemName))
-            {
-                items[i].Count++;
-                return;
-            }
-        }
-
-        ItemEntity itemToken = new ItemEntity(item,1);
-        items.Add(itemToken);
+        AddItem(item, 1);
     }
 
     public void AddItem(ItemData item,int count)
     {
+        if (item.ItemName.Equals("bullet"))
+        {
+            BulletCount += count;
+        }
+
+        _quickSlot.PlusCountQuickSort(item, count);
+
         for (int i = 0; i < items.Count; i++)
         {
             if (items[i].Item.ItemName.Equals(item.ItemName))
             {
-                items[i].Count += count;
+                if (item as WeaponData != null && !item.ItemName.Equals("Grenade"))
+                    Manager.Game.Player.Coin += item.price;
+                else
+                    items[i].Count += count;
                 return;
             }
         }
@@ -64,9 +77,12 @@ public class Inventory : MonoBehaviour
                     items.RemoveAt(i);
                 else
                     items[i].Count--;
+                if (item.ItemName.Equals("bullet"))
+                {
+                    BulletCount--;
+                }
             }
         }
-        Debug.Log("일치하는 아이템이 없음");
     }
 
     public ItemData GetData(int index, out int count)

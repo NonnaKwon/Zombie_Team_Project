@@ -207,13 +207,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0eeab00fd47916341bb12db2f90c90bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  items:
-  - {fileID: 11400000, guid: cf529568c85d36149a90948730ad2e9b, type: 2}
-  - {fileID: 11400000, guid: 77ffa34f37acc02448e55bee63f3da3e, type: 2}
-  - {fileID: 11400000, guid: 442bad22f4ad8524cb62cd7c40c2ca96, type: 2}
-  - {fileID: 11400000, guid: 01867717a338c4947bbe92588e343acf, type: 2}
-  - {fileID: 11400000, guid: cdb0790f01a63cc46915bb82e487fcca, type: 2}
-  Tokens: []
 --- !u!1 &2346809197802573730
 GameObject:
   m_ObjectHideFlags: 0

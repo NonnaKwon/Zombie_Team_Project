@@ -1,11 +1,13 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System;
+
 using static Define;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] GameObject _mousePointer;
+    public GameObject MousePointer;
 
     private Vector3 _moveDir;
 
@@ -25,12 +27,20 @@ public class PlayerController : MonoBehaviour
 
     private StateMachine<PlayerState> _stateMachine;
     public StateMachine<PlayerState> StateMachine { get { return _stateMachine; } }
+    public bool CanDash { get; set; } = true;
     public Vector2 MousePos { get { return _mousePos; } }
     public float MoveSpeed { get { return _moveSpeed; } }
     public float CurSpeed { set { _curSpeed = value; } }
     public bool CanMove { get { return _canMove; } }
-    public int Coin { get { return _coin; } set { _coin = value; } }
+    public int Coin { get { return _coin; } 
+        set 
+        { 
+            _coin = value;
+            CoinChange?.Invoke(_coin);
+        } 
+    }
 
+    public event Action<int> CoinChange;
 
     private void Awake()
     {
@@ -62,7 +72,7 @@ public class PlayerController : MonoBehaviour
         _dashSpeedPercent = 1.8f;
         _curSpeed = _moveSpeed;
         _animationLayer = 0;
-        _coin = 10000;
+        Coin = 0;
 
         if (_stateMachine.CurState != PlayerState.Idle)
             _stateMachine.ChangeState(PlayerState.Idle);
@@ -110,8 +120,9 @@ public class PlayerController : MonoBehaviour
                 transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, 5f * Time.deltaTime);
             }
         }
-        _mousePointer.transform.position = transform.position + transform.forward + new Vector3(0,1f,0);
+        MousePointer.transform.position = transform.position + transform.forward + new Vector3(0,1f,0);
     }
+
     private void Move()
     {
         float speed = _onDash ? _curSpeed * _dashSpeedPercent : _curSpeed;
@@ -123,7 +134,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnDash(InputValue value)
     {
-        if (value.isPressed)
+        if (value.isPressed && CanDash)
             _onDash = true;
         else
             _onDash = false;
@@ -167,8 +178,7 @@ public class PlayerController : MonoBehaviour
 
         if (other.gameObject.CompareTag("Item")) // 내가 추가한 스크립트
         {
-            // 아이템 픽업 로직
-            // 예: 인벤토리에 아이템 추가
+            Coin = Coin + Define.GET_COIN_AMOUNT;
             Destroy(other.gameObject); // 아이템을 게임 세계에서 제거
         }
     }
@@ -196,6 +206,11 @@ public class PlayerController : MonoBehaviour
     private class IdleState : PlayerStateClass
     {
         public IdleState(PlayerController owner) : base(owner) { }
+
+        public override void Enter()
+        {
+            owner._canMove = true;
+        }
 
         public override void Update()
         {

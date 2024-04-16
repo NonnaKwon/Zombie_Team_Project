@@ -7,7 +7,8 @@ public class Coffee : Item
 
     public override void UseItem()
     {
-
+        StatusController sc = Manager.Game.Player.GetComponent<StatusController>();
+        sc.ChangeData(Define.Status.Fatigue, 0.3f, true);
     }
 
     public override void SetData()

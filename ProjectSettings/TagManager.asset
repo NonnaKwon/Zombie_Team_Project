@@ -6,6 +6,10 @@ TagManager:
   tags:
   - Zombie
   - Building
+  - Item
+  - Weapon
+  - Cloth
+  - GameUI
   layers:
   - Default
   - TransparentFX
@@ -24,7 +28,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - TransParent
   - 
   - 
   - 

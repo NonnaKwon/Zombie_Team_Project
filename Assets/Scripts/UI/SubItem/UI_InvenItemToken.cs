@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UI_InvenItemToken : BaseUI
+public class UI_InvenItemToken : BaseUI, IPointerClickHandler
 {
     ItemData _item;
     int _count = 0;
+    bool _isQuickAdd = false;
     enum GameObjects
     {
         Image,
@@ -27,22 +29,21 @@ public class UI_InvenItemToken : BaseUI
         GetUI(GameObjects.Slot.ToString()).SetActive(active);
     }
 
-    public bool GetActiveTokwn()
+    public bool GetActiveToken()
     {
         return GetUI(GameObjects.Data.ToString()).activeSelf;
     }
 
     public void SetData(ItemData item,int count)
     {
-        this._count = count;
-        if (_item == null)
+        if (count == 0)
         {
-            _item = item;
-            InitData();
+            SetActiveToken(false);
+            return;
         }
-        else
-            UpdateData();
-
+        _count = count;
+        _item = item;
+        InitData();
     }
 
     private void InitData()
@@ -55,4 +56,14 @@ public class UI_InvenItemToken : BaseUI
     {
         GetUI<TMP_Text>(GameObjects.Count.ToString()).text = _count.ToString();
     }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (!_isQuickAdd && eventData.button == PointerEventData.InputButton.Right)
+        {
+            Manager.Game.GameUI.AddQuickSlot(_item,_count);
+            _isQuickAdd = true;
+        }
+    }
+
 }

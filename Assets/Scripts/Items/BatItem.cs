@@ -6,7 +6,7 @@ public class BatItem : Item
 {
     public override void UseItem()
     {
-        throw new System.NotImplementedException();
+        Manager.Game.Player.GetComponent<FightController>().SetWeapon(this);
     }
 
     public override void SetData()

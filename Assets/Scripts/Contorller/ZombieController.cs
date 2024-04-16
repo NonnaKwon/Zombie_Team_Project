@@ -1,10 +1,13 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 public class ZombieController : MonoBehaviour, IDamagable
 {
     [SerializeField] ZombieType type;
     [SerializeField] AttackPoint attackPoint;
     [SerializeField] float attackDamage;
+
     public Transform player;
     public Rigidbody rigid;
     public Animator animator;
@@ -14,13 +17,15 @@ public class ZombieController : MonoBehaviour, IDamagable
     public float timeBetweenAttacks;
     public float zombieSpeed;
     private float time = 0;
+    private float releaseDis = 150f;
     public float MoveSpeed { get { return zombieSpeed; } }
-    private Vector3 moveDir;
-    private GameObject bloodEffect;
+    private PooledObject bloodEffect;
 
     private ZombieState currentState;
     public float hp = 100;
-    public GameObject[] dropItems;
+    PooledObject coin;
+
+    [SerializeField] private AudioClip death1Clip;
 
     private enum ZombieState
     {
@@ -37,7 +42,9 @@ public class ZombieController : MonoBehaviour, IDamagable
     }
     private void Start()
     {
-        bloodEffect = Resources.Load<GameObject>("Weapon");
+        bloodEffect = Manager.Resource.Load<PooledObject>("Prefabs/Effects/BloodEffect");
+        coin = Manager.Resource.Load<PooledObject>("Prefabs/GoldCoins");
+
     }
 
     private void Awake()
@@ -64,13 +71,7 @@ public class ZombieController : MonoBehaviour, IDamagable
                 AttackPlayer();
                 break;
         }
-        // MoveAnimator();
     }
-
-    //private void MoveAnimator()
-    //{
-    //    animator.SetFloat("velocity", (moveDir * zombieSpeed).magnitude);
-    //}
 
     private void LookForPlayer()
     {
@@ -81,6 +82,8 @@ public class ZombieController : MonoBehaviour, IDamagable
             currentState = ZombieState.Chase;
             animator.SetBool("IsChase", true);
         }
+        else if (distanceToPlayer >= releaseDis)
+            GetComponent<PooledObject>().Release();
     }
 
     private void ChasePlayer()
@@ -112,7 +115,6 @@ public class ZombieController : MonoBehaviour, IDamagable
         if (time > timeBetweenAttacks)
         {
             time = 0;
-            Debug.Log("플레이어 공격");
             attackPoint.Hit(attackDamage);
             if (ZombieType.crawl == type)
                 animator.Play("Bite");
@@ -128,31 +130,30 @@ public class ZombieController : MonoBehaviour, IDamagable
     }
 
 
-    private void Die()
+    IEnumerator CoDie()
     {
         animator.SetTrigger("Die");
+        yield return new WaitForSecondsRealtime(1.5f);
         DropItem();
-        Destroy(gameObject);
+        SoundManager.Instance.PlaySFX(death1Clip);
+        GetComponent<PooledObject>().Release();
     }
-
     private void DropItem()
     {
-        if (dropItems.Length > 0)
-        {
-            int randomIndex = Random.Range(0, dropItems.Length);
-            Instantiate(dropItems[randomIndex], transform.position, Quaternion.identity);
-        }
+        Manager.Pool.GetPool(coin, transform.position, transform.rotation);
     }
 
     public void TakeDamage(float damage)
     {
         hp -= damage;
-        animator.SetTrigger("TakeHit");
-        // Manager. 오브젝트풀 사용
+
+        Manager.Pool.GetPool(bloodEffect, transform.position + new Vector3(0, 1.5f, 0),transform.rotation);
+
         if (hp <= 0)
         {
-            Die();
+            StartCoroutine(CoDie());
             Debug.Log("좀비 죽음");
         }
     }
+
 }

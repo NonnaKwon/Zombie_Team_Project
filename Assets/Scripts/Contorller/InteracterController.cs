@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using static Define;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public abstract class InteracterController : MonoBehaviour, IInteractable
 {
@@ -12,21 +11,20 @@ public abstract class InteracterController : MonoBehaviour, IInteractable
     //랜덤으로 아이템 리스트를
     bool _isActive;
     GameObject _uIData;
-    Image _btnInfo;
+    [SerializeField] RectTransform _btnInfo;
 
 
     protected virtual void Start()
     {
         _isActive = false;
         _uIData = GetComponentInChildren<Canvas>().gameObject;
-        _btnInfo = _uIData.GetComponentInChildren<Image>();
         _uIData.SetActive(false);
     }
 
     protected void LateUpdate()  
     {
         if (_isActive)
-            _btnInfo.rectTransform.position = Camera.main.WorldToScreenPoint(transform.position + _offset);
+            _btnInfo.position = Camera.main.WorldToScreenPoint(transform.position + _offset);
     }
 
     public void OnActive()

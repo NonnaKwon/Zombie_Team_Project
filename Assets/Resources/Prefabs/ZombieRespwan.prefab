@@ -53,7 +53,9 @@ MonoBehaviour:
   - {fileID: 6353557080926403095, guid: f2d21f22ab700a9448ed68f2dfc18371, type: 3}
   - {fileID: 8215388454793580449, guid: 3390f717dd1e8ad42a803c32266ac820, type: 3}
   - {fileID: 7735741366644206081, guid: bdabf53b8bfb9804aba608f753239ebb, type: 3}
-  - {fileID: 5780363829149477456, guid: 359833a55a4fa6647974b97c352b6f1d, type: 3}
+  layer:
+    serializedVersion: 2
+    m_Bits: 8
   spawnTime: 1
-  maxZombies: 100
   isGameOver: 0
+  checkRadius: 20

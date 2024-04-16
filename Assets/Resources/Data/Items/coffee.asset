@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 21300000, guid: aa6914e4b8e404f49b398b0ad7588fdc, type: 3}
   ItemName: coffee
-  price: 100
+  price: 5
   info: 

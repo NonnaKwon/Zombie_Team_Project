@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 21300000, guid: 61449c9e47873f348a1c0bd6a736fcbf, type: 3}
   ItemName: water
-  price: 100
+  price: 5
   info: 
