@@ -27,7 +27,7 @@ public class BossZombie : MonoBehaviour, IDamagable
     public Transform FireBloodPoint;
 
     private bool canMove = true;
-    
+    private int curCount = 0;
 
     private float time = 0;
     private enum BossPhase { Phase1, Phase2, Phase3 }
@@ -66,7 +66,6 @@ public class BossZombie : MonoBehaviour, IDamagable
 
     void Update()
     {
-        Debug.Log(currentState);
         switch (currentState)
         {
             case ZombieState.Idle:
@@ -137,7 +136,7 @@ public class BossZombie : MonoBehaviour, IDamagable
         }
     }
 
-    float attackSpeed = 3f;
+    float attackSpeed = 1f;
     void AttackPlayer()
     {
         time += Time.deltaTime;
@@ -160,7 +159,8 @@ public class BossZombie : MonoBehaviour, IDamagable
             case BossPhase.Phase2:
                 Debug.Log("2페이즈");
                 StartCoroutine(Attack());
-                StartCoroutine(StartCreateZombies());
+                if(curCount <= 50)
+                    StartCoroutine(StartCreateZombies());
                 break;
             case BossPhase.Phase3:
                 Debug.Log("3페이즈");
@@ -192,20 +192,22 @@ public class BossZombie : MonoBehaviour, IDamagable
     }
 
 
-
+    
     IEnumerator StartCreateZombies()
     {
-        int count = 20;
-        while (count >= 0) // 총 20마리 생성
+        while (true)
         {
+            if (curCount >= 50)
+                break;
             CreateZombie();
+            curCount++;
             yield return new WaitForSeconds(0.5f);
         }
     }
 
     void CreateZombie()
     {
-        float range = 15f;
+        float range = 10f;
         Vector3 InstPos = transform.position + new Vector3(Random.Range(-range, range), 0, Random.Range(-range, range));
         Instantiate(zombiePrefab, InstPos, Quaternion.identity);
     }
