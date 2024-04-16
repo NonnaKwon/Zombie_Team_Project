@@ -138,14 +138,6 @@ public class ZombieController : MonoBehaviour, IDamagable
         SoundManager.Instance.PlaySFX(death1Clip);
         GetComponent<PooledObject>().Release();
     }
-
-    void OnCollisionEnter(Collision collision)
-    {
-        if (collision.collider.CompareTag("Bat"))
-        {
-            SoundManager.instance.PlayMeleeHitSound();
-        }
-    }
     private void DropItem()
     {
         Manager.Pool.GetPool(coin, transform.position, transform.rotation);
