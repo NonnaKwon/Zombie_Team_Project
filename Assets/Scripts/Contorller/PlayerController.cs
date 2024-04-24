@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     private bool _onMouseRotate;
     private int _animationLayer;
     private bool _onDash;
-    private int _coin;
+    private int _coin = 0;
 
     Rigidbody _rigid;
     Vector2 _mousePos;
@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
     public float MoveSpeed { get { return _moveSpeed; } }
     public float CurSpeed { set { _curSpeed = value; } }
     public bool CanMove { get { return _canMove; } }
-    public int Coin { get { return _coin; } 
+    public int Coin { get { return _coin; }
         set 
         { 
             _coin = value;
@@ -72,7 +72,6 @@ public class PlayerController : MonoBehaviour
         _dashSpeedPercent = 1.8f;
         _curSpeed = _moveSpeed;
         _animationLayer = 0;
-        Coin = 0;
 
         if (_stateMachine.CurState != PlayerState.Idle)
             _stateMachine.ChangeState(PlayerState.Idle);

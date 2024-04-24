@@ -13,7 +13,8 @@ public class PoolManager : Singleton<PoolManager>
         ObjectPool objectPool = gameObject.AddComponent<ObjectPool>();
         objectPool.CreatePool(prefab, size, capacity);
 
-        poolDic.Add(prefab.GetInstanceID(), objectPool);
+        if (!poolDic.ContainsKey(prefab.GetInstanceID()))
+            poolDic.Add(prefab.GetInstanceID(), objectPool);
     }
 
     public void DestroyPool(PooledObject prefab)
